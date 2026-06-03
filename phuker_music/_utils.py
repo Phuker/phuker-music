@@ -9,17 +9,12 @@ import json
 import base64
 
 import jinja2
-import langid
 
 from . import __version__
 
 
 logger = logging.getLogger(__name__)
-
-lang_identifier = langid.langid.LanguageIdentifier.from_modelstring(langid.langid.model, norm_probs=True)
-lang_identifier.set_languages([_ for _ in lang_identifier.nb_classes if _ not in (
-    'la', # Sometimes incorrectly returns Latin
-)])
+lang_identifier = None
 
 
 def _assert(expr, msg=''):
@@ -53,6 +48,18 @@ def _init_logging(logging_format):
 
 
 def detect_language(text: str) -> str:
+    global lang_identifier
+
+    # Lazy init
+    # subsequent calls reuse the instance for performance
+    if lang_identifier is None:
+        import langid
+
+        lang_identifier = langid.langid.LanguageIdentifier.from_modelstring(langid.langid.model, norm_probs=True)
+        lang_identifier.set_languages([_ for _ in lang_identifier.nb_classes if _ not in (
+            'la', # Sometimes incorrectly returns Latin
+        )])
+
     # Buggy when all caps text
     lang, prob = lang_identifier.classify(text.lower())
     if prob > 0.98:
