@@ -14,7 +14,7 @@ uninstall:
 	$(PYTHON) -m pip uninstall -y phuker-music
 
 clean:
-	rm -rf *.egg-info build dist
+	rm -rf *.egg-info dist
 
 test: ./tests/
 	$(PYTHON) -m unittest discover -s tests -p 'test_*.py' -v
@@ -25,6 +25,7 @@ demo: ./docs/
 
 build dist/*.whl dist/*.tar.gz: pyproject.toml
 	uvx --from build pyproject-build --installer uv
+	rm -rf *.egg-info
 
 install: dist/*.whl
 	$(PYTHON) -m pip install dist/*.whl
@@ -32,5 +33,4 @@ install: dist/*.whl
 
 upload: dist/*.whl dist/*.tar.gz
 	$(PYTHON) -m twine check dist/*.whl dist/*.tar.gz
-	# username is: __token__
 	$(PYTHON) -m twine upload dist/*.whl dist/*.tar.gz
