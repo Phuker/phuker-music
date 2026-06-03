@@ -1,0 +1,101 @@
+# phuker-music
+
+Yet another HTML music player generator. Scan a directory of audio files and generate an offline, all-in-one single HTML player file. Also generates player pages for multiple albums plus an index page via a JSON config.
+
+Demo: [docs/albums.html](https://phuker.github.io/phuker-music/albums.html)
+
+## Features
+
+- No loan ads or subscription popups
+- No AI
+- No tracking, analytics, statistics, or telemetry
+- No user data uploads
+- No extra assets — No JS/CSS dependencies, no web fonts, no CDN
+- **Only a fucking single HTML file**
+
+## Quick Start
+
+First, `cd` to a directory that contains audio files, then:
+
+### Run with uvx
+
+```bash
+uvx phuker-music player .
+```
+
+### Run with pipx
+
+```bash
+pipx run phuker-music player .
+```
+
+### Install with uv and run
+
+```bash
+uv tool install phuker-music
+phuker-music player .
+```
+
+### Install with pip and run
+
+```bash
+pip install phuker-music
+phuker-music player .
+```
+
+## Usage
+
+```console
+$ phuker-music --help
+usage: phuker-music [-h] [-v] [-V] command ...
+
+Music player HTML generator
+
+positional arguments:
+  command
+    player       Generate music player HTML for a single album
+    albums       Generate player and index page for all albums
+
+options:
+  -h, --help     show this help message and exit
+  -v, --verbose  Increase verbosity level (use -vv or more for greater effect)
+  -V, --version  Show version and exit
+```
+
+```console
+$ phuker-music player --help
+usage: phuker-music player [-h] [-t TITLE] [-c COVER] [-r] [--sort-type sort_type] [-f] [-v] dir_path
+
+Generate music player HTML for a single album
+
+positional arguments:
+  dir_path              Path to an album directory
+
+options:
+  -h, --help            show this help message and exit
+  -t, --title TITLE     Album title, default: directory name
+  -c, --cover COVER     Album cover file path, relative to dir_path
+  -r, --recursively     Recursively scan files
+  --sort-type sort_type Sort type, default: filename, choices: filename, mtime_desc
+  -f, --force           Force overwrite if output file exists
+  -v, --verbose         Increase verbosity level (use -vv or more for greater effect)
+```
+
+```console
+$ phuker-music albums --help
+usage: phuker-music albums [-h] [-f] [-v] config_file
+
+Generate player and index page for all albums
+
+positional arguments:
+  config_file    Config file path
+
+options:
+  -h, --help     show this help message and exit
+  -f, --force    Force overwrite if output file exists
+  -v, --verbose  Increase verbosity level (use -vv or more for greater effect)
+```
+
+## License
+
+MIT

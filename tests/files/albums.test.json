@@ -1,0 +1,23 @@
+{
+    "albums_index_file_path": "./albums.html",
+    "albums": [
+        {
+            "dir_path": "test 0 files"
+        },
+        {
+            "dir_path": "test 1 file/"
+        },
+        {
+            "dir_path": "./test n files with cover sort_type mtime_desc",
+            "title": "test n files with cover sort_type mtime_desc",
+            "cover_file": "Cover.jpg",
+            "sort_type": "mtime_desc"
+        },
+        {
+            "dir_path": "./test n files with cover recursively/",
+            "title": "test n files with cover recursively",
+            "cover_file": "Cover.jpg",
+            "recursively": true
+        }
+    ]
+}

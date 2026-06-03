@@ -1,0 +1,71 @@
+html {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    margin: 0 2em;
+}
+
+@media (max-width: 700px) {
+    .container {
+        margin: 0 10px;
+    }
+}
+
+h1 {
+    width: fit-content;
+    margin: 0.5em 0;
+
+    /* https://github.com/zenozeng/fonts.css */
+    font-family: Georgia, "Nimbus Roman No9 L", "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "Source Han Serif CN", STSong, "AR PL New Sung", "AR PL SungtiL GB", NSimSun, SimSun, "TW\-Sung", "WenQuanYi Bitmap Song", "AR PL UMing CN", "AR PL UMing HK", "AR PL UMing TW", "AR PL UMing TW MBE", PMingLiU, MingLiU, serif;
+    font-weight: lighter;
+    font-size: x-large;
+}
+
+ul {
+    font-family: Consolas, Monaco, "Droid Sans Mono", "Courier New", "Microsoft YaHei", "PingFang SC", "WenQuanYi Micro Hei", monospace;
+}
+
+ul,
+li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    margin: 0.5em 0;
+}
+
+li a {
+    color: black;
+    text-decoration: none;
+    padding: 0.5em;
+    display: inline-block;
+    background: #ddd;
+    width: 95%;
+}
+
+li a span.cover-container {
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    vertical-align: middle;
+}
+
+li a span.cover-container img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+li a span.title {
+    display: inline-block;
+    width: calc(100% - 4em);
+    vertical-align: middle;
+}

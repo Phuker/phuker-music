@@ -1,0 +1,181 @@
+html {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    flex-shrink: 0;
+    width: fit-content;
+    margin: 0.5em 0;
+
+    /* https://github.com/zenozeng/fonts.css */
+    font-family: Georgia, "Nimbus Roman No9 L", "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "Source Han Serif CN", STSong, "AR PL New Sung", "AR PL SungtiL GB", NSimSun, SimSun, "TW\-Sung", "WenQuanYi Bitmap Song", "AR PL UMing CN", "AR PL UMing HK", "AR PL UMing TW", "AR PL UMing TW MBE", PMingLiU, MingLiU, serif;
+    font-weight: lighter;
+    font-size: x-large;
+}
+
+footer {
+    flex-shrink: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+audio.player {
+    flex: 1;
+    border: none;
+    outline: none;
+}
+
+ul {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: 0;
+    margin: 0;
+    font-family: Consolas, Monaco, "Droid Sans Mono", "Courier New", "Microsoft YaHei", "PingFang SC", "WenQuanYi Micro Hei", monospace;
+}
+
+li.dirname {
+    margin: 0 0 2px 0;
+    display: block;
+    background: #F8F8F8;
+    font-weight: bold;
+    height: 2em;
+    line-height: 2em;
+    padding: 8px;
+    /*For long item*/
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    user-select: none;
+}
+
+li.item {
+    cursor: pointer;
+    margin: 0 0 2px 0;
+    display: block;
+    background: #ddd;
+    height: 2em;
+    line-height: 2em;
+    padding: 8px;
+    /*For long item*/
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.ctrlBtn {
+    border: none;
+    outline: none;
+    background-color: #FFF;
+}
+
+img.icon {
+    height: 1.5em;
+}
+
+#ctrlBtnGroup {
+    display: flex;
+    flex-shrink: 0;
+    gap: 4px;
+}
+
+#playerLine {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#imgLoading {
+    display: none;
+    height: 2em;
+    vertical-align: middle;
+    margin-left: 0.5em;
+}
+
+#pageLoading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#pageLoading img {
+    max-width: 70%;
+    max-height: 70%;
+}
+
+.container {
+    margin: 0 2em;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+    -webkit-transition: opacity 0.3s;
+}
+
+span.metadata {
+    margin-left: 1em;
+    color: #aaa;
+}
+
+@media (max-width: 600px) {
+    #playerLine {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5em;
+    }
+
+    .container {
+        margin: 0 10px;
+    }
+
+    audio.player {
+        flex: none;
+        width: 100%;
+    }
+
+    #ctrlBtnGroup {
+        justify-content: space-around;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #ccc;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: #999;
+}

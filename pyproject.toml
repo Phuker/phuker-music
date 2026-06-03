@@ -1,0 +1,27 @@
+[project]
+name = "phuker-music"
+version = "1.0.0"
+description = "Offline single-file HTML music player generator"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [
+    { name = "Phuker", email = "Phuker@users.noreply.github.com" },
+]
+dependencies = [
+    "jinja2",
+    "langid",
+    "mutagen",
+]
+
+[project.scripts]
+phuker-music = "phuker_music.cli:main"
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["phuker_music*"]
+
+[tool.setuptools.package-data]
+phuker_music = ["templates/**"]

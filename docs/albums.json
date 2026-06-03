@@ -1,0 +1,13 @@
+{
+    "albums_index_file_path": "./albums.html",
+    "albums": [
+        {
+            "dir_path": "./Ambience/",
+            "cover_file": "Cover.jpg"
+        },
+        {
+            "dir_path": "./Nature/",
+            "cover_file": "Cover.jpg"
+        }
+    ]
+}
