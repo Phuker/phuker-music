@@ -33,7 +33,6 @@ footer {
 audio.player {
     flex: 1;
     border: none;
-    outline: none;
 }
 
 ul {
@@ -77,8 +76,12 @@ li.item {
 
 .ctrlBtn {
     border: none;
-    outline: none;
     background-color: #FFF;
+}
+
+.ctrlBtn:focus-visible {
+    outline: 2px solid #4A90D9;
+    outline-offset: 2px;
 }
 
 img.icon {
