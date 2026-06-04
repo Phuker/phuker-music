@@ -197,7 +197,7 @@ https://github.com/Phuker/phuker-music
     </style>
 </head>
 <body>
-<div id="pageLoading">
+<div id="pageLoading" role="status" aria-label="Loading">
     <h1>test n files with cover recursively</h1>
     <img src="./Cover.jpg" alt="Album cover image of: test n files with cover recursively" />
 </div>
@@ -500,8 +500,10 @@ https://github.com/Phuker/phuker-music
     function selectMusic(index) {
         for (let i = 0; i < items.length; i++) {
             items[i].style['color'] = 'inherit';
+            items[i].removeAttribute('aria-current');
         }
         items[index].style['color'] = 'blue';
+        items[index].setAttribute('aria-current', 'true');
         if (itemsList.scrollTop > (items[index].offsetTop - items[index].clientHeight) ||
             (itemsList.scrollTop + itemsList.clientHeight) < items[index].offsetTop) {
             itemsList.scrollTo(0, items[index].offsetTop - items[index].offsetHeight * 2);

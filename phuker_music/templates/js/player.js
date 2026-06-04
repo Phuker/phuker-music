@@ -202,8 +202,10 @@ function keydownPlayItem(event, i) {
 function selectMusic(index) {
     for (let i = 0; i < items.length; i++) {
         items[i].style['color'] = 'inherit';
+        items[i].removeAttribute('aria-current');
     }
     items[index].style['color'] = 'blue';
+    items[index].setAttribute('aria-current', 'true');
     if (itemsList.scrollTop > (items[index].offsetTop - items[index].clientHeight) ||
         (itemsList.scrollTop + itemsList.clientHeight) < items[index].offsetTop) {
         itemsList.scrollTo(0, items[index].offsetTop - items[index].offsetHeight * 2);
