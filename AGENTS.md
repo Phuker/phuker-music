@@ -48,7 +48,7 @@ make demo      # 等价于: python -m phuker_music albums -v -f ./docs/albums.js
 - **Albums 命令每张专辑默认 `overwrite: True`** — 与 `player` CLI 默认 `overwrite=False` 不同；`phuker_music/albums.py` 的 `main()` 对索引页仍使用顶层的 `--force` 参数
 - **Jinja2 `autoescape=True`** — HTML 模板默认转义；`|json_encode` 过滤器额外替换 `<` `>` 防 XSS
 - **`read_file()` 和 `read_file_as_data_url()` 以 `phuker_music/templates/` 为基准路径**（`_utils.py:get_jinja_env()`，基于 `__file__` 解析）
-- **依赖**：`jinja2`、`langid`、`mutagen`（Python >= 3.8）。注意 `langid` 用于语种识别（置信度 >0.98 才采纳，否则回退 `en`；跳过低置信的 `la`；输入会被小写化以避免全大写文本的识别 bug）
+- **依赖**：`jinja2`、`langid`、`mutagen`（Python >= 3.10）。注意 `langid` 用于语种识别（置信度 >0.98 才采纳，否则回退 `en`；跳过低置信的 `la`；输入会被小写化以避免全大写文本的识别 bug）
 - **测试需要本地文件** — `tests/files/` 各子目录可能包含音频文件和专辑封面图片文件；`make test` 在单元测试之后还会运行 `albums` CLI 作为集成测试
 - **Sort types**: `filename`（默认）、`mtime_desc`
 - **支持音频格式**: `.mp3`, `.ogg`, `.flac`, `.m4a`, `.wav`, `.weba`

@@ -3,7 +3,7 @@ name = "phuker-music"
 dynamic = ["version"]
 description = "Offline single-file HTML music player generator"
 readme = "Readme.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = "MIT"
 authors = [
     { name = "Phuker", email = "Phuker@users.noreply.github.com" },
