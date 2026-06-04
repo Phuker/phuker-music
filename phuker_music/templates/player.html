@@ -16,12 +16,12 @@ https://github.com/Phuker/phuker-music
 <body>
 <div id="pageLoading">
     <h1>{{ title }}</h1>
-    <img src="{{ cover_file or read_file_as_data_url('images/album.png', 'image/png') }}" />
+    <img src="{{ cover_file or read_file_as_data_url('images/album.png', 'image/png') }}" alt="Album cover image of: {{ title }}" />
 </div>
 <div class="container" id="container">
 <h1 title="{{ title }}">{{ title }}</h1>
 
-<img src="{{ read_file_as_data_url('images/loading.gif', 'image/gif') }}" id="imgLoading" />
+<img src="{{ read_file_as_data_url('images/loading.gif', 'image/gif') }}" id="imgLoading" alt="" />
 
 <ul id="itemsList">
 {%- for music_info_group in music_info_groups %}
@@ -29,27 +29,27 @@ https://github.com/Phuker/phuker-music
     <li class="dirname">{{ music_info_group.name }}</li>
     {%- endif%}
     {%- for music_info in music_info_group.music_info_sub_list %}
-    <li class="item" onclick="clickPlay({{ music_info.index }})" id="item{{ music_info.index }}">{{ music_info.name }}<span class="metadata">{{ music_info.duration_str or music_info.file_size_str }}</span></li>
+    <li class="item" tabindex="0" role="button" aria-label="{{ music_info.name }}" onclick="clickPlay({{ music_info.index }})" id="item{{ music_info.index }}">{{ music_info.name }}<span class="metadata">{{ music_info.duration_str or music_info.file_size_str }}</span></li>
     {%- endfor %}
 {%- endfor %}
 </ul>
 <footer>
 <div id="playerLine">
     <div id="ctrlBtnGroup">
-        <button class="ctrlBtn" id="btnPlayPrevious">
-            <img src="{{ read_file_as_data_url('images/left.png', 'image/png') }}" class="icon" />
+        <button class="ctrlBtn" id="btnPlayPrevious" aria-label="Previous track">
+            <img src="{{ read_file_as_data_url('images/left.png', 'image/png') }}" class="icon" alt="" />
         </button>
-        <button class="ctrlBtn" id="btnPlayMode">
-            <img src="{{ read_file_as_data_url('images/loop.png', 'image/png') }}" id="imgPlayModeIcon" class="icon" />
+        <button class="ctrlBtn" id="btnPlayMode" aria-label="Switch play mode">
+            <img src="{{ read_file_as_data_url('images/loop.png', 'image/png') }}" id="imgPlayModeIcon" class="icon" alt="" />
         </button>
-        <button class="ctrlBtn" id="btnShare">
-            <img src="{{ read_file_as_data_url('images/share.png', 'image/png') }}" id="imgShareIcon" class="icon" />
+        <button class="ctrlBtn" id="btnShare" aria-label="Copy share link">
+            <img src="{{ read_file_as_data_url('images/share.png', 'image/png') }}" id="imgShareIcon" class="icon" alt="" />
         </button>
-        <button class="ctrlBtn" id="btnPlayNext">
-            <img src="{{ read_file_as_data_url('images/right.png', 'image/png') }}" class="icon" />
+        <button class="ctrlBtn" id="btnPlayNext" aria-label="Next track">
+            <img src="{{ read_file_as_data_url('images/right.png', 'image/png') }}" class="icon" alt="" />
         </button>
     </div>
-    <audio src="" controls id="player" class="player" preload="auto">If you see this, please use a modern browser.</audio>
+    <audio src="" controls id="player" class="player" preload="auto">Your browser does not support the audio element.</audio>
 </div>
 </footer>
 
