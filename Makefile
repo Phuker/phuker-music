@@ -26,7 +26,6 @@ demo: ./docs/
 build dist/*.whl dist/*.tar.gz: pyproject.toml
 	uvx --from build pyproject-build --installer uv
 	rm -rf *.egg-info
-	$(PYTHON) -m twine check dist/*.whl dist/*.tar.gz
 
 install: dist/*.whl
 	$(PYTHON) -m pip install dist/*.whl
@@ -37,4 +36,5 @@ dev-install:
 	rm -rf *.egg-info
 
 upload: dist/*.whl dist/*.tar.gz
+	$(PYTHON) -m twine check dist/*.whl dist/*.tar.gz
 	$(PYTHON) -m twine upload dist/*.whl dist/*.tar.gz
