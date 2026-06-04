@@ -172,8 +172,7 @@ function playNext() {
 }
 
 
-function clickPlay(i) {
-    my_log(`clickPlay(${i})`);
+function playItem(i) {
     if (i === index) {
         if (player.paused) {
             player.play();
@@ -181,6 +180,21 @@ function clickPlay(i) {
     } else {
         index = i;
         playIndex();
+    }
+}
+
+
+function clickPlayItem(i) {
+    my_log(`clickPlayItem(${i})`);
+    playItem(i);
+}
+
+
+function keydownPlayItem(event, i) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        my_log(`keydownPlayItem(${i}, '${event.key}')`);
+        playItem(i);
     }
 }
 

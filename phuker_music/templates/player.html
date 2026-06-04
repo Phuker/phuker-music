@@ -29,7 +29,7 @@ https://github.com/Phuker/phuker-music
     <li class="dirname">{{ music_info_group.name }}</li>
     {%- endif%}
     {%- for music_info in music_info_group.music_info_sub_list %}
-    <li class="item" tabindex="0" role="button" aria-label="{{ music_info.name }}" onclick="clickPlay({{ music_info.index }})" id="item{{ music_info.index }}">{{ music_info.name }}<span class="metadata">{{ music_info.duration_str or music_info.file_size_str }}</span></li>
+    <li class="item" tabindex="0" role="button" aria-label="{{ music_info.name }}" onclick="clickPlayItem({{ music_info.index }})" onkeydown="keydownPlayItem(event, {{ music_info.index }})" id="item{{ music_info.index }}">{{ music_info.name }}<span class="metadata">{{ music_info.duration_str or music_info.file_size_str }}</span></li>
     {%- endfor %}
 {%- endfor %}
 </ul>
