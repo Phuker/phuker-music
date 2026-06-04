@@ -1,8 +1,10 @@
 # phuker-music
 
+[GitHub](https://github.com/Phuker/phuker-music) | [PyPI](https://pypi.org/project/phuker-music/) | [Demo](https://phuker.github.io/phuker-music/)
+
 Yet another HTML music player generator. Scan a directory of audio files and generate an offline, all-in-one single HTML player file. Also generates player pages for multiple albums plus an index page via a JSON config.
 
-Demo: [docs/albums.html](https://phuker.github.io/phuker-music/albums.html)
+You can try the [demo](https://phuker.github.io/phuker-music/) to see what generated index page and players look like. Grant system notifications permission to display a notification when each track starts playing.
 
 ## Features
 
@@ -33,6 +35,13 @@ pipx run phuker-music player .
 
 ```bash
 uv tool install phuker-music
+phuker-music player .
+```
+
+### Install with pipx and run
+
+```bash
+pipx install phuker-music
 phuker-music player .
 ```
 

@@ -1,5 +1,5 @@
 {
-    "albums_index_file_path": "./albums.html",
+    "albums_index_file_path": "./index.html",
     "albums": [
         {
             "dir_path": "./Ambience/",
