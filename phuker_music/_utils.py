@@ -13,16 +13,16 @@ import jinja2
 from . import __version__
 
 
-logger = logging.getLogger(__name__)
-lang_identifier = None
+logger: logging.Logger = logging.getLogger(__name__)
+lang_identifier: object | None = None
 
 
-def _assert(expr, msg=''):
+def _assert(expr: object, msg: str = '') -> None:
     if not expr:
         raise AssertionError(msg)
 
 
-def _init_logging(logging_format):
+def _init_logging(logging_format: str) -> None:
     logging_stream = sys.stdout
     logging_level = logging.INFO
 
@@ -71,16 +71,16 @@ def detect_language(text: str) -> str:
         return 'en'
 
 
-def get_jinja_env():
+def get_jinja_env() -> jinja2.Environment:
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
-    def global_read_file(relative_file_path):
+    def global_read_file(relative_file_path: str) -> str:
         file_path = os.path.join(script_dir, 'templates', relative_file_path)
 
         with open(file_path, 'r', encoding='UTF-8') as f:
             return f.read()
 
-    def global_read_file_as_data_url(relative_file_path, mime):
+    def global_read_file_as_data_url(relative_file_path: str, mime: str) -> str:
         file_path = os.path.join(script_dir, 'templates', relative_file_path)
 
         with open(file_path, 'rb') as f:
@@ -89,7 +89,7 @@ def get_jinja_env():
 
         return f'data:{mime};base64,{base64_content}'
 
-    def filter_json_encode(obj):
+    def filter_json_encode(obj: object) -> str:
         result = json.dumps(obj, indent=4)
 
         # Like PHP JSON_HEX_TAG, prevent XSS

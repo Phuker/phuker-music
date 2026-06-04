@@ -9,10 +9,10 @@ from . import _utils
 from . import player
 
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 
-def get_config(file_path: str) -> dict:
+def get_config(file_path: str) -> dict[str, object]:
     with open(file_path, 'r', encoding='UTF-8') as f:
         config = json.load(f)
 
@@ -56,7 +56,7 @@ def get_config(file_path: str) -> dict:
     return config
 
 
-def main(config_file: str, force: bool = False):
+def main(config_file: str, force: bool = False) -> None:
     logger.info('Load config file: %r', config_file)
     config = get_config(config_file)
     logger.debug('Config: %s', json.dumps(config, indent=4, ensure_ascii=False))

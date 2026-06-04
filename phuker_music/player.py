@@ -7,16 +7,15 @@ import math
 import pathlib
 import hashlib
 import json
-from typing import Optional
 
 import mutagen
 
 from . import _utils
 
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
-AUDIO_EXT_LIST = (
+AUDIO_EXT_LIST: tuple[str, ...] = (
     '.mp3',
     '.ogg',
     '.flac',
@@ -26,11 +25,11 @@ AUDIO_EXT_LIST = (
 )
 
 
-def match_ext_list(file_path, ext_list):
+def match_ext_list(file_path: str, ext_list: tuple[str, ...]) -> bool:
     return os.path.splitext(file_path)[1].lower() in ext_list
 
 
-def get_file_size_str(file_path):
+def get_file_size_str(file_path: str) -> str:
     size_suffix_list = ('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
 
     file_size = os.stat(file_path).st_size
@@ -67,7 +66,7 @@ def get_file_duration_str(file_path: str) -> str:
     return result
 
 
-def get_music_groups(dir_path: str, recursively: bool = False, sort_type: str = 'filename') -> list:
+def get_music_groups(dir_path: str, recursively: bool = False, sort_type: str = 'filename') -> list[dict[str, object]]:
     result = []
     index = -1
     for top, dirnames, filenames in os.walk(dir_path):
@@ -119,7 +118,7 @@ def get_hash(s: str) -> str:
     return hashlib.sha256(s.encode('UTF-8')).hexdigest()[:16]
 
 
-def generate(*, dir_path: str, title: Optional[str] = None, cover_file: Optional[str] = None, recursively: bool = False, sort_type: str = 'filename', overwrite: bool = False, output_filename: str = 'player.html'):
+def generate(*, dir_path: str, title: str | None = None, cover_file: str | None = None, recursively: bool = False, sort_type: str = 'filename', overwrite: bool = False, output_filename: str = 'player.html') -> None:
     # dir_path must be abs path, without trailing sep char
     _utils._assert(dir_path and dir_path[-1] not in ('/', '\\'), f'Invalid dir_path')
 

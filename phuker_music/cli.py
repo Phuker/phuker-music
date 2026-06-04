@@ -12,10 +12,10 @@ from . import player
 from . import albums
 
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 
-def _player_command(shell_args):
+def _player_command(shell_args: argparse.Namespace) -> None:
     dir_path = os.path.abspath(os.path.expanduser(shell_args.dir_path))
     _utils._assert(os.path.isdir(dir_path), f'Dir not exist: {dir_path!r}')
 
@@ -29,14 +29,14 @@ def _player_command(shell_args):
     )
 
 
-def _albums_command(shell_args):
+def _albums_command(shell_args: argparse.Namespace) -> None:
     config_file = os.path.abspath(os.path.expanduser(shell_args.config_file))
     _utils._assert(os.path.isfile(config_file), f'Config file not exist: {config_file!r}')
 
     albums.main(config_file, force=shell_args.force)
 
 
-def _add_player_subparser(subparsers):
+def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:
     choices_sort_type = ('filename', 'mtime_desc')
     default_sort_type = 'filename'
 
@@ -53,7 +53,7 @@ def _add_player_subparser(subparsers):
     parser_player.set_defaults(func=_player_command)
 
 
-def _add_albums_subparser(subparsers):
+def _add_albums_subparser(subparsers: argparse._SubParsersAction) -> None:
     parser_albums = subparsers.add_parser('albums', help='Generate player and index page for all albums', description='Generate player and index page for all albums')
 
     parser_albums.add_argument('config_file', help='Config file path')
@@ -63,7 +63,7 @@ def _add_albums_subparser(subparsers):
     parser_albums.set_defaults(func=_albums_command)
 
 
-def _setup_args():
+def _setup_args() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog='phuker-music', description='Music player HTML generator')
     parser.add_argument('-v', '--verbose', action='count', default=0, help='Increase verbosity level (use -vv or more for greater effect)')
     parser.add_argument('-V', '--version', action='version', version=f'%(prog)s {__version__}', help='Show version and exit')
@@ -75,7 +75,7 @@ def _setup_args():
     return parser
 
 
-def main(argv=None):
+def main(argv: list[str] | None = None) -> None:
     if argv is None:
         argv = sys.argv[1:]
 
