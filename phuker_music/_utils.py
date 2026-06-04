@@ -60,6 +60,9 @@ def detect_language(text: str) -> str:
             'la', # Sometimes incorrectly returns Latin
         )])
 
+    # Return value examples:
+    # '' -> ('en', 0.16953482986139237)
+    # 'Knowledge is power.' -> ('en', 0.9998478611629795)
     # Buggy when all caps text
     lang, prob = lang_identifier.classify(text.lower())
     if prob > 0.98:
