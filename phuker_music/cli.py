@@ -42,13 +42,13 @@ def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:
 
     parser_player = subparsers.add_parser('player', help='Generate music player HTML for a single album', description='Generate music player HTML for a single album')
 
-    parser_player.add_argument('dir_path', help='Path to an album directory')
+    parser_player.add_argument('dir_path', help='Path to the album directory')
     parser_player.add_argument('-t', '--title', help='Album title, default: directory name')
     parser_player.add_argument('-c', '--cover', help='Album cover file path, relative to dir_path')
-    parser_player.add_argument('-r', '--recursively', action='store_true', help='Recursively scan files')
+    parser_player.add_argument('-r', '--recursively', action='store_true', help='Recursively scan subdirectories for audio files')
     parser_player.add_argument('--sort-type', default=default_sort_type, choices=choices_sort_type, metavar='sort_type', help='Sort type, default: %(default)s, choices: %(choices)s')
-    parser_player.add_argument('-f', '--force', action='store_true', help='Force overwrite if output file exists')
-    parser_player.add_argument('-v', '--verbose', action='count', default=0, dest='sub_verbose', help='Increase verbosity level (use -vv or more for greater effect)')
+    parser_player.add_argument('-f', '--force', action='store_true', help='Overwrite output file if it exists')
+    parser_player.add_argument('-v', '--verbose', action='count', default=0, dest='sub_verbose', help='Increase verbosity level (use -vv for more detail)')
 
     parser_player.set_defaults(func=_player_command)
 
@@ -57,15 +57,15 @@ def _add_albums_subparser(subparsers: argparse._SubParsersAction) -> None:
     parser_albums = subparsers.add_parser('albums', help='Generate player and index page for all albums', description='Generate player and index page for all albums')
 
     parser_albums.add_argument('config_file', help='Config file path')
-    parser_albums.add_argument('-f', '--force', action='store_true', help='Force overwrite if output file exists')
-    parser_albums.add_argument('-v', '--verbose', action='count', default=0, dest='sub_verbose', help='Increase verbosity level (use -vv or more for greater effect)')
+    parser_albums.add_argument('-f', '--force', action='store_true', help='Overwrite output file if it exists')
+    parser_albums.add_argument('-v', '--verbose', action='count', default=0, dest='sub_verbose', help='Increase verbosity level (use -vv for more detail)')
 
     parser_albums.set_defaults(func=_albums_command)
 
 
 def _setup_args() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog='phuker-music', description='Music player HTML generator')
-    parser.add_argument('-v', '--verbose', action='count', default=0, help='Increase verbosity level (use -vv or more for greater effect)')
+    parser.add_argument('-v', '--verbose', action='count', default=0, help='Increase verbosity level (use -vv for more detail)')
     parser.add_argument('-V', '--version', action='version', version=f'%(prog)s {__version__}', help='Show version and exit')
 
     subparsers = parser.add_subparsers(dest='command', metavar='command', required=True)
