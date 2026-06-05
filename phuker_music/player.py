@@ -118,7 +118,7 @@ def get_hash(s: str) -> str:
     return hashlib.sha256(s.encode('UTF-8')).hexdigest()[:16]
 
 
-def generate(*, dir_path: str, title: str | None = None, cover_file: str | None = None, recursively: bool = False, sort_type: str = 'filename', overwrite: bool = False, output_filename: str = 'player.html') -> None:
+def generate(*, dir_path: str, title: str | None = None, cover_file: str | None = None, output_filename: str = 'player.html', recursively: bool = False, sort_type: str = 'filename', overwrite: bool = False) -> None:
     # dir_path must be abs path, without trailing sep char
     _utils._assert(dir_path and dir_path[-1] not in ('/', '\\'), f'Invalid dir_path')
     _utils._assert('/' not in output_filename and '\\' not in output_filename, f'output_filename must not contain path separators: {output_filename!r}')

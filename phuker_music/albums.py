@@ -28,20 +28,20 @@ def get_config(file_path: str) -> dict[str, object]:
             'dir_path': None,
             'title': None,
             'cover_file': None,
+            'output_filename': 'player.html',
             'recursively': False,
             'sort_type': 'filename',
             'overwrite': True,
-            'output_filename': 'player.html',
         }
         album_config.update(_album_config)
 
         _utils._assert(isinstance(album_config['dir_path'], str), f"invalid config['albums'][{i}]['dir_path']")
         _utils._assert(isinstance(album_config['title'], (str, type(None))), f"invalid config['albums'][{i}]['title']")
         _utils._assert(isinstance(album_config['cover_file'], (str, type(None))), f"invalid config['albums'][{i}]['cover_file']")
+        _utils._assert(isinstance(album_config['output_filename'], str), f"invalid config['albums'][{i}]['output_filename']")
         _utils._assert(isinstance(album_config['recursively'], bool), f"invalid config['albums'][{i}]['recursively']")
         _utils._assert(isinstance(album_config['sort_type'], str), f"invalid config['albums'][{i}]['sort_type']")
         _utils._assert(isinstance(album_config['overwrite'], bool), f"invalid config['albums'][{i}]['overwrite']")
-        _utils._assert(isinstance(album_config['output_filename'], str), f"invalid config['albums'][{i}]['output_filename']")
 
         dir_path = album_config['dir_path']
         dir_path = os.path.abspath(os.path.join(config_dir_path, os.path.expanduser(dir_path)))
