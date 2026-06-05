@@ -73,21 +73,22 @@ options:
 
 ```console
 $ phuker-music player --help
-usage: phuker-music player [-h] [-t TITLE] [-c COVER] [-r] [--sort-type sort_type] [-f] [-v] dir_path
+usage: phuker-music player [-h] [-t title] [-c file] [-o filename] [-r] [--sort-type type] [-f] [-v] dir_path
 
 Generate music player HTML for a single album
 
 positional arguments:
-  dir_path              Path to the album directory
+  dir_path                        Path to the album directory
 
 options:
-  -h, --help            show this help message and exit
-  -t, --title TITLE     Album title, default: directory name
-  -c, --cover COVER     Album cover file path, relative to dir_path
-  -r, --recursively     Recursively scan subdirectories for audio files
-  --sort-type sort_type Sort type, default: filename, choices: filename, mtime_desc
-  -f, --force           Overwrite output file if it exists
-  -v, --verbose         Increase verbosity level
+  -h, --help                      show this help message and exit
+  -t, --title title               Album title, default: directory name
+  -c, --cover file                Album cover file path, relative to dir_path
+  -o, --output-filename filename  Output filename, default: player.html
+  -r, --recursively               Recursively scan subdirectories for audio files
+  --sort-type type                Sort type, default: filename, choices: filename, mtime_desc
+  -f, --force                     Overwrite output file if it exists
+  -v, --verbose                   Increase verbosity level
 ```
 
 ```console
