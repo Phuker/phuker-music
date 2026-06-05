@@ -67,7 +67,7 @@ positional arguments:
 
 options:
   -h, --help     show this help message and exit
-  -v, --verbose  Increase verbosity level (use -vv or more for greater effect)
+  -v, --verbose  Increase verbosity level
   -V, --version  Show version and exit
 ```
 
@@ -78,16 +78,16 @@ usage: phuker-music player [-h] [-t TITLE] [-c COVER] [-r] [--sort-type sort_typ
 Generate music player HTML for a single album
 
 positional arguments:
-  dir_path              Path to an album directory
+  dir_path              Path to the album directory
 
 options:
   -h, --help            show this help message and exit
   -t, --title TITLE     Album title, default: directory name
   -c, --cover COVER     Album cover file path, relative to dir_path
-  -r, --recursively     Recursively scan files
+  -r, --recursively     Recursively scan subdirectories for audio files
   --sort-type sort_type Sort type, default: filename, choices: filename, mtime_desc
-  -f, --force           Force overwrite if output file exists
-  -v, --verbose         Increase verbosity level (use -vv or more for greater effect)
+  -f, --force           Overwrite output file if it exists
+  -v, --verbose         Increase verbosity level
 ```
 
 ```console
@@ -101,8 +101,8 @@ positional arguments:
 
 options:
   -h, --help     show this help message and exit
-  -f, --force    Force overwrite if output file exists
-  -v, --verbose  Increase verbosity level (use -vv or more for greater effect)
+  -f, --force    Overwrite output file if it exists
+  -v, --verbose  Increase verbosity level
 ```
 
 ## 许可证
