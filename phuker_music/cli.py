@@ -21,7 +21,7 @@ def _help_formatter(prog: str) -> argparse.HelpFormatter:
 
 def _player_command(shell_args: argparse.Namespace) -> None:
     dir_path = os.path.abspath(os.path.expanduser(shell_args.dir_path))
-    _utils._assert(os.path.isdir(dir_path), f'Dir not exist: {dir_path!r}')
+    _utils._assert(os.path.isdir(dir_path), f'Directory does not exist: {dir_path!r}')
 
     player.generate(
         dir_path=dir_path,
@@ -35,7 +35,7 @@ def _player_command(shell_args: argparse.Namespace) -> None:
 
 def _albums_command(shell_args: argparse.Namespace) -> None:
     config_file = os.path.abspath(os.path.expanduser(shell_args.config_file))
-    _utils._assert(os.path.isfile(config_file), f'Config file not exist: {config_file!r}')
+    _utils._assert(os.path.isfile(config_file), f'Config file does not exist: {config_file!r}')
 
     albums.main(config_file, force=shell_args.force)
 

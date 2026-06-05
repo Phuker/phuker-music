@@ -128,16 +128,16 @@ def generate(*, dir_path: str, title: str | None = None, cover_file: str | None 
     if cover_file:
         _cover_file_path = os.path.join(dir_path, cover_file)
         if not os.path.isfile(_cover_file_path):
-            raise FileNotFoundError(f'Cover file not exist: {_cover_file_path!r}')
+            raise FileNotFoundError(f'Cover file does not exist: {_cover_file_path!r}')
 
         # normalize, add './'
         cover_file = './' + os.path.relpath(_cover_file_path, dir_path).replace(os.sep, '/')
 
-    logger.info('Generate player in: %r', dir_path)
+    logger.info('Generating player in: %r', dir_path)
 
     music_info_groups = get_music_groups(dir_path, recursively, sort_type)
     music_info_list = [music_info for group in music_info_groups for music_info in group['music_info_sub_list']]
-    logger.info('Got %d groups, %d files', len(music_info_groups), len(music_info_list))
+    logger.info('Found %d groups, %d files', len(music_info_groups), len(music_info_list))
     logger.debug('music_info_groups: %s', json.dumps(music_info_groups, indent=4, ensure_ascii=False))
     logger.debug('music_info_list: %s', json.dumps(music_info_list, indent=4, ensure_ascii=False))
 
@@ -154,6 +154,6 @@ def generate(*, dir_path: str, title: str | None = None, cover_file: str | None 
     if os.path.exists(output_file_path) and not overwrite:
         raise FileExistsError(f'Output file already exists: {output_file_path!r}, use -f/--force to overwrite')
 
-    logger.info('Write to file: %r', output_file_path)
+    logger.info('Writing to file: %r', output_file_path)
     with open(output_file_path, 'w', encoding='UTF-8') as f:
         f.write(result)

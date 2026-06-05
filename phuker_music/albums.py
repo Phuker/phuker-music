@@ -20,7 +20,7 @@ def get_config(file_path: str) -> dict[str, object]:
 
     albums_index_file_path = config['albums_index_file_path']
     albums_index_file_path = os.path.abspath(os.path.join(config_dir_path, os.path.expanduser(albums_index_file_path)))
-    _utils._assert(os.path.isdir(os.path.dirname(albums_index_file_path)), f'Invalid albums_index_file_path, whose dir not exist: {albums_index_file_path!r}')
+    _utils._assert(os.path.isdir(os.path.dirname(albums_index_file_path)), f'Parent directory of albums_index_file_path does not exist: {albums_index_file_path!r}')
     config['albums_index_file_path'] = albums_index_file_path
 
     for i, _album_config in enumerate(config['albums']):
@@ -45,7 +45,7 @@ def get_config(file_path: str) -> dict[str, object]:
 
         dir_path = album_config['dir_path']
         dir_path = os.path.abspath(os.path.join(config_dir_path, os.path.expanduser(dir_path)))
-        _utils._assert(os.path.isdir(dir_path), f'Album dir path not exist: {dir_path!r}')
+        _utils._assert(os.path.isdir(dir_path), f'Album directory does not exist: {dir_path!r}')
         album_config['dir_path'] = dir_path
 
         if not album_config['title']:
@@ -57,10 +57,10 @@ def get_config(file_path: str) -> dict[str, object]:
 
 
 def main(config_file: str, force: bool = False) -> None:
-    logger.info('Load config file: %r', config_file)
+    logger.info('Loading config file: %r', config_file)
     config = get_config(config_file)
     logger.debug('Config: %s', json.dumps(config, indent=4, ensure_ascii=False))
-    logger.info('Got %d albums', len(config['albums']))
+    logger.info('Found %d albums', len(config['albums']))
 
     if os.path.exists(config['albums_index_file_path']) and not force:
         raise FileExistsError(f'Output file already exists: {config["albums_index_file_path"]!r}, use -f/--force to overwrite')
@@ -82,11 +82,11 @@ def main(config_file: str, force: bool = False) -> None:
 
     lang = _utils.detect_language(' '.join(title for _, title, _ in indexes))
 
-    logger.info('Generate index page: %r', config['albums_index_file_path'])
+    logger.info('Generating index page: %r', config['albums_index_file_path'])
     env = _utils.get_jinja_env()
     template = env.get_template('albums.html')
     result = template.render(lang=lang, indexes=indexes)
 
-    logger.info('Write index page: %r', config['albums_index_file_path'])
+    logger.info('Writing index page: %r', config['albums_index_file_path'])
     with open(config['albums_index_file_path'], 'w', encoding='UTF-8') as f:
         f.write(result)
