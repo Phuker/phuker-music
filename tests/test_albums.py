@@ -227,6 +227,41 @@ class TestMain(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             main(config_path, force=False)
 
+    def test_main_title_xss_encoding(self):
+        src = os.path.join(TEST_FILES_DIR, 'test 1 file')
+        album_dir = os.path.join(self.tmpdir, 'album')
+        shutil.copytree(src, album_dir)
+
+        title = '<script>alert(1);</script>'
+        config_data = {
+            'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
+            'albums': [
+                {
+                    'dir_path': album_dir,
+                    'title': title,
+                },
+            ],
+        }
+
+        config_path = os.path.join(self.tmpdir, 'config.json')
+        with open(config_path, 'w', encoding='UTF-8') as f:
+            json.dump(config_data, f)
+
+        main(config_path, force=True)
+
+        index_html = config_data['albums_index_file_path']
+        with open(index_html, 'r', encoding='UTF-8') as f:
+            index_content = f.read()
+
+        player_html = os.path.join(album_dir, 'player.html')
+        with open(player_html, 'r', encoding='UTF-8') as f:
+            player_content = f.read()
+
+        self.assertNotIn('<script>alert(1);</script>', index_content)
+        self.assertNotIn('<script>alert(1);</script>', player_content)
+        self.assertIn('&lt;script&gt;alert(1);&lt;/script&gt;', index_content)
+        self.assertIn('&lt;script&gt;alert(1);&lt;/script&gt;', player_content)
+
 
 if __name__ == '__main__':
     unittest.main()
