@@ -1,8 +1,6 @@
 # phuker-music
 
-[GitHub](https://github.com/Phuker/phuker-music) | [PyPI](https://pypi.org/project/phuker-music/) | [Demo](https://phuker.github.io/phuker-music/)
-
-简体中文 | [English](https://github.com/Phuker/phuker-music/blob/main/Readme.md)
+[Demo](https://phuker.github.io/phuker-music/) | [GitHub](https://github.com/Phuker/phuker-music) | [PyPI](https://pypi.org/project/phuker-music/) | Readme ([English](https://github.com/Phuker/phuker-music/blob/main/Readme.md), 简体中文)
 
 HTML 音乐播放器生成器。扫描音频文件目录，生成离线单文件 HTML 播放器。也可以通过 JSON 配置文件，为多张专辑批量生成播放器页面及索引页。
 

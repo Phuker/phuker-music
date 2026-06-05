@@ -1,8 +1,6 @@
 # phuker-music
 
-[GitHub](https://github.com/Phuker/phuker-music) | [PyPI](https://pypi.org/project/phuker-music/) | [Demo](https://phuker.github.io/phuker-music/)
-
-[简体中文](https://github.com/Phuker/phuker-music/blob/main/Readme.zh-CN.md) | English
+[Demo](https://phuker.github.io/phuker-music/) | [GitHub](https://github.com/Phuker/phuker-music) | [PyPI](https://pypi.org/project/phuker-music/) | Readme (English, [简体中文](https://github.com/Phuker/phuker-music/blob/main/Readme.zh-CN.md))
 
 Yet another HTML music player generator. Scan a directory of audio files and generate an offline, all-in-one single HTML player file. Also generates player pages for multiple albums plus an index page via a JSON config.
 
