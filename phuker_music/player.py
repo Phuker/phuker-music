@@ -152,7 +152,7 @@ def generate(*, dir_path: str, title: str | None = None, cover_file: str | None 
 
     output_file_path = os.path.join(dir_path, output_filename)
     if os.path.exists(output_file_path) and not overwrite:
-        raise FileExistsError(f'Output file already exist: {output_file_path!r}')
+        raise FileExistsError(f'Output file already exists: {output_file_path!r}, use -f/--force to overwrite')
 
     logger.info('Write to file: %r', output_file_path)
     with open(output_file_path, 'w', encoding='UTF-8') as f:

@@ -63,7 +63,7 @@ def main(config_file: str, force: bool = False) -> None:
     logger.info('Got %d albums', len(config['albums']))
 
     if os.path.exists(config['albums_index_file_path']) and not force:
-        raise FileExistsError(f'Output file already exist: {config["albums_index_file_path"]!r}')
+        raise FileExistsError(f'Output file already exists: {config["albums_index_file_path"]!r}, use -f/--force to overwrite')
 
     indexes = []
     for i, album_config in enumerate(config['albums']):
