@@ -2,59 +2,59 @@
 
 [GitHub](https://github.com/Phuker/phuker-music) | [PyPI](https://pypi.org/project/phuker-music/) | [Demo](https://phuker.github.io/phuker-music/)
 
-[简体中文](https://github.com/Phuker/phuker-music/blob/main/Readme.zh-CN.md) | English
+简体中文 | [English](https://github.com/Phuker/phuker-music/blob/main/Readme.md)
 
-Yet another HTML music player generator. Scan a directory of audio files and generate an offline, all-in-one single HTML player file. Also generates player pages for multiple albums plus an index page via a JSON config.
+HTML 音乐播放器生成器。扫描音频文件目录，生成离线单文件 HTML 播放器。也可以通过 JSON 配置文件，为多张专辑批量生成播放器页面及索引页。
 
-You can try the [demo](https://phuker.github.io/phuker-music/) to see what generated index page and players look like. Grant system notifications permission to display a notification when each track starts playing.
+您可以访问 [demo](https://phuker.github.io/phuker-music/) 直接查看索引页和播放器的生成效果。授予系统通知权限后，每首曲目开始播放时，会弹出系统通知。
 
-## Features
+## 功能特性
 
-- No loan ads or subscription popups
-- No AI
-- No tracking, analytics, statistics, or telemetry
-- No user data uploads
-- No extra assets — No JS/CSS dependencies, no web fonts, no CDN
-- **Only a fucking single HTML file**
+- 没有贷款广告或会员订阅弹窗
+- 没有 AI
+- 没有追踪、分析、统计或遥测
+- 不上传任何用户数据
+- 没有额外资源 — 无 JS/CSS 依赖、无网络字体、无 CDN
+- **只有一个 HTML 文件**
 
-## Quick Start
+## 快速开始
 
-First, `cd` to a directory that contains audio files, then:
+首先 `cd` 进入包含音频文件的目录，然后：
 
-### Run with uvx
+### 用 uvx 运行
 
 ```bash
 uvx phuker-music player .
 ```
 
-### Run with pipx
+### 用 pipx 运行
 
 ```bash
 pipx run phuker-music player .
 ```
 
-### Install with uv and run
+### 用 uv 安装并运行
 
 ```bash
 uv tool install phuker-music
 phuker-music player .
 ```
 
-### Install with pipx and run
+### 用 pipx 安装并运行
 
 ```bash
 pipx install phuker-music
 phuker-music player .
 ```
 
-### Install with pip and run
+### 用 pip 安装并运行
 
 ```bash
 pip install phuker-music
 phuker-music player .
 ```
 
-## Usage
+## 用法
 
 ```console
 $ phuker-music --help
@@ -107,6 +107,6 @@ options:
   -v, --verbose  Increase verbosity level (use -vv or more for greater effect)
 ```
 
-## License
+## 许可证
 
 MIT
