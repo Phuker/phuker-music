@@ -15,6 +15,10 @@ from . import albums
 logger: logging.Logger = logging.getLogger(__name__)
 
 
+def _help_formatter(prog: str) -> argparse.HelpFormatter:
+    return argparse.HelpFormatter(prog, max_help_position=50, width=500)
+
+
 def _player_command(shell_args: argparse.Namespace) -> None:
     dir_path = os.path.abspath(os.path.expanduser(shell_args.dir_path))
     _utils._assert(os.path.isdir(dir_path), f'Dir not exist: {dir_path!r}')
@@ -40,7 +44,12 @@ def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:
     choices_sort_type = ('filename', 'mtime_desc')
     default_sort_type = 'filename'
 
-    parser_player = subparsers.add_parser('player', help='Generate music player HTML for a single album', description='Generate music player HTML for a single album')
+    parser_player = subparsers.add_parser(
+        'player',
+        help='Generate music player HTML for a single album',
+        description='Generate music player HTML for a single album',
+        formatter_class=_help_formatter,
+    )
 
     parser_player.add_argument('dir_path', help='Path to the album directory')
     parser_player.add_argument('-t', '--title', help='Album title, default: directory name')
@@ -54,7 +63,12 @@ def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:
 
 
 def _add_albums_subparser(subparsers: argparse._SubParsersAction) -> None:
-    parser_albums = subparsers.add_parser('albums', help='Generate player and index page for all albums', description='Generate player and index page for all albums')
+    parser_albums = subparsers.add_parser(
+        'albums',
+        help='Generate player and index page for all albums',
+        description='Generate player and index page for all albums',
+        formatter_class=_help_formatter,
+    )
 
     parser_albums.add_argument('config_file', help='Config file path')
     parser_albums.add_argument('-f', '--force', action='store_true', help='Overwrite output file if it exists')
@@ -64,7 +78,12 @@ def _add_albums_subparser(subparsers: argparse._SubParsersAction) -> None:
 
 
 def _setup_args() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog='phuker-music', description='Music player HTML generator')
+    parser = argparse.ArgumentParser(
+        prog='phuker-music',
+        description='Music player HTML generator',
+        formatter_class=_help_formatter,
+    )
+
     parser.add_argument('-v', '--verbose', action='count', default=0, help='Increase verbosity level')
     parser.add_argument('-V', '--version', action='version', version=f'%(prog)s {__version__}', help='Show version and exit')
 
