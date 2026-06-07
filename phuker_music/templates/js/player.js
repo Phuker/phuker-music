@@ -1,6 +1,8 @@
 'use strict';
 
 const container = document.getElementById('container');
+const albumTitle = document.getElementById('album-title');
+const albumDetails = document.getElementById('album-details');
 const imgLoading = document.getElementById('imgLoading');
 const itemsList = document.getElementById('itemsList');
 const btnPlayPrevious = document.getElementById('btnPlayPrevious');
@@ -354,6 +356,22 @@ function init() {
         }, 1500);
     });
     btnPlayNext.addEventListener('click', playNext);
+
+    albumTitle.addEventListener('click', () => {
+        albumDetails.showModal();
+    });
+    albumTitle.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            albumDetails.showModal();
+        }
+    });
+
+    albumDetails.addEventListener('click', (event) => {
+        if (event.target === albumDetails) {
+            albumDetails.close();
+        }
+    });
 
     window.addEventListener('load', () => {
         if ('Notification' in window && Notification.permission !== 'denied') {

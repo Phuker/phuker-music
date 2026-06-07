@@ -30,6 +30,26 @@ footer {
     padding-bottom: 1em;
 }
 
+dialog#album-details {
+    box-sizing: border-box;
+    border: none;
+    padding: 0 1em;
+    background: white;
+    max-width: 80vw;
+    max-height: 80vh;
+}
+
+dialog#album-details img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 80vh;
+}
+
+dialog#album-details::backdrop {
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
 audio.player {
     flex: 1;
     border: none;
