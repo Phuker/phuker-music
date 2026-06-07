@@ -94,7 +94,7 @@ class TestGetConfigFromTemp(unittest.TestCase):
             'albums_index_file_path': './index.html',
             'albums': [
                 {
-                    'album_dir_path': '/nonexistent/path/12345',
+                    'album_dir_path': 'nonexistent_subdir',
                     'title': 'Test',
                 },
             ],

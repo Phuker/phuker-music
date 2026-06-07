@@ -53,4 +53,5 @@ make demo      # 等价于: python -m phuker_music albums -v -f ./docs/albums.js
 - **Sort types**: `filename`（默认）、`mtime_desc`
 - **支持音频格式**: `.mp3`, `.ogg`, `.flac`, `.m4a`, `.wav`, `.weba`
 - **Album 配置文件**格式示例见 `tests/files/albums.test.json` 和 `docs/albums.json`，`album_dir_path`/`albums_index_file_path` 均相对于配置文件所在目录解析
+- **albums 配置中 `album_dir_path` 和 `albums_index_file_path` 不能逃逸出 `albums_dir_path`** — `normalize_album_config()` 和 `normalize_albums_config()` 中用 `os.path.commonpath()` 校验，防止通过 `..`、绝对路径等方式导致路径穿越
 - **无 lint/typecheck/formatter 配置** — 本仓库没有预配置的代码检查工具
