@@ -36,4 +36,7 @@ version = { attr = "phuker_music.__version__" }
 include = ["phuker_music*"]
 
 [tool.setuptools.package-data]
-phuker_music = ["templates/**"]
+phuker_music = [
+    "templates/**",
+    "static/**",
+]

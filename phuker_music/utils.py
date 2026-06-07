@@ -16,6 +16,7 @@ from . import __version__
 logger: logging.Logger = logging.getLogger(__name__)
 lang_identifier: object | None = None
 templates_dir_path: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+static_dir_path: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
 
 
 def _assert(expr: object, msg: str = '') -> None:
@@ -84,14 +85,14 @@ def detect_language(text: str) -> str:
 
 
 def jinja_env_global_read_file(relative_file_path: str) -> str:
-    file_path = os.path.join(templates_dir_path, relative_file_path)
+    file_path = os.path.join(static_dir_path, relative_file_path)
 
     with open(file_path, 'r', encoding='UTF-8') as f:
         return f.read()
 
 
 def jinja_env_global_read_file_as_data_url(relative_file_path: str, mime: str) -> str:
-    file_path = os.path.join(templates_dir_path, relative_file_path)
+    file_path = os.path.join(static_dir_path, relative_file_path)
 
     with open(file_path, 'rb') as f:
         content = f.read()

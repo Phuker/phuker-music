@@ -8,7 +8,8 @@
   - `albums.py` — 多专辑批量生成 + 索引页生成
   - `utils.py` — `_assert` 辅助函数、日志初始化（TTY 彩色日志）、语种识别、Jinja2 环境
   - `__main__.py` — 支持 `python -m phuker_music`
-  - `templates/` — Jinja2 模板 + 静态资源（`player.html`, `albums.html`, `css/`, `js/`, `images/`, `audio/`）
+  - `templates/` — Jinja2 模板（`player.html`, `albums.html`）
+  - `static/` — 静态资源（`css/`, `js/`, `images/`, `audio/`）
 - `docs/` — 演示用音频样本目录 + 配置文件 `albums.json`（运行 `make demo` 生成索引页 `docs/index.html` 和每张专辑播放器）
 - `tests/` — 单元测试，依赖 `tests/files/` 下的测试用音频文件
 
@@ -48,7 +49,7 @@ make demo      # 等价于: python -m phuker_music albums -v -f ./docs/albums.js
 - **`--force` / `-f`** — 输出文件已存在会报 `FileExistsError`（报错信息中会提示使用 `-f`），加 `-f` 强制覆盖
 - **Albums 命令每张专辑默认 `overwrite: True`** — 与 `player` CLI 默认 `overwrite=False` 不同；`phuker_music/albums.py` 的 `main()` 对索引页仍使用顶层的 `--force` 参数
 - **Jinja2 `autoescape=True`** — HTML 模板默认转义；`|json_encode` 过滤器额外替换 `<` `>` 防 XSS
-- **`read_file()` 和 `read_file_as_data_url()` 以 `phuker_music/templates/` 为基准路径**（`utils.py:get_jinja_env()`，基于 `__file__` 解析）
+- **`read_file()` 和 `read_file_as_data_url()` 以 `phuker_music/static/` 为基准路径**（`utils.py:get_jinja_env()`，基于 `__file__` 解析）
 - **语种识别 quirks** — 置信度 >0.98 才采纳，否则回退 `en`；跳过低置信的 `la`；输入会被小写化以避免全大写文本的识别 bug（`langid` 库懒加载，首次调用较慢）
 - **Sort types**: `filename`（默认）、`mtime_desc`
 - **支持音频格式**: `.mp3`, `.ogg`, `.flac`, `.m4a`, `.wav`, `.weba`
