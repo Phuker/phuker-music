@@ -10,7 +10,7 @@ import json
 
 import mutagen
 
-from . import _utils
+from . import utils
 
 
 logger: logging.Logger = logging.getLogger(__name__)
@@ -120,8 +120,8 @@ def get_hash(s: str) -> str:
 
 def generate(*, album_dir_path: str, title: str | None = None, cover_file: str | None = None, output_filename: str = 'player.html', recursively: bool = False, sort_type: str = 'filename', overwrite: bool = False) -> None:
     # album_dir_path must be abs path, without trailing sep char
-    _utils._assert(album_dir_path and album_dir_path[-1] not in ('/', '\\'), f'Invalid album_dir_path')
-    _utils._assert('/' not in output_filename and '\\' not in output_filename, f'output_filename must not contain path separators: {output_filename!r}')
+    utils._assert(album_dir_path and album_dir_path[-1] not in ('/', '\\'), f'Invalid album_dir_path')
+    utils._assert('/' not in output_filename and '\\' not in output_filename, f'output_filename must not contain path separators: {output_filename!r}')
 
     if not title:
         title = os.path.basename(album_dir_path)
@@ -142,12 +142,12 @@ def generate(*, album_dir_path: str, title: str | None = None, cover_file: str |
     logger.debug('music_info_groups: %s', json.dumps(music_info_groups, indent=4, ensure_ascii=False))
     logger.debug('music_info_list: %s', json.dumps(music_info_list, indent=4, ensure_ascii=False))
 
-    lang = _utils.detect_language(' '.join([title] + [_['name'] for _ in music_info_list]))
+    lang = utils.detect_language(' '.join([title] + [_['name'] for _ in music_info_list]))
 
     # use os.path.basename() to get same result for same dir name, which may sync between computers
     storage_key_prefix = f'music_{get_hash(os.path.basename(album_dir_path))}_'
 
-    env = _utils.get_jinja_env()
+    env = utils.get_jinja_env()
     template = env.get_template('player.html')
     result = template.render(lang=lang, title=title, cover_file=cover_file, music_info_groups=music_info_groups, music_info_list=music_info_list, storage_key_prefix=storage_key_prefix)
 
