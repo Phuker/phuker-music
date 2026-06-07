@@ -12,7 +12,7 @@ from . import player
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-def normalize_album_config(album_config_input: dict, config_dir_path: str) -> dict:
+def normalize_album_config(album_config_input: dict, albums_dir_path: str) -> dict:
     album_config = {
         'album_dir_path': None,
         'title': None,
@@ -33,7 +33,7 @@ def normalize_album_config(album_config_input: dict, config_dir_path: str) -> di
     _utils._assert(isinstance(album_config['overwrite'], bool), f'invalid album_config: {album_config!r}')
 
     album_dir_path = album_config['album_dir_path']
-    album_dir_path = os.path.abspath(os.path.join(config_dir_path, os.path.expanduser(album_dir_path)))
+    album_dir_path = os.path.abspath(os.path.join(albums_dir_path, os.path.expanduser(album_dir_path)))
     _utils._assert(os.path.isdir(album_dir_path), f'Album directory does not exist: {album_dir_path!r}')
     album_config['album_dir_path'] = album_dir_path
 
@@ -43,14 +43,14 @@ def normalize_album_config(album_config_input: dict, config_dir_path: str) -> di
     return album_config
 
 
-def normalize_albums_config(albums_config: dict, config_dir_path: str) -> None:
+def normalize_albums_config(albums_config: dict, albums_dir_path: str) -> None:
     albums_index_file_path = albums_config['albums_index_file_path']
-    albums_index_file_path = os.path.abspath(os.path.join(config_dir_path, os.path.expanduser(albums_index_file_path)))
+    albums_index_file_path = os.path.abspath(os.path.join(albums_dir_path, os.path.expanduser(albums_index_file_path)))
     _utils._assert(os.path.isdir(os.path.dirname(albums_index_file_path)), f'Parent directory of albums_index_file_path does not exist: {albums_index_file_path!r}')
     albums_config['albums_index_file_path'] = albums_index_file_path
 
     for i, album_config_input in enumerate(albums_config['albums']):
-        albums_config['albums'][i] = normalize_album_config(album_config_input, config_dir_path)
+        albums_config['albums'][i] = normalize_album_config(album_config_input, albums_dir_path)
 
     return albums_config
 
@@ -59,8 +59,8 @@ def get_config(albums_config_file_path: str) -> dict[str, object]:
     with open(albums_config_file_path, 'r', encoding='UTF-8') as f:
         albums_config = json.load(f)
 
-    config_dir_path = os.path.dirname(albums_config_file_path)
-    albums_config = normalize_albums_config(albums_config, config_dir_path)
+    albums_dir_path = os.path.dirname(albums_config_file_path)
+    albums_config = normalize_albums_config(albums_config, albums_dir_path)
 
     return albums_config
 
