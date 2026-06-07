@@ -12,18 +12,18 @@ from . import player
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-def get_config(file_path: str) -> dict[str, object]:
-    with open(file_path, 'r', encoding='UTF-8') as f:
-        config = json.load(f)
+def get_config(albums_config_file_path: str) -> dict[str, object]:
+    with open(albums_config_file_path, 'r', encoding='UTF-8') as f:
+        albums_config = json.load(f)
 
-    config_dir_path = os.path.dirname(file_path)
+    config_dir_path = os.path.dirname(albums_config_file_path)
 
-    albums_index_file_path = config['albums_index_file_path']
+    albums_index_file_path = albums_config['albums_index_file_path']
     albums_index_file_path = os.path.abspath(os.path.join(config_dir_path, os.path.expanduser(albums_index_file_path)))
     _utils._assert(os.path.isdir(os.path.dirname(albums_index_file_path)), f'Parent directory of albums_index_file_path does not exist: {albums_index_file_path!r}')
-    config['albums_index_file_path'] = albums_index_file_path
+    albums_config['albums_index_file_path'] = albums_index_file_path
 
-    for i, _album_config in enumerate(config['albums']):
+    for i, _album_config in enumerate(albums_config['albums']):
         album_config = {
             'dir_path': None,
             'title': None,
@@ -35,13 +35,13 @@ def get_config(file_path: str) -> dict[str, object]:
         }
         album_config.update(_album_config)
 
-        _utils._assert(isinstance(album_config['dir_path'], str), f"invalid config['albums'][{i}]['dir_path']")
-        _utils._assert(isinstance(album_config['title'], (str, type(None))), f"invalid config['albums'][{i}]['title']")
-        _utils._assert(isinstance(album_config['cover_file'], (str, type(None))), f"invalid config['albums'][{i}]['cover_file']")
-        _utils._assert(isinstance(album_config['output_filename'], str), f"invalid config['albums'][{i}]['output_filename']")
-        _utils._assert(isinstance(album_config['recursively'], bool), f"invalid config['albums'][{i}]['recursively']")
-        _utils._assert(isinstance(album_config['sort_type'], str), f"invalid config['albums'][{i}]['sort_type']")
-        _utils._assert(isinstance(album_config['overwrite'], bool), f"invalid config['albums'][{i}]['overwrite']")
+        _utils._assert(isinstance(album_config['dir_path'], str), f"invalid albums_config['albums'][{i}]['dir_path']")
+        _utils._assert(isinstance(album_config['title'], (str, type(None))), f"invalid albums_config['albums'][{i}]['title']")
+        _utils._assert(isinstance(album_config['cover_file'], (str, type(None))), f"invalid albums_config['albums'][{i}]['cover_file']")
+        _utils._assert(isinstance(album_config['output_filename'], str), f"invalid albums_config['albums'][{i}]['output_filename']")
+        _utils._assert(isinstance(album_config['recursively'], bool), f"invalid albums_config['albums'][{i}]['recursively']")
+        _utils._assert(isinstance(album_config['sort_type'], str), f"invalid albums_config['albums'][{i}]['sort_type']")
+        _utils._assert(isinstance(album_config['overwrite'], bool), f"invalid albums_config['albums'][{i}]['overwrite']")
 
         dir_path = album_config['dir_path']
         dir_path = os.path.abspath(os.path.join(config_dir_path, os.path.expanduser(dir_path)))
@@ -51,26 +51,26 @@ def get_config(file_path: str) -> dict[str, object]:
         if not album_config['title']:
             album_config['title'] = os.path.basename(dir_path)
 
-        config['albums'][i] = album_config
+        albums_config['albums'][i] = album_config
 
-    return config
+    return albums_config
 
 
-def main(config_file: str, force: bool = False) -> None:
-    logger.info('Loading config file: %r', config_file)
-    config = get_config(config_file)
-    logger.debug('Config: %s', json.dumps(config, indent=4, ensure_ascii=False))
-    logger.info('Found %d albums', len(config['albums']))
+def main(albums_config_file_path: str, force: bool = False) -> None:
+    logger.info('Loading albums config file: %r', albums_config_file_path)
+    albums_config = get_config(albums_config_file_path)
+    logger.debug('Albums config: %s', json.dumps(albums_config, indent=4, ensure_ascii=False))
+    logger.info('Found %d albums', len(albums_config['albums']))
 
-    if os.path.exists(config['albums_index_file_path']) and not force:
-        raise FileExistsError(f'Output file already exists: {config["albums_index_file_path"]!r}, use -f/--force to overwrite')
+    if os.path.exists(albums_config['albums_index_file_path']) and not force:
+        raise FileExistsError(f'Output file already exists: {albums_config["albums_index_file_path"]!r}, use -f/--force to overwrite')
 
     indexes = []
-    for i, album_config in enumerate(config['albums']):
-        logger.info('(%d/%d) Album dir path: %r', i + 1, len(config['albums']), album_config['dir_path'])
+    for i, album_config in enumerate(albums_config['albums']):
+        logger.info('(%d/%d) Album dir path: %r', i + 1, len(albums_config['albums']), album_config['dir_path'])
         player.generate(**album_config)
 
-        get_rel_path = lambda _path: './' + os.path.relpath(os.path.join(album_config['dir_path'], _path), os.path.dirname(config['albums_index_file_path'])).replace(os.sep, '/')
+        get_rel_path = lambda _path: './' + os.path.relpath(os.path.join(album_config['dir_path'], _path), os.path.dirname(albums_config['albums_index_file_path'])).replace(os.sep, '/')
         player_path = get_rel_path(album_config['output_filename'])
         cover_path = get_rel_path(album_config['cover_file']) if album_config['cover_file'] else None
 
@@ -82,11 +82,11 @@ def main(config_file: str, force: bool = False) -> None:
 
     lang = _utils.detect_language(' '.join(title for _, title, _ in indexes))
 
-    logger.info('Generating index page: %r', config['albums_index_file_path'])
+    logger.info('Generating index page: %r', albums_config['albums_index_file_path'])
     env = _utils.get_jinja_env()
     template = env.get_template('albums.html')
     result = template.render(lang=lang, indexes=indexes)
 
-    logger.info('Writing index page: %r', config['albums_index_file_path'])
-    with open(config['albums_index_file_path'], 'w', encoding='UTF-8') as f:
+    logger.info('Writing index page: %r', albums_config['albums_index_file_path'])
+    with open(albums_config['albums_index_file_path'], 'w', encoding='UTF-8') as f:
         f.write(result)

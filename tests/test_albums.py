@@ -15,22 +15,22 @@ TEST_FILES_DIR = os.path.join(os.path.dirname(__file__), 'files')
 
 class TestGetConfigFromDocs(unittest.TestCase):
     def test_valid_config(self):
-        config_file = os.path.join(TEST_FILES_DIR, 'albums.test.json')
+        albums_config_file_path = os.path.join(TEST_FILES_DIR, 'albums.test.json')
 
-        config = get_config(config_file)
+        albums_config = get_config(albums_config_file_path)
 
-        self.assertIn('albums_index_file_path', config)
-        self.assertIn('albums', config)
-        self.assertEqual(len(config['albums']), 4)
-        self.assertTrue(os.path.isabs(config['albums_index_file_path']))
-        self.assertTrue(config['albums_index_file_path'].endswith('albums.html'))
+        self.assertIn('albums_index_file_path', albums_config)
+        self.assertIn('albums', albums_config)
+        self.assertEqual(len(albums_config['albums']), 4)
+        self.assertTrue(os.path.isabs(albums_config['albums_index_file_path']))
+        self.assertTrue(albums_config['albums_index_file_path'].endswith('albums.html'))
 
     def test_album_fields(self):
-        config_file = os.path.join(TEST_FILES_DIR, 'albums.test.json')
+        albums_config_file_path = os.path.join(TEST_FILES_DIR, 'albums.test.json')
 
-        config = get_config(config_file)
+        albums_config = get_config(albums_config_file_path)
 
-        for album in config['albums']:
+        for album in albums_config['albums']:
             self.assertIn('dir_path', album)
             self.assertIsInstance(album['dir_path'], str)
             self.assertTrue(os.path.isabs(album['dir_path']))
@@ -53,26 +53,26 @@ class TestGetConfigFromDocs(unittest.TestCase):
             self.assertEqual(album['output_filename'], 'player.html')
 
     def test_default_fields(self):
-        config_file = os.path.join(TEST_FILES_DIR, 'albums.test.json')
+        albums_config_file_path = os.path.join(TEST_FILES_DIR, 'albums.test.json')
 
-        config = get_config(config_file)
+        albums_config = get_config(albums_config_file_path)
 
-        self.assertEqual(config['albums'][0]['recursively'], False)
-        self.assertEqual(config['albums'][0]['sort_type'], 'filename')
-        self.assertEqual(config['albums'][0]['overwrite'], True)
-        self.assertIsNone(config['albums'][0]['cover_file'])
+        self.assertEqual(albums_config['albums'][0]['recursively'], False)
+        self.assertEqual(albums_config['albums'][0]['sort_type'], 'filename')
+        self.assertEqual(albums_config['albums'][0]['overwrite'], True)
+        self.assertIsNone(albums_config['albums'][0]['cover_file'])
 
     def test_specific_album_config(self):
-        config_file = os.path.join(TEST_FILES_DIR, 'albums.test.json')
+        albums_config_file_path = os.path.join(TEST_FILES_DIR, 'albums.test.json')
 
-        config = get_config(config_file)
+        albums_config = get_config(albums_config_file_path)
 
-        album3 = config['albums'][2]
+        album3 = albums_config['albums'][2]
         self.assertEqual(album3['sort_type'], 'mtime_desc')
         self.assertEqual(album3['recursively'], False)
         self.assertIsNotNone(album3['cover_file'])
 
-        album4 = config['albums'][3]
+        album4 = albums_config['albums'][3]
         self.assertEqual(album4['recursively'], True)
         self.assertIsNotNone(album4['cover_file'])
 
@@ -80,14 +80,14 @@ class TestGetConfigFromDocs(unittest.TestCase):
 class TestGetConfigFromTemp(unittest.TestCase):
     def setUp(self):
         self.tmpdir = tempfile.mkdtemp()
-        self.config_path = os.path.join(self.tmpdir, 'config.json')
+        self.albums_config_file_path = os.path.join(self.tmpdir, 'config.json')
 
     def tearDown(self):
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
-    def _write_config(self, config_data):
-        with open(self.config_path, 'w', encoding='UTF-8') as f:
-            json.dump(config_data, f)
+    def _write_config(self, albums_config):
+        with open(self.albums_config_file_path, 'w', encoding='UTF-8') as f:
+            json.dump(albums_config, f)
 
     def test_nonexistent_dir_path(self):
         self._write_config({
@@ -101,7 +101,7 @@ class TestGetConfigFromTemp(unittest.TestCase):
         })
 
         with self.assertRaisesRegex(AssertionError, 'Album directory does not exist'):
-            get_config(self.config_path)
+            get_config(self.albums_config_file_path)
 
     def test_invalid_type_recursively(self):
         test_dir = os.path.join(self.tmpdir, 'testdir')
@@ -117,8 +117,8 @@ class TestGetConfigFromTemp(unittest.TestCase):
             ],
         })
 
-        with self.assertRaisesRegex(AssertionError, re.escape("invalid config['albums'][0]['recursively']")):
-            get_config(self.config_path)
+        with self.assertRaisesRegex(AssertionError, re.escape("invalid albums_config['albums'][0]['recursively']")):
+            get_config(self.albums_config_file_path)
 
     def test_missing_title(self):
         test_dir = os.path.join(self.tmpdir, 'dirname_' + os.urandom(8).hex())
@@ -132,8 +132,8 @@ class TestGetConfigFromTemp(unittest.TestCase):
             ],
         })
 
-        config = get_config(self.config_path)
-        self.assertEqual(config['albums'][0]['title'], os.path.basename(test_dir))
+        albums_config = get_config(self.albums_config_file_path)
+        self.assertEqual(albums_config['albums'][0]['title'], os.path.basename(test_dir))
 
     def test_empty_title(self):
         test_dir = os.path.join(self.tmpdir, 'dirname_' + os.urandom(8).hex())
@@ -148,8 +148,8 @@ class TestGetConfigFromTemp(unittest.TestCase):
             ],
         })
 
-        config = get_config(self.config_path)
-        self.assertEqual(config['albums'][0]['title'], os.path.basename(test_dir))
+        albums_config = get_config(self.albums_config_file_path)
+        self.assertEqual(albums_config['albums'][0]['title'], os.path.basename(test_dir))
 
 
 class TestMain(unittest.TestCase):
@@ -169,7 +169,7 @@ class TestMain(unittest.TestCase):
             os.remove(player_html)
 
         title = 'title_' + os.urandom(8).hex()
-        config_data = {
+        albums_config = {
             'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
@@ -179,17 +179,17 @@ class TestMain(unittest.TestCase):
             ],
         }
 
-        config_path = os.path.join(self.tmpdir, 'config.json')
-        with open(config_path, 'w', encoding='UTF-8') as f:
-            json.dump(config_data, f)
+        albums_config_file_path = os.path.join(self.tmpdir, 'config.json')
+        with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
+            json.dump(albums_config, f)
 
-        main(config_path, force=True)
+        main(albums_config_file_path, force=True)
 
         self.assertTrue(os.path.exists(player_html))
         with open(player_html, 'r', encoding='UTF-8') as f:
             self.assertIn(title, f.read())
 
-        index_html = config_data['albums_index_file_path']
+        index_html = albums_config['albums_index_file_path']
         self.assertTrue(os.path.exists(index_html))
 
         with open(index_html, 'r', encoding='UTF-8') as f:
@@ -208,7 +208,7 @@ class TestMain(unittest.TestCase):
             os.remove(player_html)
 
         title = 'title_' + os.urandom(8).hex()
-        config_data = {
+        albums_config = {
             'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
@@ -218,14 +218,14 @@ class TestMain(unittest.TestCase):
             ],
         }
 
-        config_path = os.path.join(self.tmpdir, 'config.json')
-        with open(config_path, 'w', encoding='UTF-8') as f:
-            json.dump(config_data, f)
+        albums_config_file_path = os.path.join(self.tmpdir, 'config.json')
+        with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
+            json.dump(albums_config, f)
 
-        main(config_path, force=True)  # first run succeeds
+        main(albums_config_file_path, force=True)  # first run succeeds
 
         with self.assertRaises(FileExistsError):
-            main(config_path, force=False)
+            main(albums_config_file_path, force=False)
 
     def test_main_title_xss_encoding(self):
         src = os.path.join(TEST_FILES_DIR, 'test 1 file')
@@ -233,7 +233,7 @@ class TestMain(unittest.TestCase):
         shutil.copytree(src, album_dir)
 
         title = '<script>alert(1);</script>'
-        config_data = {
+        albums_config = {
             'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
@@ -243,13 +243,13 @@ class TestMain(unittest.TestCase):
             ],
         }
 
-        config_path = os.path.join(self.tmpdir, 'config.json')
-        with open(config_path, 'w', encoding='UTF-8') as f:
-            json.dump(config_data, f)
+        albums_config_file_path = os.path.join(self.tmpdir, 'config.json')
+        with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
+            json.dump(albums_config, f)
 
-        main(config_path, force=True)
+        main(albums_config_file_path, force=True)
 
-        index_html = config_data['albums_index_file_path']
+        index_html = albums_config['albums_index_file_path']
         with open(index_html, 'r', encoding='UTF-8') as f:
             index_content = f.read()
 

@@ -35,10 +35,10 @@ def _player_command(shell_args: argparse.Namespace) -> None:
 
 
 def _albums_command(shell_args: argparse.Namespace) -> None:
-    config_file = os.path.abspath(os.path.expanduser(shell_args.config_file))
-    _utils._assert(os.path.isfile(config_file), f'Config file does not exist: {config_file!r}')
+    albums_config_file_path = os.path.abspath(os.path.expanduser(shell_args.albums_config_file_path))
+    _utils._assert(os.path.isfile(albums_config_file_path), f'Albums config file does not exist: {albums_config_file_path!r}')
 
-    albums.main(config_file, force=shell_args.force)
+    albums.main(albums_config_file_path, force=shell_args.force)
 
 
 def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:
@@ -73,7 +73,7 @@ def _add_albums_subparser(subparsers: argparse._SubParsersAction) -> None:
         formatter_class=_help_formatter,
     )
 
-    parser_albums.add_argument('config_file', help='Config file path')
+    parser_albums.add_argument('albums_config_file_path', metavar='config_file', help='Albums config file path')
     parser_albums.add_argument('-f', '--force', action='store_true', help='Overwrite output file if it exists')
     parser_albums.add_argument('-v', '--verbose', action='count', default=0, dest='sub_verbose', help='Increase verbosity level')
 
