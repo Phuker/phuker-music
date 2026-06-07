@@ -66,11 +66,11 @@ def get_file_duration_str(file_path: str) -> str:
     return result
 
 
-def get_music_groups(dir_path: str, recursively: bool = False, sort_type: str = 'filename') -> list[dict[str, object]]:
+def get_music_groups(album_dir_path: str, recursively: bool = False, sort_type: str = 'filename') -> list[dict[str, object]]:
     result = []
     index = -1
-    for top, dirnames, filenames in os.walk(dir_path):
-        top_rel_path = os.path.relpath(top, dir_path)
+    for top, dirnames, filenames in os.walk(album_dir_path):
+        top_rel_path = os.path.relpath(top, album_dir_path)
         if top_rel_path == '.':
             top_rel_path = ''
 
@@ -118,25 +118,25 @@ def get_hash(s: str) -> str:
     return hashlib.sha256(s.encode('UTF-8')).hexdigest()[:16]
 
 
-def generate(*, dir_path: str, title: str | None = None, cover_file: str | None = None, output_filename: str = 'player.html', recursively: bool = False, sort_type: str = 'filename', overwrite: bool = False) -> None:
-    # dir_path must be abs path, without trailing sep char
-    _utils._assert(dir_path and dir_path[-1] not in ('/', '\\'), f'Invalid dir_path')
+def generate(*, album_dir_path: str, title: str | None = None, cover_file: str | None = None, output_filename: str = 'player.html', recursively: bool = False, sort_type: str = 'filename', overwrite: bool = False) -> None:
+    # album_dir_path must be abs path, without trailing sep char
+    _utils._assert(album_dir_path and album_dir_path[-1] not in ('/', '\\'), f'Invalid album_dir_path')
     _utils._assert('/' not in output_filename and '\\' not in output_filename, f'output_filename must not contain path separators: {output_filename!r}')
 
     if not title:
-        title = os.path.basename(dir_path)
+        title = os.path.basename(album_dir_path)
 
     if cover_file:
-        _cover_file_path = os.path.join(dir_path, cover_file)
+        _cover_file_path = os.path.join(album_dir_path, cover_file)
         if not os.path.isfile(_cover_file_path):
             raise FileNotFoundError(f'Cover file does not exist: {_cover_file_path!r}')
 
         # normalize, add './'
-        cover_file = './' + os.path.relpath(_cover_file_path, dir_path).replace(os.sep, '/')
+        cover_file = './' + os.path.relpath(_cover_file_path, album_dir_path).replace(os.sep, '/')
 
-    logger.info('Generating player in: %r', dir_path)
+    logger.info('Generating player in: %r', album_dir_path)
 
-    music_info_groups = get_music_groups(dir_path, recursively, sort_type)
+    music_info_groups = get_music_groups(album_dir_path, recursively, sort_type)
     music_info_list = [music_info for group in music_info_groups for music_info in group['music_info_sub_list']]
     logger.info('Found %d groups, %d files', len(music_info_groups), len(music_info_list))
     logger.debug('music_info_groups: %s', json.dumps(music_info_groups, indent=4, ensure_ascii=False))
@@ -145,13 +145,13 @@ def generate(*, dir_path: str, title: str | None = None, cover_file: str | None 
     lang = _utils.detect_language(' '.join([title] + [_['name'] for _ in music_info_list]))
 
     # use os.path.basename() to get same result for same dir name, which may sync between computers
-    storage_key_prefix = f'music_{get_hash(os.path.basename(dir_path))}_'
+    storage_key_prefix = f'music_{get_hash(os.path.basename(album_dir_path))}_'
 
     env = _utils.get_jinja_env()
     template = env.get_template('player.html')
     result = template.render(lang=lang, title=title, cover_file=cover_file, music_info_groups=music_info_groups, music_info_list=music_info_list, storage_key_prefix=storage_key_prefix)
 
-    output_file_path = os.path.join(dir_path, output_filename)
+    output_file_path = os.path.join(album_dir_path, output_filename)
     if os.path.exists(output_file_path) and not overwrite:
         raise FileExistsError(f'Output file already exists: {output_file_path!r}, use -f/--force to overwrite')
 

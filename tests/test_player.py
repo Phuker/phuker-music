@@ -163,10 +163,10 @@ class TestGenerate(unittest.TestCase):
     def setUp(self):
         self.tmpdir = tempfile.mkdtemp()
         src = os.path.join(TEST_FILES_DIR, 'test 1 file')
-        self.dir_path = os.path.join(self.tmpdir, 'album_' + os.urandom(8).hex())
-        shutil.copytree(src, self.dir_path)
+        self.album_dir_path = os.path.join(self.tmpdir, 'album_' + os.urandom(8).hex())
+        shutil.copytree(src, self.album_dir_path)
 
-        player_html = os.path.join(self.dir_path, 'player.html')
+        player_html = os.path.join(self.album_dir_path, 'player.html')
         if os.path.exists(player_html):
             os.remove(player_html)
 
@@ -176,9 +176,9 @@ class TestGenerate(unittest.TestCase):
     def test_generate_success(self):
         title = 'title_' + os.urandom(8).hex()
 
-        generate(dir_path=self.dir_path, title=title)
+        generate(album_dir_path=self.album_dir_path, title=title)
 
-        output = os.path.join(self.dir_path, 'player.html')
+        output = os.path.join(self.album_dir_path, 'player.html')
         self.assertTrue(os.path.exists(output))
 
         with open(output, 'r', encoding='UTF-8') as f:
@@ -190,54 +190,54 @@ class TestGenerate(unittest.TestCase):
     def test_file_exists_no_force(self):
         title = 'title_' + os.urandom(8).hex()
 
-        generate(dir_path=self.dir_path, title=title)
+        generate(album_dir_path=self.album_dir_path, title=title)
 
         with self.assertRaises(FileExistsError):
-            generate(dir_path=self.dir_path, title='Second', overwrite=False)
+            generate(album_dir_path=self.album_dir_path, title='Second', overwrite=False)
 
     def test_file_exists_with_force(self):
         title1 = 'title_' + os.urandom(8).hex()
         title2 = 'title_' + os.urandom(8).hex()
 
-        generate(dir_path=self.dir_path, title=title1)
-        generate(dir_path=self.dir_path, title=title2, overwrite=True)
+        generate(album_dir_path=self.album_dir_path, title=title1)
+        generate(album_dir_path=self.album_dir_path, title=title2, overwrite=True)
 
-        with open(os.path.join(self.dir_path, 'player.html'), 'r', encoding='UTF-8') as f:
+        with open(os.path.join(self.album_dir_path, 'player.html'), 'r', encoding='UTF-8') as f:
             content = f.read()
 
         self.assertNotIn(title1, content)
         self.assertIn(title2, content)
 
     def test_trailing_slash_dir_path(self):
-        with self.assertRaisesRegex(AssertionError, 'Invalid dir_path'):
-            generate(dir_path=self.dir_path + '/', title='Test')
+        with self.assertRaisesRegex(AssertionError, 'Invalid album_dir_path'):
+            generate(album_dir_path=self.album_dir_path + '/', title='Test')
 
     def test_generate_title_defaults_to_dirname(self):
-        generate(dir_path=self.dir_path)
+        generate(album_dir_path=self.album_dir_path)
 
-        output = os.path.join(self.dir_path, 'player.html')
+        output = os.path.join(self.album_dir_path, 'player.html')
         self.assertTrue(os.path.exists(output))
 
         with open(output, 'r', encoding='UTF-8') as f:
             content = f.read()
 
-        self.assertIn(os.path.basename(self.dir_path), content)
+        self.assertIn(os.path.basename(self.album_dir_path), content)
         self.assertIn('<html', content.lower())
 
     def test_generate_title_empty_string_fallback(self):
-        generate(dir_path=self.dir_path, title='')
+        generate(album_dir_path=self.album_dir_path, title='')
 
-        output = os.path.join(self.dir_path, 'player.html')
+        output = os.path.join(self.album_dir_path, 'player.html')
         self.assertTrue(os.path.exists(output))
 
         with open(output, 'r', encoding='UTF-8') as f:
             content = f.read()
 
-        self.assertIn(os.path.basename(self.dir_path), content)
+        self.assertIn(os.path.basename(self.album_dir_path), content)
 
     def test_missing_cover_file(self):
         with self.assertRaises(FileNotFoundError):
-            generate(dir_path=self.dir_path, title='Test', cover_file='nonexistent.jpg')
+            generate(album_dir_path=self.album_dir_path, title='Test', cover_file='nonexistent.jpg')
 
 
 if __name__ == '__main__':

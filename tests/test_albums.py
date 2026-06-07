@@ -31,9 +31,9 @@ class TestGetConfigFromDocs(unittest.TestCase):
         albums_config = get_config(albums_config_file_path)
 
         for album in albums_config['albums']:
-            self.assertIn('dir_path', album)
-            self.assertIsInstance(album['dir_path'], str)
-            self.assertTrue(os.path.isabs(album['dir_path']))
+            self.assertIn('album_dir_path', album)
+            self.assertIsInstance(album['album_dir_path'], str)
+            self.assertTrue(os.path.isabs(album['album_dir_path']))
 
             self.assertIn('title', album)
             self.assertIsInstance(album['title'], str)
@@ -89,12 +89,12 @@ class TestGetConfigFromTemp(unittest.TestCase):
         with open(self.albums_config_file_path, 'w', encoding='UTF-8') as f:
             json.dump(albums_config, f)
 
-    def test_nonexistent_dir_path(self):
+    def test_nonexistent_album_dir_path(self):
         self._write_config({
             'albums_index_file_path': './index.html',
             'albums': [
                 {
-                    'dir_path': '/nonexistent/path/12345',
+                    'album_dir_path': '/nonexistent/path/12345',
                     'title': 'Test',
                 },
             ],
@@ -110,7 +110,7 @@ class TestGetConfigFromTemp(unittest.TestCase):
             'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
-                    'dir_path': test_dir,
+                    'album_dir_path': test_dir,
                     'title': 'Test',
                     'recursively': 'not-a-bool',
                 },
@@ -127,7 +127,7 @@ class TestGetConfigFromTemp(unittest.TestCase):
             'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
-                    'dir_path': test_dir,
+                    'album_dir_path': test_dir,
                 },
             ],
         })
@@ -142,7 +142,7 @@ class TestGetConfigFromTemp(unittest.TestCase):
             'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
-                    'dir_path': test_dir,
+                    'album_dir_path': test_dir,
                     'title': '',
                 },
             ],
@@ -173,7 +173,7 @@ class TestMain(unittest.TestCase):
             'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
-                    'dir_path': album_dir,
+                    'album_dir_path': album_dir,
                     'title': title,
                 },
             ],
@@ -212,7 +212,7 @@ class TestMain(unittest.TestCase):
             'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
-                    'dir_path': album_dir,
+                    'album_dir_path': album_dir,
                     'title': title,
                 },
             ],
@@ -237,7 +237,7 @@ class TestMain(unittest.TestCase):
             'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
-                    'dir_path': album_dir,
+                    'album_dir_path': album_dir,
                     'title': title,
                 },
             ],

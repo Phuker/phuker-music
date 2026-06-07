@@ -20,11 +20,11 @@ def _help_formatter(prog: str) -> argparse.HelpFormatter:
 
 
 def _player_command(shell_args: argparse.Namespace) -> None:
-    dir_path = os.path.abspath(os.path.expanduser(shell_args.dir_path))
-    _utils._assert(os.path.isdir(dir_path), f'Directory does not exist: {dir_path!r}')
+    album_dir_path = os.path.abspath(os.path.expanduser(shell_args.album_dir_path))
+    _utils._assert(os.path.isdir(album_dir_path), f'Directory does not exist: {album_dir_path!r}')
 
     player.generate(
-        dir_path=dir_path,
+        album_dir_path=album_dir_path,
         title=shell_args.title,
         cover_file=shell_args.cover,
         output_filename=shell_args.output_filename,
@@ -53,7 +53,7 @@ def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:
         formatter_class=_help_formatter,
     )
 
-    parser_player.add_argument('dir_path', help='Path to the album directory')
+    parser_player.add_argument('album_dir_path', metavar='dir_path', help='Path to the album directory')
     parser_player.add_argument('-t', '--title', metavar='title', help='Album title, default: directory name')
     parser_player.add_argument('-c', '--cover', metavar='file', help='Album cover file path, relative to dir_path')
     parser_player.add_argument('-o', '--output-filename', metavar='filename', default=default_output_filename, help='Output filename, default: %(default)s')
