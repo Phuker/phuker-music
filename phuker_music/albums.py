@@ -45,6 +45,10 @@ def normalize_album_config(album_config_input: dict, albums_dir_path: str) -> di
 
 
 def normalize_albums_config(albums_config: dict, albums_dir_path: str) -> None:
+    utils._assert(isinstance(albums_config, dict), 'invalid albums_config')
+    utils._assert(isinstance(albums_config.get('albums_index_file_path'), str), 'invalid albums_index_file_path')
+    utils._assert(isinstance(albums_config.get('albums'), list), 'invalid albums')
+
     albums_index_file_path = albums_config['albums_index_file_path']
     albums_index_file_path = os.path.abspath(os.path.join(albums_dir_path, os.path.expanduser(albums_index_file_path))).replace(os.sep, '/')
     utils._assert(utils.is_sub_path(albums_index_file_path, albums_dir_path), f'albums_index_file_path must be within albums_dir_path: {albums_index_file_path!r}')
