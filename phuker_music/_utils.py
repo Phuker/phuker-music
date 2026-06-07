@@ -48,6 +48,13 @@ def _init_logging(logging_format: str) -> None:
     logging.addLevelName(logging.DEBUG, f'\x1b[36m{logging.getLevelName(logging.DEBUG)}\x1b[39m')
 
 
+def is_sub_path(path: str, parent_path: str) -> bool:
+    path = os.path.abspath(path).replace(os.sep, '/')
+    parent_path = os.path.abspath(parent_path).replace(os.sep, '/')
+
+    return parent_path == os.path.commonpath([path, parent_path]).replace(os.sep, '/')
+
+
 def detect_language(text: str) -> str:
     global lang_identifier
 
