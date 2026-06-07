@@ -12,46 +12,55 @@ from . import player
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-def get_config(albums_config_file_path: str) -> dict[str, object]:
-    with open(albums_config_file_path, 'r', encoding='UTF-8') as f:
-        albums_config = json.load(f)
+def normalize_album_config(album_config_input: dict, config_dir_path: str) -> dict:
+    album_config = {
+        'dir_path': None,
+        'title': None,
+        'cover_file': None,
+        'output_filename': 'player.html',
+        'recursively': False,
+        'sort_type': 'filename',
+        'overwrite': True,
+    }
+    album_config.update(album_config_input)
 
-    config_dir_path = os.path.dirname(albums_config_file_path)
+    _utils._assert(isinstance(album_config['dir_path'], str), f'invalid album_config: {album_config!r}')
+    _utils._assert(isinstance(album_config['title'], (str, type(None))), f'invalid album_config: {album_config!r}')
+    _utils._assert(isinstance(album_config['cover_file'], (str, type(None))), f'invalid album_config: {album_config!r}')
+    _utils._assert(isinstance(album_config['output_filename'], str), f'invalid album_config: {album_config!r}')
+    _utils._assert(isinstance(album_config['recursively'], bool), f'invalid album_config: {album_config!r}')
+    _utils._assert(isinstance(album_config['sort_type'], str), f'invalid album_config: {album_config!r}')
+    _utils._assert(isinstance(album_config['overwrite'], bool), f'invalid album_config: {album_config!r}')
 
+    dir_path = album_config['dir_path']
+    dir_path = os.path.abspath(os.path.join(config_dir_path, os.path.expanduser(dir_path)))
+    _utils._assert(os.path.isdir(dir_path), f'Album directory does not exist: {dir_path!r}')
+    album_config['dir_path'] = dir_path
+
+    if not album_config['title']:
+        album_config['title'] = os.path.basename(dir_path)
+
+    return album_config
+
+
+def normalize_albums_config(albums_config: dict, config_dir_path: str) -> None:
     albums_index_file_path = albums_config['albums_index_file_path']
     albums_index_file_path = os.path.abspath(os.path.join(config_dir_path, os.path.expanduser(albums_index_file_path)))
     _utils._assert(os.path.isdir(os.path.dirname(albums_index_file_path)), f'Parent directory of albums_index_file_path does not exist: {albums_index_file_path!r}')
     albums_config['albums_index_file_path'] = albums_index_file_path
 
-    for i, _album_config in enumerate(albums_config['albums']):
-        album_config = {
-            'dir_path': None,
-            'title': None,
-            'cover_file': None,
-            'output_filename': 'player.html',
-            'recursively': False,
-            'sort_type': 'filename',
-            'overwrite': True,
-        }
-        album_config.update(_album_config)
+    for i, album_config_input in enumerate(albums_config['albums']):
+        albums_config['albums'][i] = normalize_album_config(album_config_input, config_dir_path)
 
-        _utils._assert(isinstance(album_config['dir_path'], str), f"invalid albums_config['albums'][{i}]['dir_path']")
-        _utils._assert(isinstance(album_config['title'], (str, type(None))), f"invalid albums_config['albums'][{i}]['title']")
-        _utils._assert(isinstance(album_config['cover_file'], (str, type(None))), f"invalid albums_config['albums'][{i}]['cover_file']")
-        _utils._assert(isinstance(album_config['output_filename'], str), f"invalid albums_config['albums'][{i}]['output_filename']")
-        _utils._assert(isinstance(album_config['recursively'], bool), f"invalid albums_config['albums'][{i}]['recursively']")
-        _utils._assert(isinstance(album_config['sort_type'], str), f"invalid albums_config['albums'][{i}]['sort_type']")
-        _utils._assert(isinstance(album_config['overwrite'], bool), f"invalid albums_config['albums'][{i}]['overwrite']")
+    return albums_config
 
-        dir_path = album_config['dir_path']
-        dir_path = os.path.abspath(os.path.join(config_dir_path, os.path.expanduser(dir_path)))
-        _utils._assert(os.path.isdir(dir_path), f'Album directory does not exist: {dir_path!r}')
-        album_config['dir_path'] = dir_path
 
-        if not album_config['title']:
-            album_config['title'] = os.path.basename(dir_path)
+def get_config(albums_config_file_path: str) -> dict[str, object]:
+    with open(albums_config_file_path, 'r', encoding='UTF-8') as f:
+        albums_config = json.load(f)
 
-        albums_config['albums'][i] = album_config
+    config_dir_path = os.path.dirname(albums_config_file_path)
+    albums_config = normalize_albums_config(albums_config, config_dir_path)
 
     return albums_config
 

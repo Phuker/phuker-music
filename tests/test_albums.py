@@ -3,7 +3,7 @@ import sys
 import shutil
 import json
 import tempfile
-import re
+
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -117,7 +117,7 @@ class TestGetConfigFromTemp(unittest.TestCase):
             ],
         })
 
-        with self.assertRaisesRegex(AssertionError, re.escape("invalid albums_config['albums'][0]['recursively']")):
+        with self.assertRaisesRegex(AssertionError, 'invalid album_config:'):
             get_config(self.albums_config_file_path)
 
     def test_missing_title(self):
