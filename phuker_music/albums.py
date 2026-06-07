@@ -33,7 +33,7 @@ def normalize_album_config(album_config_input: dict, albums_dir_path: str) -> di
     _utils._assert(isinstance(album_config['overwrite'], bool), f'invalid album_config: {album_config!r}')
 
     album_dir_path = album_config['album_dir_path']
-    album_dir_path = os.path.abspath(os.path.join(albums_dir_path, os.path.expanduser(album_dir_path)))
+    album_dir_path = os.path.abspath(os.path.join(albums_dir_path, os.path.expanduser(album_dir_path))).replace(os.sep, '/')
     _utils._assert(albums_dir_path == os.path.commonpath([album_dir_path, albums_dir_path]), f'album_dir_path must be within albums_dir_path: {album_dir_path!r}')
     _utils._assert(os.path.isdir(album_dir_path), f'Album directory does not exist: {album_dir_path!r}')
     album_config['album_dir_path'] = album_dir_path
@@ -46,7 +46,7 @@ def normalize_album_config(album_config_input: dict, albums_dir_path: str) -> di
 
 def normalize_albums_config(albums_config: dict, albums_dir_path: str) -> None:
     albums_index_file_path = albums_config['albums_index_file_path']
-    albums_index_file_path = os.path.abspath(os.path.join(albums_dir_path, os.path.expanduser(albums_index_file_path)))
+    albums_index_file_path = os.path.abspath(os.path.join(albums_dir_path, os.path.expanduser(albums_index_file_path))).replace(os.sep, '/')
     _utils._assert(albums_dir_path == os.path.commonpath([albums_index_file_path, albums_dir_path]), f'albums_index_file_path must be within albums_dir_path: {albums_index_file_path!r}')
     _utils._assert(os.path.isdir(os.path.dirname(albums_index_file_path)), f'Parent directory of albums_index_file_path does not exist: {albums_index_file_path!r}')
     albums_config['albums_index_file_path'] = albums_index_file_path
@@ -61,7 +61,7 @@ def get_config(albums_config_file_path: str) -> dict[str, object]:
     with open(albums_config_file_path, 'r', encoding='UTF-8') as f:
         albums_config = json.load(f)
 
-    albums_dir_path = os.path.dirname(albums_config_file_path)
+    albums_dir_path = os.path.dirname(albums_config_file_path).replace(os.sep, '/')
     albums_config = normalize_albums_config(albums_config, albums_dir_path)
 
     return albums_config
