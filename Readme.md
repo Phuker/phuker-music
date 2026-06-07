@@ -98,7 +98,7 @@ usage: phuker-music albums [-h] [-f] [-v] config_file
 Generate player and index page for all albums
 
 positional arguments:
-  config_file    Config file path
+  config_file    Albums config file path
 
 options:
   -h, --help     show this help message and exit
