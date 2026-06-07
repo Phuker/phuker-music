@@ -15,6 +15,7 @@ from . import __version__
 
 logger: logging.Logger = logging.getLogger(__name__)
 lang_identifier: object | None = None
+templates_dir_path: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 
 
 def _assert(expr: object, msg: str = '') -> None:
@@ -71,39 +72,40 @@ def detect_language(text: str) -> str:
         return 'en'
 
 
+def jinja_env_global_read_file(relative_file_path: str) -> str:
+    file_path = os.path.join(templates_dir_path, relative_file_path)
+
+    with open(file_path, 'r', encoding='UTF-8') as f:
+        return f.read()
+
+
+def jinja_env_global_read_file_as_data_url(relative_file_path: str, mime: str) -> str:
+    file_path = os.path.join(templates_dir_path, relative_file_path)
+
+    with open(file_path, 'rb') as f:
+        content = f.read()
+        base64_content = base64.b64encode(content).decode()
+
+    return f'data:{mime};base64,{base64_content}'
+
+
+def jinja_env_filter_json_encode(obj: object) -> str:
+    result = json.dumps(obj, indent=4)
+
+    # Like PHP JSON_HEX_TAG, prevent XSS
+    # https://www.php.net/manual/en/json.constants.php
+    result = result.replace('<', '\\u003c').replace('>', '\\u003e')
+
+    return result
+
+
 def get_jinja_env() -> jinja2.Environment:
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-
-    def global_read_file(relative_file_path: str) -> str:
-        file_path = os.path.join(script_dir, 'templates', relative_file_path)
-
-        with open(file_path, 'r', encoding='UTF-8') as f:
-            return f.read()
-
-    def global_read_file_as_data_url(relative_file_path: str, mime: str) -> str:
-        file_path = os.path.join(script_dir, 'templates', relative_file_path)
-
-        with open(file_path, 'rb') as f:
-            content = f.read()
-            base64_content = base64.b64encode(content).decode()
-
-        return f'data:{mime};base64,{base64_content}'
-
-    def filter_json_encode(obj: object) -> str:
-        result = json.dumps(obj, indent=4)
-
-        # Like PHP JSON_HEX_TAG, prevent XSS
-        # https://www.php.net/manual/en/json.constants.php
-        result = result.replace('<', '\\u003c').replace('>', '\\u003e')
-
-        return result
-
-    loader = jinja2.FileSystemLoader(os.path.join(script_dir, 'templates'))
+    loader = jinja2.FileSystemLoader(templates_dir_path)
     env = jinja2.Environment(loader=loader, autoescape=True)
 
     env.globals['version'] = __version__
-    env.globals['read_file'] = global_read_file
-    env.globals['read_file_as_data_url'] = global_read_file_as_data_url
-    env.filters['json_encode'] = filter_json_encode
+    env.globals['read_file'] = jinja_env_global_read_file
+    env.globals['read_file_as_data_url'] = jinja_env_global_read_file_as_data_url
+    env.filters['json_encode'] = jinja_env_filter_json_encode
 
     return env
