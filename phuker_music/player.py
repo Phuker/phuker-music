@@ -25,10 +25,6 @@ AUDIO_EXT_LIST: tuple[str, ...] = (
 )
 
 
-def match_ext_list(file_path: str, ext_list: tuple[str, ...]) -> bool:
-    return os.path.splitext(file_path)[1].lower() in ext_list
-
-
 def get_file_size_str(file_path: str) -> str:
     size_suffix_list = ('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
 
@@ -78,7 +74,7 @@ def get_music_groups(album_dir_path: str, recursively: bool = False, sort_type: 
         # https://stackoverflow.com/questions/18282370/in-what-order-does-os-walk-iterates-iterate
         dirnames.sort()
 
-        filenames = [filename for filename in filenames if match_ext_list(filename, AUDIO_EXT_LIST)]
+        filenames = [filename for filename in filenames if utils.match_ext_list(filename, AUDIO_EXT_LIST)]
         if sort_type == 'filename':
             filenames.sort()
         elif sort_type == 'mtime_desc':
