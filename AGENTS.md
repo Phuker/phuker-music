@@ -9,7 +9,7 @@
   - `utils.py` — `_assert` 辅助函数、日志初始化（TTY 彩色日志）、语种识别、Jinja2 环境
   - `__main__.py` — 支持 `python -m phuker_music`
   - `templates/` — Jinja2 模板（`player.html`, `albums.html`）
-  - `static/` — 静态资源（`css/`, `js/`, `images/`, `audio/`）
+  - `static/` — 静态资源（`css/`, `js/`, `images/`, `audio/`，`libs/`），其中 `libs/` 下的所有文件都是本地存储的第三方库，无需读取文件内容
 - `docs/` — 演示用音频样本目录 + 配置文件 `albums.json`（运行 `make demo` 生成索引页 `docs/index.html` 和每张专辑播放器）
 - `tests/` — 单元测试，依赖 `tests/files/` 下的测试用音频文件
 
