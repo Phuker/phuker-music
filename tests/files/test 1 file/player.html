@@ -47,7 +47,7 @@ https://github.com/Phuker/phuker-music
     dialog#album-details {
         box-sizing: border-box;
         border: none;
-        padding: 0.75em 0.75em 2em 0.75em;
+        padding: 0;
         background: white;
         max-width: min(600px, 75vw);
         max-height: 90vh;
@@ -68,6 +68,7 @@ https://github.com/Phuker/phuker-music
         display: inline-flex;
         flex-direction: column;
         width: fit-content;
+        padding: 0.75em 0.75em 2em 0.75em;
     }
 
     dialog#album-details .album-details-title {
@@ -681,6 +682,7 @@ https://github.com/Phuker/phuker-music
             }
         });
 
+        // Use closedby property when widely available
         albumDetails.addEventListener('click', (event) => {
             if (event.target === albumDetails) {
                 albumDetails.close();

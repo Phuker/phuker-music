@@ -367,6 +367,7 @@ function init() {
         }
     });
 
+    // Use closedby property when widely available
     albumDetails.addEventListener('click', (event) => {
         if (event.target === albumDetails) {
             albumDetails.close();
