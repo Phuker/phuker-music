@@ -21,10 +21,12 @@ https://github.com/Phuker/phuker-music
 <div class="container" id="container">
 <h1 id="album-title" title="{{ title }}" role="button" tabindex="0" aria-label="View album details">{{ title }}</h1>
 <dialog id="album-details">
-    <p>{{ title }}</p>
-    {% if cover_file %}
-    <p><img src="{{ cover_file }}" alt="Album cover image of: {{ title }}" /></p>
-    {% endif %}
+    <div class="album-details-inner">
+        {%- if cover_file %}
+        <img src="{{ cover_file }}" alt="Album cover image of: {{ title }}" />
+        {%- endif %}
+        <p class="album-details-title">{{ title }}</p>
+    </div>
 </dialog>
 <img src="{{ read_file_as_data_url('images/loading.gif', 'image/gif') }}" id="imgLoading" alt="" />
 
