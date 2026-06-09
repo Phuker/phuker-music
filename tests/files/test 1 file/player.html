@@ -49,6 +49,12 @@ https://github.com/Phuker/phuker-music
         background: white;
         max-width: 80vw;
         max-height: 80vh;
+        opacity: 0;
+        transition: opacity 0.2s, overlay 0.2s allow-discrete, display 0.2s allow-discrete;
+    }
+
+    dialog[open]#album-details {
+        opacity: 1;
     }
 
     dialog#album-details img {
@@ -60,6 +66,12 @@ https://github.com/Phuker/phuker-music
 
     dialog#album-details::backdrop {
         background-color: rgba(0, 0, 0, 0.75);
+        opacity: 0;
+        transition: opacity 0.2s, overlay 0.2s allow-discrete, display 0.2s allow-discrete;
+    }
+
+    dialog[open]#album-details::backdrop {
+        opacity: 1;
     }
 
     audio.player {
@@ -213,6 +225,16 @@ https://github.com/Phuker/phuker-music
 
     ::-webkit-scrollbar-thumb:active {
         background-color: #999;
+    }
+
+    @starting-style {
+        dialog[open]#album-details {
+            opacity: 0;
+        }
+
+        dialog[open]#album-details::backdrop {
+            opacity: 0;
+        }
     }
     </style>
 </head>
