@@ -10,13 +10,13 @@
         {
             "album_dir_path": "./test n files with cover sort_type mtime_desc",
             "title": "test n files with cover sort_type mtime_desc",
-            "cover_file": "Cover.jpg",
+            "cover_file": "Cover.png",
             "sort_type": "mtime_desc"
         },
         {
             "album_dir_path": "./test n files with cover recursively/",
             "title": "test n files with cover recursively",
-            "cover_file": "Cover.jpg",
+            "cover_file": "Cover.png",
             "recursively": true
         }
     ]
