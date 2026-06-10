@@ -19,12 +19,12 @@ templates_dir_path: str = os.path.join(os.path.dirname(os.path.abspath(__file__)
 static_dir_path: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
 
 
-def _assert(expr: object, msg: str = '') -> None:
+def assert_(expr: object, msg: str = '') -> None:
     if not expr:
         raise AssertionError(msg)
 
 
-def _init_logging(logging_format: str) -> None:
+def init_logging(logging_format: str) -> None:
     logging_stream = sys.stdout
     logging_level = logging.INFO
 
