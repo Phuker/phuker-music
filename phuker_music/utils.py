@@ -67,6 +67,16 @@ def get_rel_path(path: str, start_dir_path: str) -> str:
         return './' + os.path.relpath(path, start_dir_path).replace(os.sep, '/')
 
 
+def get_abs_joined_path(*paths: str) -> str:
+    assert_(len(paths) >= 1, f'paths must have at least 1 element, got: {paths!r}')
+    for path in paths:
+        assert_(isinstance(path, str) and path, f'path must be non-empty str: {path!r}')
+
+    expanded = tuple(os.path.expanduser(path) for path in paths)
+
+    return os.path.abspath(os.path.join(*expanded)).replace(os.sep, '/')
+
+
 def detect_language(text: str) -> str:
     global lang_identifier
 
