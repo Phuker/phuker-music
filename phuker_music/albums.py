@@ -51,9 +51,9 @@ def normalize_album_config(album_config_input: dict, *, albums_dir_path: str, is
         album_config['output_filename'] = 'player.html'
 
     if not is_abs_path:
-        album_config['album_dir_path'] = './' + os.path.relpath(album_config['album_dir_path'], albums_dir_path).replace(os.sep, '/')
+        album_config['album_dir_path'] = utils.get_rel_path(album_config['album_dir_path'], albums_dir_path)
         if album_config['cover_file']:
-            album_config['cover_file'] = './' + os.path.relpath(album_config['cover_file'], album_dir_path).replace(os.sep, '/')
+            album_config['cover_file'] = utils.get_rel_path(album_config['cover_file'], album_dir_path)
 
     return album_config
 
@@ -72,7 +72,7 @@ def normalize_albums_config(albums_config: dict, *, albums_dir_path: str, is_abs
         albums_config['albums'][i] = normalize_album_config(album_config_input, albums_dir_path=albums_dir_path, is_abs_path=is_abs_path)
 
     if not is_abs_path:
-        albums_config['albums_index_file_path'] = './' + os.path.relpath(albums_config['albums_index_file_path'], albums_dir_path).replace(os.sep, '/')
+        albums_config['albums_index_file_path'] = utils.get_rel_path(albums_config['albums_index_file_path'], albums_dir_path)
 
     return albums_config
 
@@ -104,9 +104,8 @@ def main(albums_config_file_path: str, force: bool = False) -> None:
         logger.info('(%d/%d) Album dir path: %r', i + 1, len(albums_config['albums']), album_config['album_dir_path'])
         player.generate(**album_config)
 
-        get_rel_path = lambda _path: './' + os.path.relpath(os.path.join(album_config['album_dir_path'], _path), os.path.dirname(albums_config['albums_index_file_path'])).replace(os.sep, '/')
-        player_path = get_rel_path(album_config['output_filename'])
-        cover_path = get_rel_path(album_config['cover_file']) if album_config['cover_file'] else None
+        player_path = utils.get_rel_path(os.path.join(album_config['album_dir_path'], album_config['output_filename']), os.path.dirname(albums_config['albums_index_file_path']))
+        cover_path = utils.get_rel_path(os.path.join(album_config['album_dir_path'], album_config['cover_file']), os.path.dirname(albums_config['albums_index_file_path'])) if album_config['cover_file'] else None
 
         indexes.append((
             player_path,

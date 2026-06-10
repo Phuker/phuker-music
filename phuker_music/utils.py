@@ -60,6 +60,13 @@ def is_sub_path(path: str, parent_path: str) -> bool:
     return parent_path == os.path.commonpath([path, parent_path]).replace(os.sep, '/')
 
 
+def get_rel_path(path: str, start_dir_path: str) -> str:
+    if path == start_dir_path:
+        return '.'
+    else:
+        return './' + os.path.relpath(path, start_dir_path).replace(os.sep, '/')
+
+
 def detect_language(text: str) -> str:
     global lang_identifier
 

@@ -129,8 +129,7 @@ def generate(*, album_dir_path: str, title: str | None = None, cover_file: str |
         if not os.path.isfile(_cover_file_path):
             raise FileNotFoundError(f'Cover file does not exist: {_cover_file_path!r}')
 
-        # normalize, add './'
-        cover_file = './' + os.path.relpath(_cover_file_path, album_dir_path).replace(os.sep, '/')
+        cover_file = utils.get_rel_path(_cover_file_path, album_dir_path)
 
     logger.info('Generating player in: %r', album_dir_path)
 
