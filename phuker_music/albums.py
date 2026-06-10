@@ -12,7 +12,7 @@ from . import player
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-def normalize_album_config(album_config_input: dict, albums_dir_path: str) -> dict:
+def normalize_album_config(album_config_input: dict, *, albums_dir_path: str, is_abs_path: bool = True) -> dict:
     album_config = {
         'album_dir_path': None,
         'title': None,
@@ -28,12 +28,12 @@ def normalize_album_config(album_config_input: dict, albums_dir_path: str) -> di
     utils.assert_(isinstance(album_config['title'], (str, type(None))), f'invalid album_config: {album_config!r}')
     utils.assert_(isinstance(album_config['cover_file'], (str, type(None))), f'invalid album_config: {album_config!r}')
     utils.assert_(isinstance(album_config['output_filename'], str), f'invalid album_config: {album_config!r}')
+    utils.assert_('/' not in album_config['output_filename'] and '\\' not in album_config['output_filename'], f'output_filename must not contain path separators: {album_config["output_filename"]!r}')
     utils.assert_(isinstance(album_config['recursively'], bool), f'invalid album_config: {album_config!r}')
     utils.assert_(isinstance(album_config['sort_type'], str), f'invalid album_config: {album_config!r}')
     utils.assert_(isinstance(album_config['overwrite'], bool), f'invalid album_config: {album_config!r}')
 
-    album_dir_path = album_config['album_dir_path']
-    album_dir_path = os.path.abspath(os.path.join(albums_dir_path, os.path.expanduser(album_dir_path))).replace(os.sep, '/')
+    album_dir_path = os.path.abspath(os.path.join(albums_dir_path, os.path.expanduser(album_config['album_dir_path']))).replace(os.sep, '/')
     utils.assert_(utils.is_sub_path(album_dir_path, albums_dir_path), f'album_dir_path must be within albums_dir_path: {album_dir_path!r}')
     utils.assert_(os.path.isdir(album_dir_path), f'Album directory does not exist: {album_dir_path!r}')
     album_config['album_dir_path'] = album_dir_path
@@ -41,22 +41,38 @@ def normalize_album_config(album_config_input: dict, albums_dir_path: str) -> di
     if not album_config['title']:
         album_config['title'] = os.path.basename(album_dir_path)
 
+    if not album_config['cover_file']:
+        album_config['cover_file'] = None
+    else:
+        album_config['cover_file'] = os.path.abspath(os.path.join(album_dir_path, os.path.expanduser(album_config['cover_file']))).replace(os.sep, '/')
+        utils.assert_(utils.is_sub_path(album_config['cover_file'], album_dir_path), f'cover_file must be within album_dir_path: {album_config["cover_file"]!r}')
+
+    if not album_config['output_filename']:
+        album_config['output_filename'] = 'player.html'
+
+    if not is_abs_path:
+        album_config['album_dir_path'] = './' + os.path.relpath(album_config['album_dir_path'], albums_dir_path).replace(os.sep, '/')
+        if album_config['cover_file']:
+            album_config['cover_file'] = './' + os.path.relpath(album_config['cover_file'], album_dir_path).replace(os.sep, '/')
+
     return album_config
 
 
-def normalize_albums_config(albums_config: dict, albums_dir_path: str) -> None:
+def normalize_albums_config(albums_config: dict, *, albums_dir_path: str, is_abs_path: bool = True) -> dict:
     utils.assert_(isinstance(albums_config, dict), 'invalid albums_config')
-    utils.assert_(isinstance(albums_config.get('albums_index_file_path'), str), 'invalid albums_index_file_path')
+    utils.assert_(isinstance(albums_config.get('albums_index_file_path'), str) and albums_config['albums_index_file_path'], 'invalid albums_index_file_path')
     utils.assert_(isinstance(albums_config.get('albums'), list), 'invalid albums')
 
-    albums_index_file_path = albums_config['albums_index_file_path']
-    albums_index_file_path = os.path.abspath(os.path.join(albums_dir_path, os.path.expanduser(albums_index_file_path))).replace(os.sep, '/')
+    albums_index_file_path = os.path.abspath(os.path.join(albums_dir_path, os.path.expanduser(albums_config['albums_index_file_path']))).replace(os.sep, '/')
     utils.assert_(utils.is_sub_path(albums_index_file_path, albums_dir_path), f'albums_index_file_path must be within albums_dir_path: {albums_index_file_path!r}')
     utils.assert_(os.path.isdir(os.path.dirname(albums_index_file_path)), f'Parent directory of albums_index_file_path does not exist: {albums_index_file_path!r}')
     albums_config['albums_index_file_path'] = albums_index_file_path
 
     for i, album_config_input in enumerate(albums_config['albums']):
-        albums_config['albums'][i] = normalize_album_config(album_config_input, albums_dir_path)
+        albums_config['albums'][i] = normalize_album_config(album_config_input, albums_dir_path=albums_dir_path, is_abs_path=is_abs_path)
+
+    if not is_abs_path:
+        albums_config['albums_index_file_path'] = './' + os.path.relpath(albums_config['albums_index_file_path'], albums_dir_path).replace(os.sep, '/')
 
     return albums_config
 
@@ -66,7 +82,7 @@ def get_config(albums_config_file_path: str) -> dict[str, object]:
         albums_config = json.load(f)
 
     albums_dir_path = os.path.dirname(albums_config_file_path).replace(os.sep, '/')
-    albums_config = normalize_albums_config(albums_config, albums_dir_path)
+    albums_config = normalize_albums_config(albums_config, albums_dir_path=albums_dir_path)
 
     return albums_config
 
