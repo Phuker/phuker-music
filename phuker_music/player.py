@@ -115,8 +115,10 @@ def get_hash(s: str) -> str:
 
 
 def generate(*, album_dir_path: str, title: str | None = None, cover_file: str | None = None, output_filename: str = 'player.html', recursively: bool = False, sort_type: str = 'filename', overwrite: bool = False) -> None:
-    # album_dir_path must be abs path, without trailing sep char
-    utils.assert_(album_dir_path and album_dir_path[-1] not in ('/', '\\'), f'Invalid album_dir_path')
+    utils.assert_(isinstance(album_dir_path, str) and album_dir_path, f'Invalid album_dir_path')
+    album_dir_path = os.path.abspath(os.path.expanduser(album_dir_path)).replace(os.sep, '/')
+    utils.assert_(os.path.isdir(album_dir_path), f'Directory does not exist: {album_dir_path!r}')
+
     utils.assert_('/' not in output_filename and '\\' not in output_filename, f'output_filename must not contain path separators: {output_filename!r}')
 
     if not title:

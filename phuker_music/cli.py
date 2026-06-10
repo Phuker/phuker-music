@@ -20,11 +20,8 @@ def _help_formatter(prog: str) -> argparse.HelpFormatter:
 
 
 def _player_command(shell_args: argparse.Namespace) -> None:
-    album_dir_path = os.path.abspath(os.path.expanduser(shell_args.album_dir_path)).replace(os.sep, '/')
-    utils.assert_(os.path.isdir(album_dir_path), f'Directory does not exist: {album_dir_path!r}')
-
     player.generate(
-        album_dir_path=album_dir_path,
+        album_dir_path=shell_args.album_dir_path,
         title=shell_args.title,
         cover_file=shell_args.cover,
         output_filename=shell_args.output_filename,
@@ -35,10 +32,7 @@ def _player_command(shell_args: argparse.Namespace) -> None:
 
 
 def _albums_command(shell_args: argparse.Namespace) -> None:
-    albums_config_file_path = os.path.abspath(os.path.expanduser(shell_args.albums_config_file_path)).replace(os.sep, '/')
-    utils.assert_(os.path.isfile(albums_config_file_path), f'Albums config file does not exist: {albums_config_file_path!r}')
-
-    albums.main(albums_config_file_path, force=shell_args.force)
+    albums.main(shell_args.albums_config_file_path, force=shell_args.force)
 
 
 def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:

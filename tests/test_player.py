@@ -181,10 +181,6 @@ class TestGenerate(unittest.TestCase):
         self.assertNotIn(title1, content)
         self.assertIn(title2, content)
 
-    def test_trailing_slash_dir_path(self):
-        with self.assertRaisesRegex(AssertionError, 'Invalid album_dir_path'):
-            generate(album_dir_path=self.album_dir_path + '/', title='Test')
-
     def test_generate_title_defaults_to_dirname(self):
         generate(album_dir_path=self.album_dir_path)
 

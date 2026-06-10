@@ -88,6 +88,9 @@ def get_config(albums_config_file_path: str) -> dict[str, object]:
 
 
 def main(albums_config_file_path: str, force: bool = False) -> None:
+    albums_config_file_path = os.path.abspath(os.path.expanduser(albums_config_file_path)).replace(os.sep, '/')
+    utils.assert_(os.path.isfile(albums_config_file_path), f'Albums config file does not exist: {albums_config_file_path!r}')
+
     logger.info('Loading albums config file: %r', albums_config_file_path)
     albums_config = get_config(albums_config_file_path)
     logger.debug('Albums config: %s', json.dumps(albums_config, indent=4, ensure_ascii=False))
