@@ -54,13 +54,16 @@ def match_ext_list(file_path: str, ext_list: tuple[str, ...]) -> bool:
 
 
 def is_sub_path(path: str, parent_path: str) -> bool:
-    path = os.path.abspath(path).replace(os.sep, '/')
-    parent_path = os.path.abspath(parent_path).replace(os.sep, '/')
+    path = os.path.abspath(os.path.expanduser(path))
+    parent_path = os.path.abspath(os.path.expanduser(parent_path))
 
-    return parent_path == os.path.commonpath([path, parent_path]).replace(os.sep, '/')
+    return parent_path == os.path.commonpath([path, parent_path])
 
 
 def get_rel_path(path: str, start_dir_path: str) -> str:
+    path = os.path.expanduser(path)
+    start_dir_path = os.path.expanduser(start_dir_path)
+
     if path == start_dir_path:
         return '.'
     else:
