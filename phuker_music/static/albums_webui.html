@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Albums config editor</title>
+    <link rel="stylesheet" href="./static/css/albums_webui.css">
+    <script src="./static/libs/vue@3.5.35/vue.global.prod.js"></script>
+    <script src="./static/libs/sortablejs@1.15.7/Sortable.min.js"></script>
+    <script src="./static/libs/vuedraggable@4.1.0/vuedraggable.umd.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div id="top-bar">
+            <label>
+                albums_index_file_path:
+                <input type="text" v-model="indexFilePath" placeholder="index.html">
+            </label>
+            <button id="btn-save" @click="saveConfig">Save Config</button>
+            <button id="btn-regenerate" @click="regenerate">Regenerate</button>
+        </div>
+
+        <div id="scan-progress" v-show="scanStatus !== 'done'" v-cloak>
+            <div>Scanning directories for audio and image files...</div>
+            <div>Scanned {{ scannedDirs }} directories</div>
+        </div>
+
+        <div id="main-content" v-show="scanStatus === 'done'" v-cloak>
+            <div id="columns">
+                <div id="column-left">
+                    <div class="column-header">
+                        <h2>Albums</h2>
+                    </div>
+                    <div id="albums-list">
+                        <draggable v-model="albums" group="albums" item-key="album_dir_path"
+                            :animation="150"
+                            ghost-class="sortable-ghost"
+                            @change="onAlbumsChange">
+                            <template #item="{ element }">
+                                <div class="album-card">
+                                    <div class="card-row">
+                                        <span class="card-label">path:</span>
+                                        <span class="card-path">{{ element.album_dir_path }}</span>
+                                    </div>
+                                    <div class="card-row">
+                                        <label>title:</label>
+                                        <input type="text" class="card-title" v-model="element.title" placeholder="Default: directory name">
+                                    </div>
+                                    <div class="card-row">
+                                        <label>cover:</label>
+                                        <select class="card-cover" v-model="element.cover_file">
+                                            <option value="">(No cover)</option>
+                                            <option v-for="opt in getCoverOptions(element.album_dir_path, element.cover_file)" :key="opt" :value="opt">{{ opt }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="card-row">
+                                        <label>output:</label>
+                                        <input type="text" class="card-output" v-model="element.output_filename" placeholder="Default: player.html">
+                                    </div>
+                                    <div class="card-row">
+                                        <label><input type="checkbox" class="card-recursively" v-model="element.recursively"> recursively</label>
+                                    </div>
+                                    <div class="card-row">
+                                        <label>sort:</label>
+                                        <select class="card-sort" v-model="element.sort_type">
+                                            <option value="filename">filename</option>
+                                            <option value="mtime_desc">mtime_desc</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn-delete" @click="deleteAlbum(element)">Delete</button>
+                                </div>
+                            </template>
+                        </draggable>
+                    </div>
+                </div>
+                <div id="column-right">
+                    <div class="column-header">
+                        <h2>Available</h2>
+                        <button id="btn-add-all" @click="addAllAlbums">Add All</button>
+                    </div>
+                    <div id="available-list">
+                        <draggable v-model="availableItems"
+                            :group="{ name: 'albums', pull: 'clone', put: false }"
+                            :sort="false"
+                            item-key="album_dir_path"
+                            ghost-class="sortable-ghost"
+                            :animation="150">
+                            <template #item="{ element }">
+                                <div class="available-item">{{ element.album_dir_path }}</div>
+                            </template>
+                        </draggable>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="toast" :class="toast.type">{{ toast.text }}</div>
+    </div>
+
+    <script src="./static/js/albums_webui.js"></script>
+</body>
+
+</html>

@@ -10,6 +10,7 @@ from . import __version__
 from . import utils
 from . import player
 from . import albums
+from . import albums_webui
 
 
 logger: logging.Logger = logging.getLogger(__name__)
@@ -33,6 +34,10 @@ def _player_command(shell_args: argparse.Namespace) -> None:
 
 def _albums_command(shell_args: argparse.Namespace) -> None:
     albums.main(shell_args.albums_config_file_path, force=shell_args.force)
+
+
+def _albums_webui_command(shell_args: argparse.Namespace) -> None:
+    albums_webui.main(shell_args.albums_config_file_path, host=shell_args.host, port=shell_args.port)
 
 
 def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:
@@ -74,6 +79,25 @@ def _add_albums_subparser(subparsers: argparse._SubParsersAction) -> None:
     parser_albums.set_defaults(func=_albums_command)
 
 
+def _add_albums_webui_subparser(subparsers: argparse._SubParsersAction) -> None:
+    default_host = '127.0.0.1'
+    default_port = 8000
+
+    parser_webui = subparsers.add_parser(
+        'albums-webui',
+        help='Start a web UI to edit albums config',
+        description='Start a web UI to edit albums config',
+        formatter_class=_help_formatter,
+    )
+
+    parser_webui.add_argument('albums_config_file_path', metavar='config_file', help='Albums config file path')
+    parser_webui.add_argument('--host', default=default_host, help='Host to bind to, default: %(default)s')
+    parser_webui.add_argument('--port', type=int, default=default_port, help='Port to bind to, default: %(default)s')
+    parser_webui.add_argument('-v', '--verbose', action='count', default=0, dest='sub_verbose', help='Increase verbosity level')
+
+    parser_webui.set_defaults(func=_albums_webui_command)
+
+
 def _setup_args() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog='phuker-music',
@@ -87,6 +111,7 @@ def _setup_args() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest='command', metavar='command', required=True)
     _add_player_subparser(subparsers)
     _add_albums_subparser(subparsers)
+    _add_albums_webui_subparser(subparsers)
 
     return parser
 

@@ -9,6 +9,7 @@ authors = [
     { name = "Phuker", email = "Phuker@users.noreply.github.com" },
 ]
 dependencies = [
+    "flask",
     "jinja2",
     "langid",
     "mutagen",
