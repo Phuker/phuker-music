@@ -78,12 +78,12 @@ def normalize_albums_config(albums_config: dict, *, albums_dir_path: str, is_abs
     return albums_config
 
 
-def get_config(albums_config_file_path: str) -> dict[str, object]:
+def get_config(albums_config_file_path: str, *, is_abs_path: bool = True) -> dict[str, object]:
     with open(albums_config_file_path, 'r', encoding='UTF-8') as f:
         albums_config = json.load(f)
 
     albums_dir_path = os_path.dirname(albums_config_file_path)
-    albums_config = normalize_albums_config(albums_config, albums_dir_path=albums_dir_path)
+    albums_config = normalize_albums_config(albums_config, albums_dir_path=albums_dir_path, is_abs_path=is_abs_path)
 
     return albums_config
 
