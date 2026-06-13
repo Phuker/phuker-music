@@ -10,20 +10,12 @@ import json
 
 import mutagen
 
+from . import constants
 from . import utils
 from .utils import os_path
 
 
 logger: logging.Logger = logging.getLogger(__name__)
-
-AUDIO_EXT_LIST: tuple[str, ...] = (
-    '.mp3',
-    '.ogg',
-    '.flac',
-    '.m4a',
-    '.wav',
-    '.weba',
-)
 
 
 def get_file_size_str(file_path: str) -> str:
@@ -76,7 +68,7 @@ def get_music_groups(album_dir_path: str, recursively: bool = False, sort_type: 
         # https://stackoverflow.com/questions/18282370/in-what-order-does-os-walk-iterates-iterate
         dirnames.sort()
 
-        filenames = [filename for filename in filenames if utils.match_ext_list(filename, AUDIO_EXT_LIST)]
+        filenames = [filename for filename in filenames if utils.match_ext_list(filename, constants.AUDIO_EXT_LIST)]
         if sort_type == 'filename':
             filenames.sort()
         elif sort_type == 'mtime_desc':
