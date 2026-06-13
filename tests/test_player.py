@@ -12,8 +12,10 @@ from phuker_music.player import (
     get_music_groups,
     generate,
 )
+from phuker_music.utils import os_path
 
-TEST_FILES_DIR = os.path.join(os.path.dirname(__file__), 'files')
+
+TEST_FILES_DIR = os_path.join(os_path.dirname(__file__), 'files')
 
 
 class TestGetDurationStr(unittest.TestCase):
@@ -54,13 +56,13 @@ class TestGetHash(unittest.TestCase):
 
 class TestGetMusicGroups(unittest.TestCase):
     def test_empty_dir(self):
-        path = os.path.join(TEST_FILES_DIR, 'test 0 files')
+        path = os_path.join(TEST_FILES_DIR, 'test 0 files')
 
         groups = get_music_groups(path)
         self.assertEqual(groups, [])
 
     def test_one_file(self):
-        path = os.path.join(TEST_FILES_DIR, 'test 1 file')
+        path = os_path.join(TEST_FILES_DIR, 'test 1 file')
 
         groups = get_music_groups(path)
         self.assertEqual(len(groups), 1)
@@ -77,7 +79,7 @@ class TestGetMusicGroups(unittest.TestCase):
         self.assertIn('duration_str', music)
 
     def test_mtime_desc_sort(self):
-        path = os.path.join(TEST_FILES_DIR, 'test n files with cover sort_type mtime_desc')
+        path = os_path.join(TEST_FILES_DIR, 'test n files with cover sort_type mtime_desc')
 
         groups = get_music_groups(path, sort_type='mtime_desc')
         self.assertEqual(len(groups), 1)
@@ -89,11 +91,11 @@ class TestGetMusicGroups(unittest.TestCase):
         self.assertIn('sin 440Hz 5s.wav', paths)
         self.assertIn('sin 494Hz 6s.flac', paths)
         self.assertIn('sin 554Hz 7s.mp3', paths)
-        mtimes = [os.path.getmtime(os.path.join(path, p)) for p in paths]
+        mtimes = [os_path.getmtime(os_path.join(path, p)) for p in paths]
         self.assertEqual(mtimes, sorted(mtimes, reverse=True))
 
     def test_default_sort_is_filename(self):
-        path = os.path.join(TEST_FILES_DIR, 'test n files with cover sort_type mtime_desc')
+        path = os_path.join(TEST_FILES_DIR, 'test n files with cover sort_type mtime_desc')
 
         groups = get_music_groups(path)  # default sort_type='filename'
         self.assertEqual(len(groups), 1)
@@ -103,7 +105,7 @@ class TestGetMusicGroups(unittest.TestCase):
         self.assertEqual(paths, sorted(paths))
 
     def test_recursive(self):
-        path = os.path.join(TEST_FILES_DIR, 'test n files with cover recursively')
+        path = os_path.join(TEST_FILES_DIR, 'test n files with cover recursively')
 
         groups = get_music_groups(path, recursively=True)
         self.assertEqual(len(groups), 4)
@@ -118,7 +120,7 @@ class TestGetMusicGroups(unittest.TestCase):
         self.assertEqual(total_files, 6)
 
     def test_non_recursive_only_top_level(self):
-        path = os.path.join(TEST_FILES_DIR, 'test n files with cover recursively')
+        path = os_path.join(TEST_FILES_DIR, 'test n files with cover recursively')
 
         groups = get_music_groups(path, recursively=False)
         self.assertEqual(len(groups), 1)
@@ -126,7 +128,7 @@ class TestGetMusicGroups(unittest.TestCase):
         self.assertEqual(len(groups[0]['music_info_sub_list']), 2)
 
     def test_invalid_sort_type(self):
-        path = os.path.join(TEST_FILES_DIR, 'test 1 file')
+        path = os_path.join(TEST_FILES_DIR, 'test 1 file')
 
         with self.assertRaises(ValueError):
             get_music_groups(path, sort_type='invalid')
@@ -135,12 +137,12 @@ class TestGetMusicGroups(unittest.TestCase):
 class TestGenerate(unittest.TestCase):
     def setUp(self):
         self.tmpdir = tempfile.mkdtemp()
-        src = os.path.join(TEST_FILES_DIR, 'test 1 file')
-        self.album_dir_path = os.path.join(self.tmpdir, 'album_' + os.urandom(8).hex())
+        src = os_path.join(TEST_FILES_DIR, 'test 1 file')
+        self.album_dir_path = os_path.join(self.tmpdir, 'album_' + os.urandom(8).hex())
         shutil.copytree(src, self.album_dir_path)
 
-        player_html = os.path.join(self.album_dir_path, 'player.html')
-        if os.path.exists(player_html):
+        player_html = os_path.join(self.album_dir_path, 'player.html')
+        if os_path.exists(player_html):
             os.remove(player_html)
 
     def tearDown(self):
@@ -151,8 +153,8 @@ class TestGenerate(unittest.TestCase):
 
         generate(album_dir_path=self.album_dir_path, title=title)
 
-        output = os.path.join(self.album_dir_path, 'player.html')
-        self.assertTrue(os.path.exists(output))
+        output = os_path.join(self.album_dir_path, 'player.html')
+        self.assertTrue(os_path.exists(output))
 
         with open(output, 'r', encoding='UTF-8') as f:
             content = f.read()
@@ -175,7 +177,7 @@ class TestGenerate(unittest.TestCase):
         generate(album_dir_path=self.album_dir_path, title=title1)
         generate(album_dir_path=self.album_dir_path, title=title2, overwrite=True)
 
-        with open(os.path.join(self.album_dir_path, 'player.html'), 'r', encoding='UTF-8') as f:
+        with open(os_path.join(self.album_dir_path, 'player.html'), 'r', encoding='UTF-8') as f:
             content = f.read()
 
         self.assertNotIn(title1, content)
@@ -184,25 +186,25 @@ class TestGenerate(unittest.TestCase):
     def test_generate_title_defaults_to_dirname(self):
         generate(album_dir_path=self.album_dir_path)
 
-        output = os.path.join(self.album_dir_path, 'player.html')
-        self.assertTrue(os.path.exists(output))
+        output = os_path.join(self.album_dir_path, 'player.html')
+        self.assertTrue(os_path.exists(output))
 
         with open(output, 'r', encoding='UTF-8') as f:
             content = f.read()
 
-        self.assertIn(os.path.basename(self.album_dir_path), content)
+        self.assertIn(os_path.basename(self.album_dir_path), content)
         self.assertIn('<html', content.lower())
 
     def test_generate_title_empty_string_fallback(self):
         generate(album_dir_path=self.album_dir_path, title='')
 
-        output = os.path.join(self.album_dir_path, 'player.html')
-        self.assertTrue(os.path.exists(output))
+        output = os_path.join(self.album_dir_path, 'player.html')
+        self.assertTrue(os_path.exists(output))
 
         with open(output, 'r', encoding='UTF-8') as f:
             content = f.read()
 
-        self.assertIn(os.path.basename(self.album_dir_path), content)
+        self.assertIn(os_path.basename(self.album_dir_path), content)
 
     def test_missing_cover_file(self):
         with self.assertRaises(FileNotFoundError):

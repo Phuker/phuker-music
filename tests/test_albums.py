@@ -3,37 +3,38 @@ import sys
 import shutil
 import json
 import tempfile
-
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from phuker_music.albums import get_config, main
+from phuker_music.utils import os_path
 
-TEST_FILES_DIR = os.path.join(os.path.dirname(__file__), 'files')
+
+TEST_FILES_DIR = os_path.join(os_path.dirname(__file__), 'files')
 
 
 class TestGetConfigFromDocs(unittest.TestCase):
     def test_valid_config(self):
-        albums_config_file_path = os.path.join(TEST_FILES_DIR, 'albums.test.json')
+        albums_config_file_path = os_path.join(TEST_FILES_DIR, 'albums.test.json')
 
         albums_config = get_config(albums_config_file_path)
 
         self.assertIn('albums_index_file_path', albums_config)
         self.assertIn('albums', albums_config)
         self.assertEqual(len(albums_config['albums']), 4)
-        self.assertTrue(os.path.isabs(albums_config['albums_index_file_path']))
+        self.assertTrue(os_path.isabs(albums_config['albums_index_file_path']))
         self.assertTrue(albums_config['albums_index_file_path'].endswith('albums.html'))
 
     def test_album_fields(self):
-        albums_config_file_path = os.path.join(TEST_FILES_DIR, 'albums.test.json')
+        albums_config_file_path = os_path.join(TEST_FILES_DIR, 'albums.test.json')
 
         albums_config = get_config(albums_config_file_path)
 
         for album in albums_config['albums']:
             self.assertIn('album_dir_path', album)
             self.assertIsInstance(album['album_dir_path'], str)
-            self.assertTrue(os.path.isabs(album['album_dir_path']))
+            self.assertTrue(os_path.isabs(album['album_dir_path']))
 
             self.assertIn('title', album)
             self.assertIsInstance(album['title'], str)
@@ -53,7 +54,7 @@ class TestGetConfigFromDocs(unittest.TestCase):
             self.assertEqual(album['output_filename'], 'player.html')
 
     def test_default_fields(self):
-        albums_config_file_path = os.path.join(TEST_FILES_DIR, 'albums.test.json')
+        albums_config_file_path = os_path.join(TEST_FILES_DIR, 'albums.test.json')
 
         albums_config = get_config(albums_config_file_path)
 
@@ -63,7 +64,7 @@ class TestGetConfigFromDocs(unittest.TestCase):
         self.assertIsNone(albums_config['albums'][0]['cover_file'])
 
     def test_specific_album_config(self):
-        albums_config_file_path = os.path.join(TEST_FILES_DIR, 'albums.test.json')
+        albums_config_file_path = os_path.join(TEST_FILES_DIR, 'albums.test.json')
 
         albums_config = get_config(albums_config_file_path)
 
@@ -80,7 +81,7 @@ class TestGetConfigFromDocs(unittest.TestCase):
 class TestGetConfigFromTemp(unittest.TestCase):
     def setUp(self):
         self.tmpdir = tempfile.mkdtemp()
-        self.albums_config_file_path = os.path.join(self.tmpdir, 'config.json')
+        self.albums_config_file_path = os_path.join(self.tmpdir, 'config.json')
 
     def tearDown(self):
         shutil.rmtree(self.tmpdir, ignore_errors=True)
@@ -104,10 +105,10 @@ class TestGetConfigFromTemp(unittest.TestCase):
             get_config(self.albums_config_file_path)
 
     def test_invalid_type_recursively(self):
-        test_dir = os.path.join(self.tmpdir, 'testdir')
+        test_dir = os_path.join(self.tmpdir, 'testdir')
         os.makedirs(test_dir)
         self._write_config({
-            'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
+            'albums_index_file_path': os_path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
                     'album_dir_path': test_dir,
@@ -121,10 +122,10 @@ class TestGetConfigFromTemp(unittest.TestCase):
             get_config(self.albums_config_file_path)
 
     def test_missing_title(self):
-        test_dir = os.path.join(self.tmpdir, 'dirname_' + os.urandom(8).hex())
+        test_dir = os_path.join(self.tmpdir, 'dirname_' + os.urandom(8).hex())
         os.makedirs(test_dir)
         self._write_config({
-            'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
+            'albums_index_file_path': os_path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
                     'album_dir_path': test_dir,
@@ -133,13 +134,13 @@ class TestGetConfigFromTemp(unittest.TestCase):
         })
 
         albums_config = get_config(self.albums_config_file_path)
-        self.assertEqual(albums_config['albums'][0]['title'], os.path.basename(test_dir))
+        self.assertEqual(albums_config['albums'][0]['title'], os_path.basename(test_dir))
 
     def test_empty_title(self):
-        test_dir = os.path.join(self.tmpdir, 'dirname_' + os.urandom(8).hex())
+        test_dir = os_path.join(self.tmpdir, 'dirname_' + os.urandom(8).hex())
         os.makedirs(test_dir)
         self._write_config({
-            'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
+            'albums_index_file_path': os_path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
                     'album_dir_path': test_dir,
@@ -149,7 +150,7 @@ class TestGetConfigFromTemp(unittest.TestCase):
         })
 
         albums_config = get_config(self.albums_config_file_path)
-        self.assertEqual(albums_config['albums'][0]['title'], os.path.basename(test_dir))
+        self.assertEqual(albums_config['albums'][0]['title'], os_path.basename(test_dir))
 
 
 class TestMain(unittest.TestCase):
@@ -160,17 +161,17 @@ class TestMain(unittest.TestCase):
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
     def test_main_generates_player_and_index(self):
-        src = os.path.join(TEST_FILES_DIR, 'test 1 file')
-        album_dir = os.path.join(self.tmpdir, 'album')
+        src = os_path.join(TEST_FILES_DIR, 'test 1 file')
+        album_dir = os_path.join(self.tmpdir, 'album')
         shutil.copytree(src, album_dir)
 
-        player_html = os.path.join(album_dir, 'player.html')
-        if os.path.exists(player_html):
+        player_html = os_path.join(album_dir, 'player.html')
+        if os_path.exists(player_html):
             os.remove(player_html)
 
         title = 'title_' + os.urandom(8).hex()
         albums_config = {
-            'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
+            'albums_index_file_path': os_path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
                     'album_dir_path': album_dir,
@@ -179,18 +180,18 @@ class TestMain(unittest.TestCase):
             ],
         }
 
-        albums_config_file_path = os.path.join(self.tmpdir, 'config.json')
+        albums_config_file_path = os_path.join(self.tmpdir, 'config.json')
         with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
             json.dump(albums_config, f)
 
         main(albums_config_file_path, force=True)
 
-        self.assertTrue(os.path.exists(player_html))
+        self.assertTrue(os_path.exists(player_html))
         with open(player_html, 'r', encoding='UTF-8') as f:
             self.assertIn(title, f.read())
 
         index_html = albums_config['albums_index_file_path']
-        self.assertTrue(os.path.exists(index_html))
+        self.assertTrue(os_path.exists(index_html))
 
         with open(index_html, 'r', encoding='UTF-8') as f:
             content = f.read()
@@ -199,17 +200,17 @@ class TestMain(unittest.TestCase):
         self.assertIn('<html', content.lower())
 
     def test_main_file_exists_no_force(self):
-        src = os.path.join(TEST_FILES_DIR, 'test 1 file')
-        album_dir = os.path.join(self.tmpdir, 'album')
+        src = os_path.join(TEST_FILES_DIR, 'test 1 file')
+        album_dir = os_path.join(self.tmpdir, 'album')
         shutil.copytree(src, album_dir)
 
-        player_html = os.path.join(album_dir, 'player.html')
-        if os.path.exists(player_html):
+        player_html = os_path.join(album_dir, 'player.html')
+        if os_path.exists(player_html):
             os.remove(player_html)
 
         title = 'title_' + os.urandom(8).hex()
         albums_config = {
-            'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
+            'albums_index_file_path': os_path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
                     'album_dir_path': album_dir,
@@ -218,7 +219,7 @@ class TestMain(unittest.TestCase):
             ],
         }
 
-        albums_config_file_path = os.path.join(self.tmpdir, 'config.json')
+        albums_config_file_path = os_path.join(self.tmpdir, 'config.json')
         with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
             json.dump(albums_config, f)
 
@@ -228,13 +229,13 @@ class TestMain(unittest.TestCase):
             main(albums_config_file_path, force=False)
 
     def test_main_title_xss_encoding(self):
-        src = os.path.join(TEST_FILES_DIR, 'test 1 file')
-        album_dir = os.path.join(self.tmpdir, 'album')
+        src = os_path.join(TEST_FILES_DIR, 'test 1 file')
+        album_dir = os_path.join(self.tmpdir, 'album')
         shutil.copytree(src, album_dir)
 
         title = '<script>alert(1);</script>'
         albums_config = {
-            'albums_index_file_path': os.path.join(self.tmpdir, 'index.html'),
+            'albums_index_file_path': os_path.join(self.tmpdir, 'index.html'),
             'albums': [
                 {
                     'album_dir_path': album_dir,
@@ -243,7 +244,7 @@ class TestMain(unittest.TestCase):
             ],
         }
 
-        albums_config_file_path = os.path.join(self.tmpdir, 'config.json')
+        albums_config_file_path = os_path.join(self.tmpdir, 'config.json')
         with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
             json.dump(albums_config, f)
 
@@ -253,7 +254,7 @@ class TestMain(unittest.TestCase):
         with open(index_html, 'r', encoding='UTF-8') as f:
             index_content = f.read()
 
-        player_html = os.path.join(album_dir, 'player.html')
+        player_html = os_path.join(album_dir, 'player.html')
         with open(player_html, 'r', encoding='UTF-8') as f:
             player_content = f.read()
 

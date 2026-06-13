@@ -11,6 +11,7 @@ import json
 import mutagen
 
 from . import utils
+from .utils import os_path
 
 
 logger: logging.Logger = logging.getLogger(__name__)
@@ -66,7 +67,8 @@ def get_music_groups(album_dir_path: str, recursively: bool = False, sort_type: 
     result = []
     index = -1
     for top, dirnames, filenames in os.walk(album_dir_path):
-        top_rel_path = os.path.relpath(top, album_dir_path)
+        top = top.replace(os.sep, '/')
+        top_rel_path = os_path.relpath(top, album_dir_path)
         if top_rel_path == '.':
             top_rel_path = ''
 
@@ -78,7 +80,7 @@ def get_music_groups(album_dir_path: str, recursively: bool = False, sort_type: 
         if sort_type == 'filename':
             filenames.sort()
         elif sort_type == 'mtime_desc':
-            filenames.sort(key=lambda filename: (-os.path.getmtime(os.path.join(top, filename)), filename))
+            filenames.sort(key=lambda filename: (-os_path.getmtime(os_path.join(top, filename)), filename))
         else:
             raise ValueError(f'Invalid sort_type: {sort_type!r}')
 
@@ -86,13 +88,13 @@ def get_music_groups(album_dir_path: str, recursively: bool = False, sort_type: 
         for filename in filenames:
             index += 1
             filename_stem = pathlib.PurePosixPath(filename).stem
-            file_abs_path = os.path.join(top, filename)
-            file_rel_path = os.path.join(top_rel_path, filename)
+            file_abs_path = os_path.join(top, filename)
+            file_rel_path = os_path.join(top_rel_path, filename)
             file_size_str = get_file_size_str(file_abs_path)
             duration_str = get_file_duration_str(file_abs_path)
             music_info_sub_list.append({
                 'index': index,
-                'path': file_rel_path.replace(os.sep, '/'),
+                'path': file_rel_path,
                 'name': filename_stem,
                 'file_size_str': file_size_str,
                 'duration_str': duration_str,
@@ -100,7 +102,7 @@ def get_music_groups(album_dir_path: str, recursively: bool = False, sort_type: 
 
         if music_info_sub_list:
             result.append({
-                'name': top_rel_path.replace(os.sep, '/'),
+                'name': top_rel_path,
                 'music_info_sub_list': music_info_sub_list,
             })
 
@@ -117,16 +119,16 @@ def get_hash(s: str) -> str:
 def generate(*, album_dir_path: str, title: str | None = None, cover_file: str | None = None, output_filename: str = 'player.html', recursively: bool = False, sort_type: str = 'filename', overwrite: bool = False) -> None:
     utils.assert_(isinstance(album_dir_path, str) and album_dir_path, f'Invalid album_dir_path')
     album_dir_path = utils.get_abs_joined_path(album_dir_path)
-    utils.assert_(os.path.isdir(album_dir_path), f'Directory does not exist: {album_dir_path!r}')
+    utils.assert_(os_path.isdir(album_dir_path), f'Directory does not exist: {album_dir_path!r}')
 
     utils.assert_('/' not in output_filename and '\\' not in output_filename, f'output_filename must not contain path separators: {output_filename!r}')
 
     if not title:
-        title = os.path.basename(album_dir_path)
+        title = os_path.basename(album_dir_path)
 
     if cover_file:
-        _cover_file_path = os.path.join(album_dir_path, cover_file)
-        if not os.path.isfile(_cover_file_path):
+        _cover_file_path = os_path.join(album_dir_path, cover_file)
+        if not os_path.isfile(_cover_file_path):
             raise FileNotFoundError(f'Cover file does not exist: {_cover_file_path!r}')
 
         cover_file = utils.get_rel_path(_cover_file_path, album_dir_path)
@@ -141,15 +143,15 @@ def generate(*, album_dir_path: str, title: str | None = None, cover_file: str |
 
     lang = utils.detect_language(' '.join([title] + [_['name'] for _ in music_info_list]))
 
-    # use os.path.basename() to get same result for same dir name, which may sync between computers
-    storage_key_prefix = f'music_{get_hash(os.path.basename(album_dir_path))}_'
+    # Get same result for same dir name, which may sync between computers
+    storage_key_prefix = f'music_{get_hash(os_path.basename(album_dir_path))}_'
 
     env = utils.get_jinja_env()
     template = env.get_template('player.html')
     result = template.render(lang=lang, title=title, cover_file=cover_file, music_info_groups=music_info_groups, music_info_list=music_info_list, storage_key_prefix=storage_key_prefix)
 
-    output_file_path = os.path.join(album_dir_path, output_filename)
-    if os.path.exists(output_file_path) and not overwrite:
+    output_file_path = os_path.join(album_dir_path, output_filename)
+    if os_path.exists(output_file_path) and not overwrite:
         raise FileExistsError(f'Output file already exists: {output_file_path!r}, use -f/--force to overwrite')
 
     logger.info('Writing to file: %r', output_file_path)

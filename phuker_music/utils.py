@@ -5,6 +5,7 @@ import os
 import sys
 import logging
 import atexit
+import functools
 import json
 import base64
 
@@ -15,8 +16,6 @@ from . import __version__
 
 logger: logging.Logger = logging.getLogger(__name__)
 lang_identifier: object | None = None
-templates_dir_path: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
-static_dir_path: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
 
 
 def assert_(expr: object, msg: str = '') -> None:
@@ -49,25 +48,65 @@ def init_logging(logging_format: str) -> None:
     logging.addLevelName(logging.DEBUG, f'\x1b[36m{logging.getLevelName(logging.DEBUG)}\x1b[39m')
 
 
+class OsPathProxy:
+    # Proxy os.path on Windows: replace \ with / in str return values of wrapped functions
+
+    _WRAPPED_FUNCS = {
+        'abspath',
+        'commonpath',
+        'dirname',
+        'expanduser',
+        'join',
+        'normpath',
+        'realpath',
+        'relpath',
+    }
+
+    def __init__(self):
+        pass
+
+    def __getattr__(self, name):
+        obj = getattr(os.path, name)
+
+        if name not in self._WRAPPED_FUNCS:
+            return obj
+        else:
+            @functools.wraps(obj)
+            def wrapper(*args, **kwargs):
+                return_val = obj(*args, **kwargs)
+                if isinstance(return_val, str):
+                    return return_val.replace(os.sep, '/')
+                else:
+                    return return_val
+
+            return wrapper
+
+
+if os.name == 'nt':
+    os_path = OsPathProxy()
+else:
+    os_path = os.path
+
+
 def match_ext_list(file_path: str, ext_list: tuple[str, ...]) -> bool:
-    return os.path.splitext(file_path)[1].lower() in ext_list
+    return os_path.splitext(file_path)[1].lower() in ext_list
 
 
 def is_sub_path(path: str, parent_path: str) -> bool:
-    path = os.path.abspath(os.path.expanduser(path))
-    parent_path = os.path.abspath(os.path.expanduser(parent_path))
+    path = os_path.abspath(os_path.expanduser(path))
+    parent_path = os_path.abspath(os_path.expanduser(parent_path))
 
-    return parent_path == os.path.commonpath([path, parent_path])
+    return parent_path == os_path.commonpath([path, parent_path])
 
 
 def get_rel_path(path: str, start_dir_path: str) -> str:
-    path = os.path.expanduser(path)
-    start_dir_path = os.path.expanduser(start_dir_path)
+    path = os_path.expanduser(path)
+    start_dir_path = os_path.expanduser(start_dir_path)
 
     if path == start_dir_path:
         return '.'
     else:
-        return './' + os.path.relpath(path, start_dir_path).replace(os.sep, '/')
+        return './' + os_path.relpath(path, start_dir_path)
 
 
 def get_abs_joined_path(*paths: str) -> str:
@@ -75,9 +114,9 @@ def get_abs_joined_path(*paths: str) -> str:
     for path in paths:
         assert_(isinstance(path, str) and path, f'path must be non-empty str: {path!r}')
 
-    expanded = tuple(os.path.expanduser(path) for path in paths)
+    expanded = tuple(os_path.expanduser(path) for path in paths)
 
-    return os.path.abspath(os.path.join(*expanded)).replace(os.sep, '/')
+    return os_path.abspath(os_path.join(*expanded))
 
 
 def detect_language(text: str) -> str:
@@ -104,15 +143,18 @@ def detect_language(text: str) -> str:
         return 'en'
 
 
+static_dir_path: str = os_path.join(os_path.dirname(os_path.abspath(__file__)), 'static')
+
+
 def jinja_env_global_read_file(relative_file_path: str) -> str:
-    file_path = os.path.join(static_dir_path, relative_file_path)
+    file_path = os_path.join(static_dir_path, relative_file_path)
 
     with open(file_path, 'r', encoding='UTF-8') as f:
         return f.read()
 
 
 def jinja_env_global_read_file_as_data_url(relative_file_path: str, mime: str) -> str:
-    file_path = os.path.join(static_dir_path, relative_file_path)
+    file_path = os_path.join(static_dir_path, relative_file_path)
 
     with open(file_path, 'rb') as f:
         content = f.read()
@@ -132,6 +174,7 @@ def jinja_env_filter_json_encode(obj: object) -> str:
 
 
 def get_jinja_env() -> jinja2.Environment:
+    templates_dir_path = os_path.join(os_path.dirname(os_path.abspath(__file__)), 'templates')
     loader = jinja2.FileSystemLoader(templates_dir_path)
     env = jinja2.Environment(loader=loader, autoescape=True)
 
