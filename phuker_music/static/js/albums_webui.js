@@ -57,14 +57,14 @@ createApp({
             }
         }
 
-        function deleteAlbum(album) {
+        function actionDeleteAlbum(album) {
             const idx = albums.value.indexOf(album);
             if (idx !== -1) {
                 albums.value.splice(idx, 1);
             }
         }
 
-        function addAllAlbums() {
+        function actionAddAllAlbums() {
             const existing = new Set(albums.value.map(a => a.album_dir_path));
             let added = 0;
             for (const dirPath of Object.keys(availableAlbums.value).sort()) {
@@ -75,7 +75,7 @@ createApp({
             }
 
             if (added > 0) {
-                showToast(`Added ${added} album(s).`, 'success');
+                showToast(`Added ${added} album(s)`, 'success');
             }
         }
 
@@ -88,8 +88,8 @@ createApp({
         async function pollScan() {
             while (true) {
                 try {
-                    const r = await fetch('/api/scan');
-                    const data = await r.json();
+                    const resp = await fetch('/api/scan');
+                    const data = await resp.json();
                     if (data.status === 'scanning') {
                         scanStatus.value = 'scanning';
                         scannedDirs.value = data.data.scanned_dirs;
@@ -125,12 +125,12 @@ createApp({
                     albums: albums.value,
                 };
 
-                const r = await fetch('/api/save-config', {
+                const resp = await fetch('/api/save-config', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(albumsConfig),
                 });
-                const data = await r.json();
+                const data = await resp.json();
                 if (data.status !== 'ok') {
                     throw new Error(JSON.stringify(data));
                 }
@@ -141,8 +141,8 @@ createApp({
             }
 
             try {
-                const r = await fetch('/api/regenerate', { method: 'POST' });
-                const data = await r.json();
+                const resp = await fetch('/api/regenerate', { method: 'POST' });
+                const data = await resp.json();
                 if (data.status !== 'ok') {
                     throw new Error(JSON.stringify(data));
                 }
@@ -169,8 +169,8 @@ createApp({
             toast,
             getCoverOptions,
             onAlbumsChange,
-            deleteAlbum,
-            addAllAlbums,
+            actionDeleteAlbum,
+            actionAddAllAlbums,
             actionPublish,
         };
     },

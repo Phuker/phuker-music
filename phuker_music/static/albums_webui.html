@@ -68,7 +68,7 @@
                                             <option value="mtime_desc">mtime_desc</option>
                                         </select>
                                     </div>
-                                    <button class="btn-delete" @click="deleteAlbum(element)">Delete</button>
+                                    <button class="btn-delete" @click="actionDeleteAlbum(element)">Delete</button>
                                 </div>
                             </template>
                         </draggable>
@@ -77,7 +77,7 @@
                 <div id="column-right">
                     <div class="column-header">
                         <h2>Available</h2>
-                        <button id="btn-add-all" @click="addAllAlbums">Add All</button>
+                        <button id="btn-add-all" @click="actionAddAllAlbums">Add All</button>
                     </div>
                     <div id="available-list">
                         <draggable v-model="availableItems"
