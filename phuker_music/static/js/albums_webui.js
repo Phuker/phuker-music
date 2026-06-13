@@ -65,18 +65,12 @@ createApp({
         }
 
         function actionAddAllAlbums() {
-            const existing = new Set(albums.value.map(a => a.album_dir_path));
-            let added = 0;
+            const count = Object.keys(availableAlbums.value).length;
             for (const dirPath of Object.keys(availableAlbums.value).sort()) {
-                if (!existing.has(dirPath)) {
-                    albums.value.push(createAlbumConfig(dirPath));
-                    added++;
-                }
+                albums.value.push(createAlbumConfig(dirPath));
             }
 
-            if (added > 0) {
-                showToast(`Added ${added} album(s)`, 'success');
-            }
+            showToast(`Added ${count} album(s)`, 'success');
         }
 
         const availableItems = computed(() => {
