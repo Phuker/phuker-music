@@ -256,6 +256,11 @@ body {
     pointer-events: none;
 }
 
+#toast.info {
+    background: #4a90d9;
+    opacity: 1;
+}
+
 #toast.success {
     background: #27ae60;
     opacity: 1;
