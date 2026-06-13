@@ -27,7 +27,7 @@ createApp({
     setup() {
         const scanStatus = ref('idle');
         const scannedDirs = ref(0);
-        const indexFilePath = ref('./index.html');
+        const albumsIndexFilePath = ref('./index.html');
         const albums = ref([]);
         const availableAlbums = ref({});
         const toast = ref({ text: '', type: '' });
@@ -95,7 +95,7 @@ createApp({
                         scannedDirs.value = data.data.scanned_dirs;
                     } else if (data.status === 'done') {
                         scannedDirs.value = data.data.scanned_dirs;
-                        indexFilePath.value = data.data.albums_config.albums_index_file_path;
+                        albumsIndexFilePath.value = data.data.albums_config.albums_index_file_path;
                         albums.value = data.data.albums_config.albums;
                         availableAlbums.value = data.data.available_albums;
 
@@ -118,7 +118,7 @@ createApp({
 
         async function saveConfig() {
             const config = {
-                albums_index_file_path: indexFilePath.value,
+                albums_index_file_path: albumsIndexFilePath.value,
                 albums: albums.value,
             };
 
@@ -163,7 +163,7 @@ createApp({
         return {
             scanStatus,
             scannedDirs,
-            indexFilePath,
+            albumsIndexFilePath,
             albums,
             availableAlbums,
             availableItems,
