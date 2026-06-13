@@ -104,9 +104,10 @@ createApp({
 
                         return;
                     } else {
-                        throw new Error(`Invalid status: ${data.status}`);
+                        throw new Error(JSON.stringify(data));
                     }
                 } catch (error) {
+                    showToast(`Failed to scan: ${error.message}`, 'error');
                     console.error('pollScan():', error);
                     await sleepAsync(800); // Wait retry
                 }
@@ -131,10 +132,11 @@ createApp({
                 if (data.status === 'ok') {
                     showToast('Config saved.', 'success');
                 } else {
-                    throw new Error(data.message);
+                    throw new Error(JSON.stringify(data));
                 }
-            } catch (err) {
-                showToast(`Failed to save: ${err.message}`, 'error');
+            } catch (error) {
+                showToast(`Failed to save: ${error.message}`, 'error');
+                console.error('saveConfig():', error);
             }
         }
 
@@ -146,10 +148,11 @@ createApp({
                 if (data.status === 'ok') {
                     showToast('Regeneration complete.', 'success');
                 } else {
-                    throw new Error(data.message);
+                    throw new Error(JSON.stringify(data));
                 }
-            } catch (err) {
-                showToast(`Failed to regenerate: ${err.message}`, 'error');
+            } catch (error) {
+                showToast(`Failed to regenerate: ${error.message}`, 'error');
+                console.error('regenerate():', error);
             }
         }
 
