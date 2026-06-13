@@ -176,7 +176,7 @@ def jinja_env_filter_json_encode(obj: object) -> str:
 def get_jinja_env() -> jinja2.Environment:
     templates_dir_path = os_path.join(os_path.dirname(os_path.abspath(__file__)), 'templates')
     loader = jinja2.FileSystemLoader(templates_dir_path)
-    env = jinja2.Environment(loader=loader, autoescape=True)
+    env = jinja2.Environment(loader=loader, autoescape=True, keep_trailing_newline=True)
 
     env.globals['version'] = __version__
     env.globals['read_file'] = jinja_env_global_read_file
