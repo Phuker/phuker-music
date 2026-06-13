@@ -46,20 +46,12 @@ body {
     color: #fff;
 }
 
-#btn-save {
+#btn-publish {
     background: #4a90d9;
 }
 
-#btn-save:hover {
+#btn-publish:hover {
     background: #357abd;
-}
-
-#btn-regenerate {
-    background: #27ae60;
-}
-
-#btn-regenerate:hover {
-    background: #219a52;
 }
 
 [v-cloak] {

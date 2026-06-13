@@ -116,44 +116,43 @@ createApp({
             }
         }
 
-        async function saveConfig() {
-            const config = {
-                albums_index_file_path: albumsIndexFilePath.value,
-                albums: albums.value,
-            };
+        async function actionPublish() {
+            showToast('Saving and generating ...', 'info');
 
             try {
+                const albumsConfig = {
+                    albums_index_file_path: albumsIndexFilePath.value,
+                    albums: albums.value,
+                };
+
                 const r = await fetch('/api/save-config', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(config),
+                    body: JSON.stringify(albumsConfig),
                 });
                 const data = await r.json();
-                if (data.status === 'ok') {
-                    showToast('Config saved.', 'success');
-                } else {
+                if (data.status !== 'ok') {
                     throw new Error(JSON.stringify(data));
                 }
             } catch (error) {
                 showToast(`Failed to save: ${error.message}`, 'error');
-                console.error('saveConfig():', error);
+                console.error('actionPublish():', error);
+                return;
             }
-        }
 
-        async function regenerate() {
-            showToast('Regenerating...', 'info');
             try {
                 const r = await fetch('/api/regenerate', { method: 'POST' });
                 const data = await r.json();
-                if (data.status === 'ok') {
-                    showToast('Regeneration complete.', 'success');
-                } else {
+                if (data.status !== 'ok') {
                     throw new Error(JSON.stringify(data));
                 }
             } catch (error) {
-                showToast(`Failed to regenerate: ${error.message}`, 'error');
-                console.error('regenerate():', error);
+                showToast(`Failed to generate: ${error.message}`, 'error');
+                console.error('actionPublish():', error);
+                return;
             }
+
+            showToast('Done', 'success');
         }
 
         onMounted(() => {
@@ -172,8 +171,7 @@ createApp({
             onAlbumsChange,
             deleteAlbum,
             addAllAlbums,
-            saveConfig,
-            regenerate,
+            actionPublish,
         };
     },
 }).mount('#app');
