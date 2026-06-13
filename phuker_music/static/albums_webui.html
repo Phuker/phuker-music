@@ -15,7 +15,7 @@
     <div id="app">
         <div id="top-bar">
             <label>
-                albums_index_file_path:
+                Albums index HTML file path:
                 <input type="text" v-model="indexFilePath" placeholder="index.html">
             </label>
             <button id="btn-save" @click="saveConfig">Save Config</button>
@@ -41,29 +41,29 @@
                             <template #item="{ element }">
                                 <div class="album-card">
                                     <div class="card-row">
-                                        <span class="card-label">path:</span>
+                                        <span class="card-label">Path:</span>
                                         <span class="card-path">{{ element.album_dir_path }}</span>
                                     </div>
                                     <div class="card-row">
-                                        <label>title:</label>
+                                        <label>Title:</label>
                                         <input type="text" class="card-title" v-model="element.title" placeholder="Default: directory name">
                                     </div>
                                     <div class="card-row">
-                                        <label>cover:</label>
+                                        <label>Cover:</label>
                                         <select class="card-cover" v-model="element.cover_file">
                                             <option :value="null">(No cover)</option>
                                             <option v-for="opt in getCoverOptions(element.album_dir_path, element.cover_file)" :key="opt" :value="opt">{{ opt }}</option>
                                         </select>
                                     </div>
                                     <div class="card-row">
-                                        <label>output:</label>
+                                        <label>Output:</label>
                                         <input type="text" class="card-output" v-model="element.output_filename" placeholder="Default: player.html">
                                     </div>
                                     <div class="card-row">
-                                        <label><input type="checkbox" class="card-recursively" v-model="element.recursively"> recursively</label>
+                                        <label><input type="checkbox" class="card-recursively" v-model="element.recursively"> Recursively</label>
                                     </div>
                                     <div class="card-row">
-                                        <label>sort:</label>
+                                        <label>Sort:</label>
                                         <select class="card-sort" v-model="element.sort_type">
                                             <option value="filename">filename</option>
                                             <option value="mtime_desc">mtime_desc</option>
