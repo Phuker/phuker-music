@@ -10,7 +10,7 @@ function createAlbumConfig(dirPath) {
     return {
         album_dir_path: dirPath,
         title: '',
-        cover_file: '',
+        cover_file: null,
         output_filename: 'player.html',
         recursively: false,
         sort_type: 'filename',

@@ -51,7 +51,7 @@
                                     <div class="card-row">
                                         <label>cover:</label>
                                         <select class="card-cover" v-model="element.cover_file">
-                                            <option value="">(No cover)</option>
+                                            <option :value="null">(No cover)</option>
                                             <option v-for="opt in getCoverOptions(element.album_dir_path, element.cover_file)" :key="opt" :value="opt">{{ opt }}</option>
                                         </select>
                                     </div>
