@@ -77,9 +77,6 @@ def _add_albums_subparser(subparsers: argparse._SubParsersAction) -> None:
 
 
 def _add_albums_webui_subparser(subparsers: argparse._SubParsersAction) -> None:
-    default_host = '127.0.0.1'
-    default_port = 8000
-
     parser_webui = subparsers.add_parser(
         'albums-webui',
         help='Launch a web UI to edit albums config and generate player and index HTML for multiple albums',
@@ -88,8 +85,8 @@ def _add_albums_webui_subparser(subparsers: argparse._SubParsersAction) -> None:
     )
 
     parser_webui.add_argument('albums_config_file_path', metavar='config_file', help='Albums config file path')
-    parser_webui.add_argument('--host', default=default_host, help='Host to bind to, default: %(default)s')
-    parser_webui.add_argument('--port', type=int, default=default_port, help='Port to bind to, default: %(default)s')
+    parser_webui.add_argument('--host', default=constants.DEFAULT_WEBUI_HOST, help='Host to bind to, default: %(default)s')
+    parser_webui.add_argument('--port', type=int, default=constants.DEFAULT_WEBUI_PORT, help='Port to bind to, default: %(default)s')
     parser_webui.add_argument('-v', '--verbose', action='count', default=0, dest='sub_verbose', help='Increase verbosity level')
 
     parser_webui.set_defaults(func=_albums_webui_command)

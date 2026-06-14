@@ -37,3 +37,7 @@ IMAGE_EXT_LIST: tuple[str, ...] = (
 CHOICES_SORT_TYPE: tuple[str, ...] = ('filename', 'mtime_desc')
 DEFAULT_SORT_TYPE: str = 'filename'
 DEFAULT_OUTPUT_FILENAME: str = 'player.html'
+
+# albums_webui
+DEFAULT_WEBUI_HOST: str = '127.0.0.1'
+DEFAULT_WEBUI_PORT: int = 8000

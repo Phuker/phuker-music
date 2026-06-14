@@ -181,7 +181,7 @@ def index():
     return send_from_directory('static', 'albums_webui.html')
 
 
-def main(_albums_config_file_path: str, host: str = '127.0.0.1', port: int = 8000) -> None:
+def main(_albums_config_file_path: str, host: str = constants.DEFAULT_WEBUI_HOST, port: int = constants.DEFAULT_WEBUI_PORT) -> None:
     global albums_config_file_path, albums_dir_path
 
     albums_config_file_path = utils.get_abs_joined_path(_albums_config_file_path)
