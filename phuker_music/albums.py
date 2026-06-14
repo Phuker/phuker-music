@@ -25,6 +25,11 @@ def normalize_albums_config(albums_config: dict, *, base_dir_path: str, is_abs_p
 
     for i, album_config_input in enumerate(albums_config['albums']):
         albums_config['albums'][i] = player.normalize_album_config(album_config_input, base_dir_path=base_dir_path, is_abs_path=is_abs_path)
+        utils.assert_(
+            utils.is_sub_path(utils.get_abs_joined_path(base_dir_path, albums_config['albums'][i]['album_dir_path']), base_dir_path),
+            f'album_dir_path must be within base_dir_path: {albums_config["albums"][i]["album_dir_path"]!r}',
+        )
+
 
     if not is_abs_path:
         albums_config['albums_index_file_path'] = utils.get_rel_path(albums_config['albums_index_file_path'], base_dir_path)

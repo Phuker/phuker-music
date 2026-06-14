@@ -128,7 +128,6 @@ def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.'
     utils.assert_(isinstance(album_config['sort_type'], str), f'invalid album_config: {album_config!r}')
 
     album_dir_path = utils.get_abs_joined_path(base_dir_path, album_config['album_dir_path'])
-    utils.assert_(utils.is_sub_path(album_dir_path, base_dir_path), f'album_dir_path must be within base_dir_path: {album_dir_path!r}')
     utils.assert_(os_path.isdir(album_dir_path), f'album_dir_path does not exist: {album_dir_path!r}')
     album_config['album_dir_path'] = album_dir_path
 
