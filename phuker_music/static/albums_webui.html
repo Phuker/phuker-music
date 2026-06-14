@@ -18,7 +18,7 @@
                 Albums index HTML file path:
                 <input type="text" v-model="albumsIndexFilePath" placeholder="index.html">
             </label>
-            <button id="btn-publish" @click="actionPublish">Save &amp; Generate</button>
+            <button id="btn-publish" @click="actionPublish" :disabled="isPublishing">Save &amp; Generate</button>
         </div>
 
         <div id="scan-progress" v-show="scanStatus !== 'done'" v-cloak>

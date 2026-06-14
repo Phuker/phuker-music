@@ -58,6 +58,11 @@ body {
     background: #357abd;
 }
 
+#btn-publish:disabled {
+    background: #a0c4e8;
+    cursor: not-allowed;
+}
+
 [v-cloak] {
     display: none !important;
 }

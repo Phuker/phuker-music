@@ -47,6 +47,7 @@ createApp({
         const scanStatus = ref('idle');
         const scannedDirs = ref(0);
         const albumsIndexFilePath = ref('./index.html');
+        const isPublishing = ref(false);
         const albums = ref([]);
         const availableAlbums = ref({});
         const toasts = ref([]);
@@ -120,7 +121,7 @@ createApp({
             }
         }
 
-        async function actionPublish() {
+        async function _actionPublish() {
             showToast('Saving ...', 'info');
             try {
                 const albumsConfig = {
@@ -155,6 +156,13 @@ createApp({
             showToast('Done', 'success');
         }
 
+        function actionPublish() {
+            isPublishing.value = true;
+            _actionPublish().finally(() => {
+                isPublishing.value = false;
+            });
+        }
+
         onMounted(() => {
             pollScan();
         });
@@ -163,6 +171,7 @@ createApp({
             scanStatus,
             scannedDirs,
             albumsIndexFilePath,
+            isPublishing,
             albums,
             availableAlbums,
             availableItems,
