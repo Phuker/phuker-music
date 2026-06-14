@@ -21,7 +21,6 @@ def normalize_album_config(album_config_input: dict, *, albums_dir_path: str, is
         'output_filename': 'player.html',
         'recursively': False,
         'sort_type': 'filename',
-        'overwrite': True,
     }
     album_config.update(album_config_input)
 
@@ -32,7 +31,6 @@ def normalize_album_config(album_config_input: dict, *, albums_dir_path: str, is
     utils.assert_('/' not in album_config['output_filename'] and '\\' not in album_config['output_filename'], f'output_filename must not contain path separators: {album_config["output_filename"]!r}')
     utils.assert_(isinstance(album_config['recursively'], bool), f'invalid album_config: {album_config!r}')
     utils.assert_(isinstance(album_config['sort_type'], str), f'invalid album_config: {album_config!r}')
-    utils.assert_(isinstance(album_config['overwrite'], bool), f'invalid album_config: {album_config!r}')
 
     album_dir_path = utils.get_abs_joined_path(albums_dir_path, album_config['album_dir_path'])
     utils.assert_(utils.is_sub_path(album_dir_path, albums_dir_path), f'album_dir_path must be within albums_dir_path: {album_dir_path!r}')
@@ -103,7 +101,7 @@ def main(albums_config_file_path: str, overwrite: bool = False) -> None:
     indexes = []
     for i, album_config in enumerate(albums_config['albums']):
         logger.info('(%d/%d) Album dir path: %r', i + 1, len(albums_config['albums']), album_config['album_dir_path'])
-        player.generate(**album_config)
+        player.generate(**album_config, overwrite=overwrite)
 
         player_path = utils.get_rel_path(os_path.join(album_config['album_dir_path'], album_config['output_filename']), os_path.dirname(albums_config['albums_index_file_path']))
         cover_path = utils.get_rel_path(os_path.join(album_config['album_dir_path'], album_config['cover_file']), os_path.dirname(albums_config['albums_index_file_path'])) if album_config['cover_file'] else None

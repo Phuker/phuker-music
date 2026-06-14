@@ -47,7 +47,7 @@ make demo      # 等价于: python -m phuker_music albums -v -f ./docs/albums.js
 - **`utils.assert_()` 抛出 `AssertionError`**，不是 `ValueError` — 如果捕获异常，注意类型
 - **`-v` / `--verbose` 启用调试日志** — 顶层和子命令级 `-v` 叠加，`>=1` 即设 `DEBUG` 级别（`cli.py:109`）
 - **`--force` / `-f`** — 输出文件已存在会报 `FileExistsError`（报错信息中会提示使用 `-f`），加 `-f` 强制覆盖
-- **Albums 命令每张专辑默认 `overwrite: True`** — 与 `player` CLI 默认 `overwrite=False` 不同；`phuker_music/albums.py` 的 `main()` 对索引页仍使用顶层的 `--force` 参数
+- **Albums 命令 `overwrite` 由 `main()` 统一控制** — 通过 `main()` 的 `overwrite` 参数统一传给每张专辑的 `player.generate()`，命令行 `-f`/`--force` 映射到此参数
 - **Jinja2 `autoescape=True`** — HTML 模板默认转义；`|json_encode` 过滤器额外替换 `<` `>` 防 XSS
 - **`read_file()` 和 `read_file_as_data_url()` 以 `phuker_music/static/` 为基准路径**（`utils.py:get_jinja_env()`，基于 `__file__` 解析）
 - **语种识别 quirks** — 置信度 >0.98 才采纳，否则回退 `en`；跳过低置信的 `la`；输入会被小写化以避免全大写文本的识别 bug（`langid` 库懒加载，首次调用较慢）

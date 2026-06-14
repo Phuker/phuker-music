@@ -47,9 +47,6 @@ class TestGetConfigFromDocs(unittest.TestCase):
             self.assertIn('sort_type', album)
             self.assertIsInstance(album['sort_type'], str)
 
-            self.assertIn('overwrite', album)
-            self.assertIsInstance(album['overwrite'], bool)
-
             self.assertIn('output_filename', album)
             self.assertEqual(album['output_filename'], 'player.html')
 
@@ -60,7 +57,6 @@ class TestGetConfigFromDocs(unittest.TestCase):
 
         self.assertEqual(albums_config['albums'][0]['recursively'], False)
         self.assertEqual(albums_config['albums'][0]['sort_type'], 'filename')
-        self.assertEqual(albums_config['albums'][0]['overwrite'], True)
         self.assertIsNone(albums_config['albums'][0]['cover_file'])
 
     def test_specific_album_config(self):

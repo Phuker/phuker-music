@@ -14,7 +14,6 @@ function createAlbumConfig(dirPath) {
         output_filename: 'player.html',
         recursively: false,
         sort_type: 'filename',
-        overwrite: true,
     };
 }
 
