@@ -59,9 +59,9 @@ createApp({
         }
 
         function actionDeleteAlbum(album) {
-            const idx = albums.value.indexOf(album);
-            if (idx !== -1) {
-                albums.value.splice(idx, 1);
+            const index = albums.value.indexOf(album);
+            if (index !== -1) {
+                albums.value.splice(index, 1);
             }
         }
 
