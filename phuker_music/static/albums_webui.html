@@ -36,10 +36,12 @@
                         <draggable v-model="albums" group="albums" item-key="album_dir_path"
                             :animation="150"
                             ghost-class="sortable-ghost"
+                            handle=".drag-handle"
                             @change="onAlbumsChange">
                             <template #item="{ element }">
                                 <div class="album-card">
                                     <div class="card-row">
+                                        <img class="drag-handle" src="./static/images/draggable.png" alt="Drag to reorder">
                                         <span class="card-label">Path:</span>
                                         <span class="card-path">{{ element.album_dir_path }}</span>
                                     </div>
@@ -85,9 +87,13 @@
                             :sort="false"
                             item-key="album_dir_path"
                             ghost-class="sortable-ghost"
+                            handle=".drag-handle"
                             :animation="150">
                             <template #item="{ element }">
-                                <div class="available-item">{{ element.album_dir_path }}</div>
+                                <div class="available-item">
+                                    <img class="drag-handle" src="./static/images/draggable.png" alt="Drag">
+                                    {{ element.album_dir_path }}
+                                </div>
                             </template>
                         </draggable>
                     </div>

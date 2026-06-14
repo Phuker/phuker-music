@@ -143,23 +143,23 @@ body {
     border-radius: 6px;
     padding: 12px;
     margin-bottom: 8px;
-    cursor: grab;
-    user-select: none;
-}
-
-.album-card:active {
-    cursor: grabbing;
-}
-
-.album-card.sortable-selected {
-    background: #eaf2fb;
-    border-color: #4a90d9;
-    box-shadow: 0 0 0 2px rgba(74, 144, 217, 0.3);
 }
 
 .album-card.sortable-ghost {
     opacity: 0.4;
     background: #e0e0e0;
+}
+
+.drag-handle {
+    width: 16px;
+    height: 16px;
+    cursor: grab;
+    opacity: 0.5;
+    flex-shrink: 0;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
 }
 
 .card-row {
@@ -212,20 +212,18 @@ body {
 }
 
 .available-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     padding: 8px 12px;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
     background: #fff;
     margin-bottom: 4px;
-    cursor: grab;
     font-family: 'SF Mono', Monaco, monospace;
     font-size: 12px;
     color: #555;
     word-break: break-all;
-}
-
-.available-item:active {
-    cursor: grabbing;
 }
 
 .available-item.sortable-ghost {
