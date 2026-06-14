@@ -13,7 +13,7 @@ from . import player
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-def normalize_albums_config(albums_config: dict, *, base_dir_path: str, is_abs_path: bool = True) -> dict:
+def normalize_albums_config(albums_config: dict, *, base_dir_path: str, absolute: bool = True) -> dict:
     utils.assert_(isinstance(albums_config, dict), 'invalid albums_config')
     utils.assert_(isinstance(albums_config.get('albums_index_file_path'), str) and albums_config['albums_index_file_path'], 'invalid albums_index_file_path')
     utils.assert_(isinstance(albums_config.get('albums'), list), 'invalid albums')
@@ -24,24 +24,24 @@ def normalize_albums_config(albums_config: dict, *, base_dir_path: str, is_abs_p
     albums_config['albums_index_file_path'] = albums_index_file_path
 
     for i, album_config_input in enumerate(albums_config['albums']):
-        albums_config['albums'][i] = player.normalize_album_config(album_config_input, base_dir_path=base_dir_path, is_abs_path=is_abs_path)
+        albums_config['albums'][i] = player.normalize_album_config(album_config_input, base_dir_path=base_dir_path, absolute=absolute)
         utils.assert_(
             utils.is_sub_path(utils.get_abs_joined_path(base_dir_path, albums_config['albums'][i]['album_dir_path']), base_dir_path),
             f'album_dir_path must be within base_dir_path: {albums_config["albums"][i]["album_dir_path"]!r}',
         )
 
-    if not is_abs_path:
+    if not absolute:
         albums_config['albums_index_file_path'] = utils.get_rel_path(albums_config['albums_index_file_path'], base_dir_path)
 
     return albums_config
 
 
-def get_config(albums_config_file_path: str, *, is_abs_path: bool = True) -> dict[str, object]:
+def get_config(albums_config_file_path: str, *, absolute: bool = True) -> dict[str, object]:
     with open(albums_config_file_path, 'r', encoding='UTF-8') as f:
         albums_config = json.load(f)
 
     albums_dir_path = os_path.dirname(albums_config_file_path)
-    albums_config = normalize_albums_config(albums_config, base_dir_path=albums_dir_path, is_abs_path=is_abs_path)
+    albums_config = normalize_albums_config(albums_config, base_dir_path=albums_dir_path, absolute=absolute)
 
     return albums_config
 

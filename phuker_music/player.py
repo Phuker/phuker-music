@@ -108,7 +108,7 @@ def get_hash(s: str) -> str:
     return hashlib.sha256(s.encode('UTF-8')).hexdigest()[:16]
 
 
-def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.', is_abs_path: bool = True) -> dict:
+def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.', absolute: bool = True) -> dict:
     album_config = {
         'album_dir_path': None,
         'title': None,
@@ -144,7 +144,7 @@ def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.'
     if not album_config['output_filename']:
         album_config['output_filename'] = 'player.html'
 
-    if not is_abs_path:
+    if not absolute:
         album_config['album_dir_path'] = utils.get_rel_path(album_config['album_dir_path'], base_dir_path)
         if album_config['cover_file']:
             album_config['cover_file'] = utils.get_rel_path(album_config['cover_file'], album_dir_path)
