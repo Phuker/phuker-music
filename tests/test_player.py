@@ -6,13 +6,14 @@ import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from phuker_music import constants
+from phuker_music.utils import os_path
 from phuker_music.player import (
     get_duration_str,
     get_hash,
     get_music_groups,
     generate,
 )
-from phuker_music.utils import os_path
 
 
 TEST_FILES_DIR = os_path.join(os_path.dirname(__file__), 'files')
@@ -141,7 +142,7 @@ class TestGenerate(unittest.TestCase):
         self.album_dir_path = os_path.join(self.tmpdir, 'album_' + os.urandom(8).hex())
         shutil.copytree(src, self.album_dir_path)
 
-        player_html = os_path.join(self.album_dir_path, 'player.html')
+        player_html = os_path.join(self.album_dir_path, constants.DEFAULT_OUTPUT_FILENAME)
         if os_path.exists(player_html):
             os.remove(player_html)
 
@@ -153,7 +154,7 @@ class TestGenerate(unittest.TestCase):
 
         generate({'album_dir_path': self.album_dir_path, 'title': title})
 
-        output = os_path.join(self.album_dir_path, 'player.html')
+        output = os_path.join(self.album_dir_path, constants.DEFAULT_OUTPUT_FILENAME)
         self.assertTrue(os_path.exists(output))
 
         with open(output, 'r', encoding='UTF-8') as f:
@@ -177,7 +178,7 @@ class TestGenerate(unittest.TestCase):
         generate({'album_dir_path': self.album_dir_path, 'title': title1})
         generate({'album_dir_path': self.album_dir_path, 'title': title2}, overwrite=True)
 
-        with open(os_path.join(self.album_dir_path, 'player.html'), 'r', encoding='UTF-8') as f:
+        with open(os_path.join(self.album_dir_path, constants.DEFAULT_OUTPUT_FILENAME), 'r', encoding='UTF-8') as f:
             content = f.read()
 
         self.assertNotIn(title1, content)
@@ -186,7 +187,7 @@ class TestGenerate(unittest.TestCase):
     def test_generate_title_defaults_to_dirname(self):
         generate({'album_dir_path': self.album_dir_path})
 
-        output = os_path.join(self.album_dir_path, 'player.html')
+        output = os_path.join(self.album_dir_path, constants.DEFAULT_OUTPUT_FILENAME)
         self.assertTrue(os_path.exists(output))
 
         with open(output, 'r', encoding='UTF-8') as f:
@@ -198,7 +199,7 @@ class TestGenerate(unittest.TestCase):
     def test_generate_title_empty_string_fallback(self):
         generate({'album_dir_path': self.album_dir_path, 'title': ''})
 
-        output = os_path.join(self.album_dir_path, 'player.html')
+        output = os_path.join(self.album_dir_path, constants.DEFAULT_OUTPUT_FILENAME)
         self.assertTrue(os_path.exists(output))
 
         with open(output, 'r', encoding='UTF-8') as f:

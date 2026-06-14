@@ -7,6 +7,7 @@ import argparse
 import logging
 
 from . import __version__
+from . import constants
 from . import utils
 from . import player
 from . import albums
@@ -41,10 +42,6 @@ def _albums_webui_command(shell_args: argparse.Namespace) -> None:
 
 
 def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:
-    choices_sort_type = ('filename', 'mtime_desc')
-    default_sort_type = 'filename'
-    default_output_filename = 'player.html'
-
     parser_player = subparsers.add_parser(
         'player',
         help='Generate music player HTML for a single album',
@@ -55,9 +52,9 @@ def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:
     parser_player.add_argument('album_dir_path', metavar='dir_path', help='Path to the album directory')
     parser_player.add_argument('-t', '--title', metavar='title', help='Album title, default: directory name')
     parser_player.add_argument('-c', '--cover', metavar='file', help='Album cover file path, relative to dir_path')
-    parser_player.add_argument('-o', '--output-filename', metavar='filename', default=default_output_filename, help='Output filename, default: %(default)s')
+    parser_player.add_argument('-o', '--output-filename', metavar='filename', default=constants.DEFAULT_OUTPUT_FILENAME, help='Output filename, default: %(default)s')
     parser_player.add_argument('-r', '--recursively', action='store_true', help='Recursively scan subdirectories for audio files')
-    parser_player.add_argument('--sort-type', default=default_sort_type, choices=choices_sort_type, metavar='type', help='Sort type, default: %(default)s, choices: %(choices)s')
+    parser_player.add_argument('--sort-type', choices=constants.CHOICES_SORT_TYPE, default=constants.DEFAULT_SORT_TYPE, metavar='type', help='Sort type, choices: %(choices)s, default: %(default)s')
     parser_player.add_argument('-f', '--force', action='store_true', help='Overwrite output file if it exists')
     parser_player.add_argument('-v', '--verbose', action='count', default=0, dest='sub_verbose', help='Increase verbosity level')
 

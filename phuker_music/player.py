@@ -55,7 +55,7 @@ def get_file_duration_str(file_path: str) -> str:
     return result
 
 
-def get_music_groups(album_dir_path: str, recursively: bool = False, sort_type: str = 'filename') -> list[dict[str, object]]:
+def get_music_groups(album_dir_path: str, recursively: bool = False, sort_type: str = constants.DEFAULT_SORT_TYPE) -> list[dict[str, object]]:
     result = []
     index = -1
     for top, dirnames, filenames in os.walk(album_dir_path):
@@ -113,9 +113,9 @@ def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.'
         'album_dir_path': None,
         'title': None,
         'cover_file': None,
-        'output_filename': 'player.html',
+        'output_filename': constants.DEFAULT_OUTPUT_FILENAME,
         'recursively': False,
-        'sort_type': 'filename',
+        'sort_type': constants.DEFAULT_SORT_TYPE,
     }
     album_config.update({k: v for k, v in album_config_input.items() if k in album_config})
 
@@ -142,7 +142,7 @@ def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.'
         utils.assert_(os_path.isfile(album_config['cover_file']), f'cover_file does not exist: {album_config["cover_file"]!r}')
 
     if not album_config['output_filename']:
-        album_config['output_filename'] = 'player.html'
+        album_config['output_filename'] = constants.DEFAULT_OUTPUT_FILENAME
 
     if not absolute:
         album_config['album_dir_path'] = utils.get_rel_path(album_config['album_dir_path'], base_dir_path)

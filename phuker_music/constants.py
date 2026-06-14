@@ -32,3 +32,8 @@ IMAGE_EXT_LIST: tuple[str, ...] = (
     '.tiff',
     '.webp',
 )
+
+# album_config
+CHOICES_SORT_TYPE: tuple[str, ...] = ('filename', 'mtime_desc')
+DEFAULT_SORT_TYPE: str = 'filename'
+DEFAULT_OUTPUT_FILENAME: str = 'player.html'

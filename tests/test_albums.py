@@ -7,8 +7,9 @@ import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from phuker_music.albums import get_config, main
+from phuker_music import constants
 from phuker_music.utils import os_path
+from phuker_music.albums import get_config, main
 
 
 TEST_FILES_DIR = os_path.join(os_path.dirname(__file__), 'files')
@@ -48,7 +49,7 @@ class TestGetConfigFromDocs(unittest.TestCase):
             self.assertIsInstance(album['sort_type'], str)
 
             self.assertIn('output_filename', album)
-            self.assertEqual(album['output_filename'], 'player.html')
+            self.assertEqual(album['output_filename'], constants.DEFAULT_OUTPUT_FILENAME)
 
     def test_default_fields(self):
         albums_config_file_path = os_path.join(TEST_FILES_DIR, 'albums.test.json')
@@ -56,7 +57,7 @@ class TestGetConfigFromDocs(unittest.TestCase):
         albums_config = get_config(albums_config_file_path)
 
         self.assertEqual(albums_config['albums'][0]['recursively'], False)
-        self.assertEqual(albums_config['albums'][0]['sort_type'], 'filename')
+        self.assertEqual(albums_config['albums'][0]['sort_type'], constants.DEFAULT_SORT_TYPE)
         self.assertIsNone(albums_config['albums'][0]['cover_file'])
 
     def test_specific_album_config(self):
@@ -162,7 +163,7 @@ class TestMain(unittest.TestCase):
         album_dir = os_path.join(self.tmpdir, 'album')
         shutil.copytree(src, album_dir)
 
-        player_html = os_path.join(album_dir, 'player.html')
+        player_html = os_path.join(album_dir, constants.DEFAULT_OUTPUT_FILENAME)
         if os_path.exists(player_html):
             os.remove(player_html)
 
@@ -202,7 +203,7 @@ class TestMain(unittest.TestCase):
         album_dir = os_path.join(self.tmpdir, 'album')
         shutil.copytree(src, album_dir)
 
-        player_html = os_path.join(album_dir, 'player.html')
+        player_html = os_path.join(album_dir, constants.DEFAULT_OUTPUT_FILENAME)
         if os_path.exists(player_html):
             os.remove(player_html)
 
@@ -254,7 +255,7 @@ class TestMain(unittest.TestCase):
         with open(index_html, 'r', encoding='UTF-8') as f:
             index_content = f.read()
 
-        player_html = os_path.join(album_dir, 'player.html')
+        player_html = os_path.join(album_dir, constants.DEFAULT_OUTPUT_FILENAME)
         with open(player_html, 'r', encoding='UTF-8') as f:
             player_content = f.read()
 
