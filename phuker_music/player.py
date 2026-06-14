@@ -117,7 +117,7 @@ def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.'
         'recursively': False,
         'sort_type': 'filename',
     }
-    album_config.update(album_config_input)
+    album_config.update({k: v for k, v in album_config_input.items() if k in album_config})
 
     utils.assert_(isinstance(album_config['album_dir_path'], str) and album_config['album_dir_path'], f'invalid album_dir_path: {album_config["album_dir_path"]!r}')
     utils.assert_(isinstance(album_config['title'], (str, type(None))), f'invalid album_config: {album_config!r}')
