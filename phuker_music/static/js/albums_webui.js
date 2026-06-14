@@ -29,16 +29,18 @@ createApp({
         const albumsIndexFilePath = ref('./index.html');
         const albums = ref([]);
         const availableAlbums = ref({});
-        const toast = ref({ text: '', type: '' });
-        let toastTimer = null;
+        const toasts = ref([]);
+        let toastId = 0;
 
-        function showToast(msg, type) {
-            toast.value.text = msg;
-            toast.value.type = type;
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => {
-                toast.value.type = '';
-            }, 4000);
+        function showToast(msg, type, duration = 4000) {
+            const id = ++toastId;
+            toasts.value.push({ id: id, text: msg, type: type });
+            setTimeout(() => {
+                const index = toasts.value.findIndex((toast) => (toast.id === id));
+                if (index !== -1) {
+                    toasts.value.splice(index, 1);
+                }
+            }, duration);
         }
 
         function getCoverOptions(dirPath, currentCover) {
@@ -159,7 +161,7 @@ createApp({
             albums,
             availableAlbums,
             availableItems,
-            toast,
+            toasts,
             getCoverOptions,
             onAlbumsChange,
             actionDeleteAlbum,
