@@ -30,7 +30,6 @@ def normalize_albums_config(albums_config: dict, *, base_dir_path: str, is_abs_p
             f'album_dir_path must be within base_dir_path: {albums_config["albums"][i]["album_dir_path"]!r}',
         )
 
-
     if not is_abs_path:
         albums_config['albums_index_file_path'] = utils.get_rel_path(albums_config['albums_index_file_path'], base_dir_path)
 
@@ -51,6 +50,8 @@ def main(albums_config_file_path: str, overwrite: bool = False) -> None:
     albums_config_file_path = utils.get_abs_joined_path(albums_config_file_path)
     utils.assert_(os_path.isfile(albums_config_file_path), f'Albums config file does not exist: {albums_config_file_path!r}')
 
+    albums_dir_path = os_path.dirname(albums_config_file_path)
+
     logger.info('Loading albums config file: %r', albums_config_file_path)
     albums_config = get_config(albums_config_file_path)
     logger.debug('Albums config: %s', json.dumps(albums_config, indent=4, ensure_ascii=False))
@@ -62,7 +63,7 @@ def main(albums_config_file_path: str, overwrite: bool = False) -> None:
     indexes = []
     for i, album_config in enumerate(albums_config['albums']):
         logger.info('(%d/%d) Album dir path: %r', i + 1, len(albums_config['albums']), album_config['album_dir_path'])
-        player.generate(album_config, base_dir_path=os_path.dirname(albums_config_file_path), overwrite=overwrite)
+        player.generate(album_config, base_dir_path=albums_dir_path, overwrite=overwrite)
 
         player_path = utils.get_rel_path(os_path.join(album_config['album_dir_path'], album_config['output_filename']), os_path.dirname(albums_config['albums_index_file_path']))
         cover_path = utils.get_rel_path(os_path.join(album_config['album_dir_path'], album_config['cover_file']), os_path.dirname(albums_config['albums_index_file_path'])) if album_config['cover_file'] else None
