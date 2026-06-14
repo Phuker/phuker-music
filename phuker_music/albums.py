@@ -88,7 +88,7 @@ def get_config(albums_config_file_path: str, *, is_abs_path: bool = True) -> dic
     return albums_config
 
 
-def main(albums_config_file_path: str, force: bool = False) -> None:
+def main(albums_config_file_path: str, overwrite: bool = False) -> None:
     albums_config_file_path = utils.get_abs_joined_path(albums_config_file_path)
     utils.assert_(os_path.isfile(albums_config_file_path), f'Albums config file does not exist: {albums_config_file_path!r}')
 
@@ -97,7 +97,7 @@ def main(albums_config_file_path: str, force: bool = False) -> None:
     logger.debug('Albums config: %s', json.dumps(albums_config, indent=4, ensure_ascii=False))
     logger.info('Found %d albums', len(albums_config['albums']))
 
-    if os_path.exists(albums_config['albums_index_file_path']) and not force:
+    if os_path.exists(albums_config['albums_index_file_path']) and not overwrite:
         raise FileExistsError(f'Output file already exists: {albums_config["albums_index_file_path"]!r}, use -f/--force to overwrite')
 
     indexes = []

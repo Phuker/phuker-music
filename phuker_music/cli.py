@@ -33,7 +33,7 @@ def _player_command(shell_args: argparse.Namespace) -> None:
 
 
 def _albums_command(shell_args: argparse.Namespace) -> None:
-    albums.main(shell_args.albums_config_file_path, force=shell_args.force)
+    albums.main(shell_args.albums_config_file_path, overwrite=shell_args.force)
 
 
 def _albums_webui_command(shell_args: argparse.Namespace) -> None:

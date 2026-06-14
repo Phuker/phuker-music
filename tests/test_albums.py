@@ -186,7 +186,7 @@ class TestMain(unittest.TestCase):
             json.dump(albums_config, f)
             f.write('\n')
 
-        main(albums_config_file_path, force=True)
+        main(albums_config_file_path, overwrite=True)
 
         self.assertTrue(os_path.exists(player_html))
         with open(player_html, 'r', encoding='UTF-8') as f:
@@ -226,10 +226,10 @@ class TestMain(unittest.TestCase):
             json.dump(albums_config, f)
             f.write('\n')
 
-        main(albums_config_file_path, force=True)  # first run succeeds
+        main(albums_config_file_path, overwrite=True)  # first run succeeds
 
         with self.assertRaises(FileExistsError):
-            main(albums_config_file_path, force=False)
+            main(albums_config_file_path, overwrite=False)
 
     def test_main_title_xss_encoding(self):
         src = os_path.join(TEST_FILES_DIR, 'test 1 file')
@@ -252,7 +252,7 @@ class TestMain(unittest.TestCase):
             json.dump(albums_config, f)
             f.write('\n')
 
-        main(albums_config_file_path, force=True)
+        main(albums_config_file_path, overwrite=True)
 
         index_html = albums_config['albums_index_file_path']
         with open(index_html, 'r', encoding='UTF-8') as f:

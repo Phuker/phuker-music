@@ -124,7 +124,7 @@ def api_save_config():
 @app.route('/api/regenerate', methods=['POST'])
 def api_regenerate():
     try:
-        albums.main(albums_config_file_path, force=True)
+        albums.main(albums_config_file_path, overwrite=True)
 
         return jsonify({'status': 'ok'})
     except Exception as e:
