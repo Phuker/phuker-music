@@ -146,5 +146,5 @@ def main(_albums_config_file_path: str, host: str = '127.0.0.1', port: int = 800
     albums_dir_path = os_path.dirname(albums_config_file_path)
     logger.info('Albums directory: %r', albums_dir_path)
 
-    logger.info('Albums WebUI starting at http://%s:%d/', host, port)
+    logger.info('Albums WebUI listening on %s:%d, open http://127.0.0.1:%d/ in browser to view', host, port, port)
     app.run(host=host, port=port, debug=False, threaded=True)
