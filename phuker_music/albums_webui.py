@@ -23,9 +23,16 @@ albums_dir_path: str = ''
 
 scan_lock = threading.Lock()
 scan_status = {
-    'status': 'idle', # 'idle' 'scanning' 'done' 'error'
+    'status': 'idle', # 'idle' 'running' 'done' 'error'
     'scanned_dirs': 0,
     'available_albums': None,
+    'message': None,
+}
+
+generate_lock = threading.Lock()
+generate_status = {
+    'status': 'idle', # 'idle' 'running' 'done' 'error'
+    'message': None,
 }
 
 
@@ -49,42 +56,54 @@ def background_scan() -> None:
         if has_audio:
             available_albums[utils.get_rel_path(root, albums_dir_path)] = [utils.get_rel_path(_, root) for _ in sorted(image_file_path_list)]
 
-        scan_status['scanned_dirs'] += 1
+        with scan_lock:
+            scan_status['scanned_dirs'] += 1
 
         return has_audio, image_file_path_list
 
     try:
         _scan(albums_dir_path)
 
-        scan_status['available_albums'] = available_albums
-        scan_status['status'] = 'done'
-    except Exception:
-        logger.exception('Scan failed')
-        scan_status['status'] = 'error'
+        with scan_lock:
+            scan_status['status'] = 'done'
+            scan_status['available_albums'] = available_albums
+    except Exception as e:
+        logger.exception('/api/scan failed')
+        with scan_lock:
+            scan_status['status'] = 'error'
+            scan_status['message'] = repr(e)
 
 
-@app.route('/api/scan')
+@app.route('/api/scan', methods=['POST'])
 def api_scan():
+    def _reset_scan_status(status):
+        scan_status['status'] = status
+        scan_status['scanned_dirs'] = 0
+        scan_status['available_albums'] = None
+        scan_status['message'] = None
+
     with scan_lock:
         if scan_status['status'] == 'idle':
-            scan_status['status'] = 'scanning'
-            scan_status['scanned_dirs'] = 0
-            thread = threading.Thread(target=background_scan, daemon=True)
-            thread.start()
+            _reset_scan_status('running')
+            threading.Thread(target=background_scan, daemon=True).start()
             return jsonify({
-                'status': 'scanning',
+                'status': 'running',
                 'data': {
                     'scanned_dirs': 0,
                 },
             })
-        elif scan_status['status'] == 'scanning':
+        elif scan_status['status'] == 'running':
             return jsonify({
-                'status': 'scanning',
+                'status': 'running',
                 'data': {
                     'scanned_dirs': scan_status['scanned_dirs'],
                 },
             })
         elif scan_status['status'] == 'done':
+            scanned_dirs = scan_status['scanned_dirs']
+            available_albums = scan_status['available_albums']
+            _reset_scan_status('idle')
+
             if os_path.isfile(albums_config_file_path):
                 albums_config = albums.get_config(albums_config_file_path, absolute=False)
             else:
@@ -96,13 +115,15 @@ def api_scan():
             return jsonify({
                 'status': 'done',
                 'data': {
-                    'scanned_dirs': scan_status['scanned_dirs'],
+                    'scanned_dirs': scanned_dirs,
                     'albums_config': albums_config,
-                    'available_albums': scan_status['available_albums'],
+                    'available_albums': available_albums,
                 },
             })
         else:
-            return jsonify({'status': 'error', 'message': 'Scan failed'}), 500
+            message = scan_status['message']
+            _reset_scan_status('idle')
+            return jsonify({'status': 'error', 'message': message}), 500
 
 
 @app.route('/api/save-config', methods=['POST'])
@@ -115,21 +136,44 @@ def api_save_config():
             json.dump(albums_config, f, indent=4, ensure_ascii=False)
             f.write('\n')
 
-        return jsonify({'status': 'ok'})
+        return jsonify({'status': 'done'})
     except Exception as e:
         logger.exception('/api/save-config failed')
         return jsonify({'status': 'error', 'message': repr(e)}), 500
 
 
-@app.route('/api/regenerate', methods=['POST'])
-def api_regenerate():
+def background_generate() -> None:
     try:
         albums.main(albums_config_file_path, overwrite=True)
-
-        return jsonify({'status': 'ok'})
+        with generate_lock:
+            generate_status['status'] = 'done'
     except Exception as e:
-        logger.exception('/api/regenerate failed')
-        return jsonify({'status': 'error', 'message': repr(e)}), 500
+        logger.exception('/api/generate failed')
+        with generate_lock:
+            generate_status['status'] = 'error'
+            generate_status['message'] = repr(e)
+
+
+@app.route('/api/generate', methods=['POST'])
+def api_generate():
+    def _reset_generate_status(status):
+        generate_status['status'] = status
+        generate_status['message'] = None
+
+    with generate_lock:
+        if generate_status['status'] == 'idle':
+            _reset_generate_status('running')
+            threading.Thread(target=background_generate, daemon=True).start()
+            return jsonify({'status': 'running'})
+        elif generate_status['status'] == 'running':
+            return jsonify({'status': 'running'})
+        elif generate_status['status'] == 'done':
+            _reset_generate_status('idle')
+            return jsonify({'status': 'done'})
+        else:
+            message = generate_status['message']
+            _reset_generate_status('idle')
+            return jsonify({'status': 'error', 'message': message}), 500
 
 
 @app.route('/')

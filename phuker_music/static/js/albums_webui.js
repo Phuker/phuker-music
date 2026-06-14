@@ -6,6 +6,26 @@ function sleepAsync(ms) {
 }
 
 
+async function pollFetch(resource, options, onRunning) {
+    while (true) {
+        const resp = await fetch(resource, options);
+        const data = await resp.json();
+
+        if (data.status === 'running') {
+            if (onRunning) {
+                onRunning(data);
+            }
+
+            await sleepAsync(300);
+        } else if (data.status === 'done') {
+            return data;
+        } else {
+            throw new Error(JSON.stringify(data));
+        }
+    }
+}
+
+
 function createAlbumConfig(dirPath) {
     return {
         album_dir_path: dirPath,
@@ -81,39 +101,27 @@ createApp({
         });
 
         async function pollScan() {
-            while (true) {
-                try {
-                    const resp = await fetch('/api/scan');
-                    const data = await resp.json();
-                    if (data.status === 'scanning') {
-                        scanStatus.value = 'scanning';
-                        scannedDirs.value = data.data.scanned_dirs;
-                    } else if (data.status === 'done') {
-                        scannedDirs.value = data.data.scanned_dirs;
-                        albumsIndexFilePath.value = data.data.albums_config.albums_index_file_path;
-                        albums.value = data.data.albums_config.albums;
-                        availableAlbums.value = data.data.available_albums;
+            try {
+                const data = await pollFetch('/api/scan', { method: 'POST' }, (data) => {
+                    scanStatus.value = 'running';
+                    scannedDirs.value = data.data.scanned_dirs;
+                });
 
-                        await sleepAsync(200); // let user see the final scan count before transitioning
-                        scanStatus.value = 'done';
+                scannedDirs.value = data.data.scanned_dirs;
+                albumsIndexFilePath.value = data.data.albums_config.albums_index_file_path;
+                albums.value = data.data.albums_config.albums;
+                availableAlbums.value = data.data.available_albums;
 
-                        return;
-                    } else {
-                        throw new Error(JSON.stringify(data));
-                    }
-                } catch (error) {
-                    showToast(`Failed to scan: ${error.message}`, 'error');
-                    console.error('pollScan():', error);
-                    await sleepAsync(800); // Wait retry
-                }
-
-                await sleepAsync(200);
+                await sleepAsync(200); // let user see the final scan count before transitioning
+                scanStatus.value = 'done';
+            } catch (error) {
+                showToast(`Failed to scan: ${error.message}`, 'error');
+                console.error('pollScan():', error);
             }
         }
 
         async function actionPublish() {
-            showToast('Saving and generating ...', 'info');
-
+            showToast('Saving ...', 'info');
             try {
                 const albumsConfig = {
                     albums_index_file_path: albumsIndexFilePath.value,
@@ -126,7 +134,7 @@ createApp({
                     body: JSON.stringify(albumsConfig),
                 });
                 const data = await resp.json();
-                if (data.status !== 'ok') {
+                if (data.status !== 'done') {
                     throw new Error(JSON.stringify(data));
                 }
             } catch (error) {
@@ -135,12 +143,9 @@ createApp({
                 return;
             }
 
+            showToast('Generating ...', 'info');
             try {
-                const resp = await fetch('/api/regenerate', { method: 'POST' });
-                const data = await resp.json();
-                if (data.status !== 'ok') {
-                    throw new Error(JSON.stringify(data));
-                }
+                await pollFetch('/api/generate', { method: 'POST' });
             } catch (error) {
                 showToast(`Failed to generate: ${error.message}`, 'error');
                 console.error('actionPublish():', error);
