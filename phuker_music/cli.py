@@ -67,8 +67,8 @@ def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:
 def _add_albums_subparser(subparsers: argparse._SubParsersAction) -> None:
     parser_albums = subparsers.add_parser(
         'albums',
-        help='Generate player and index page for all albums',
-        description='Generate player and index page for all albums',
+        help='Generate player and index HTML for multiple albums',
+        description='Generate player and index HTML for multiple albums',
         formatter_class=_help_formatter,
     )
 
@@ -85,8 +85,8 @@ def _add_albums_webui_subparser(subparsers: argparse._SubParsersAction) -> None:
 
     parser_webui = subparsers.add_parser(
         'albums-webui',
-        help='Start a web UI to edit albums config',
-        description='Start a web UI to edit albums config',
+        help='Launch a web UI to edit albums config and generate player and index HTML for multiple albums',
+        description='Launch a web UI to edit albums config and generate player and index HTML for multiple albums',
         formatter_class=_help_formatter,
     )
 

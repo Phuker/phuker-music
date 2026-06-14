@@ -15,7 +15,7 @@ HTML 音乐播放器生成器。扫描音频文件目录，生成离线单文件
 - 没有额外资源 — 无 JS/CSS 依赖、无网络字体、无 CDN
 - **只有一个 HTML 文件**
 
-## 安装
+## 安装与运行
 
 ### 用 uvx 运行（无需安装）
 
@@ -146,8 +146,8 @@ Music player HTML generator
 positional arguments:
   command
     player        为单张专辑生成音乐播放器 HTML
-    albums        为所有专辑生成播放器和索引页
-    albums-webui  启动 Web UI 以编辑专辑配置
+    albums        为多张专辑生成播放器和索引页 HTML
+    albums-webui  启动 Web UI 以编辑专辑配置并生成播放器和索引页 HTML
 
 options:
   -h, --help      显示此帮助信息并退出
@@ -179,7 +179,7 @@ options:
 $ phuker-music albums --help
 usage: phuker-music albums [-h] [-f] [-v] config_file
 
-为所有专辑生成播放器和索引页
+为多张专辑生成播放器和索引页 HTML
 
 positional arguments:
   config_file    专辑配置文件路径
@@ -194,7 +194,7 @@ options:
 $ phuker-music albums-webui --help
 usage: phuker-music albums-webui [-h] [--host HOST] [--port PORT] [-v] config_file
 
-启动 Web UI 以编辑专辑配置
+启动 Web UI 以编辑专辑配置并生成播放器和索引页 HTML
 
 positional arguments:
   config_file    专辑配置文件路径

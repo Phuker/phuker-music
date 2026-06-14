@@ -15,7 +15,7 @@ You can try the [demo](https://phuker.github.io/phuker-music/) to see what the g
 - No extra assets — No JS/CSS dependencies, no web fonts, no CDN
 - **Only a fucking single HTML file**
 
-## Installation
+## Install and run
 
 ### Run with uvx (without installation)
 
@@ -146,8 +146,8 @@ Music player HTML generator
 positional arguments:
   command
     player        Generate music player HTML for a single album
-    albums        Generate player and index page for all albums
-    albums-webui  Start a web UI to edit albums config
+    albums        Generate player and index HTML for multiple albums
+    albums-webui  Launch a web UI to edit albums config and generate player and index HTML for multiple albums
 
 options:
   -h, --help      show this help message and exit
@@ -179,7 +179,7 @@ options:
 $ phuker-music albums --help
 usage: phuker-music albums [-h] [-f] [-v] config_file
 
-Generate player and index page for all albums
+Generate player and index HTML for multiple albums
 
 positional arguments:
   config_file    Albums config file path
@@ -194,7 +194,7 @@ options:
 $ phuker-music albums-webui --help
 usage: phuker-music albums-webui [-h] [--host HOST] [--port PORT] [-v] config_file
 
-Start a web UI to edit albums config
+Launch a web UI to edit albums config and generate player and index HTML for multiple albums
 
 positional arguments:
   config_file    Albums config file path
