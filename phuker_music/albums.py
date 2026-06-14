@@ -13,65 +13,21 @@ from . import player
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-def normalize_album_config(album_config_input: dict, *, albums_dir_path: str, is_abs_path: bool = True) -> dict:
-    album_config = {
-        'album_dir_path': None,
-        'title': None,
-        'cover_file': None,
-        'output_filename': 'player.html',
-        'recursively': False,
-        'sort_type': 'filename',
-    }
-    album_config.update(album_config_input)
-
-    utils.assert_(isinstance(album_config['album_dir_path'], str), f'invalid album_config: {album_config!r}')
-    utils.assert_(isinstance(album_config['title'], (str, type(None))), f'invalid album_config: {album_config!r}')
-    utils.assert_(isinstance(album_config['cover_file'], (str, type(None))), f'invalid album_config: {album_config!r}')
-    utils.assert_(isinstance(album_config['output_filename'], str), f'invalid album_config: {album_config!r}')
-    utils.assert_('/' not in album_config['output_filename'] and '\\' not in album_config['output_filename'], f'output_filename must not contain path separators: {album_config["output_filename"]!r}')
-    utils.assert_(isinstance(album_config['recursively'], bool), f'invalid album_config: {album_config!r}')
-    utils.assert_(isinstance(album_config['sort_type'], str), f'invalid album_config: {album_config!r}')
-
-    album_dir_path = utils.get_abs_joined_path(albums_dir_path, album_config['album_dir_path'])
-    utils.assert_(utils.is_sub_path(album_dir_path, albums_dir_path), f'album_dir_path must be within albums_dir_path: {album_dir_path!r}')
-    utils.assert_(os_path.isdir(album_dir_path), f'Album directory does not exist: {album_dir_path!r}')
-    album_config['album_dir_path'] = album_dir_path
-
-    if not album_config['title']:
-        album_config['title'] = os_path.basename(album_dir_path)
-
-    if not album_config['cover_file']:
-        album_config['cover_file'] = None
-    else:
-        album_config['cover_file'] = utils.get_abs_joined_path(album_dir_path, album_config['cover_file'])
-        utils.assert_(utils.is_sub_path(album_config['cover_file'], album_dir_path), f'cover_file must be within album_dir_path: {album_config["cover_file"]!r}')
-
-    if not album_config['output_filename']:
-        album_config['output_filename'] = 'player.html'
-
-    if not is_abs_path:
-        album_config['album_dir_path'] = utils.get_rel_path(album_config['album_dir_path'], albums_dir_path)
-        if album_config['cover_file']:
-            album_config['cover_file'] = utils.get_rel_path(album_config['cover_file'], album_dir_path)
-
-    return album_config
-
-
-def normalize_albums_config(albums_config: dict, *, albums_dir_path: str, is_abs_path: bool = True) -> dict:
+def normalize_albums_config(albums_config: dict, *, base_dir_path: str, is_abs_path: bool = True) -> dict:
     utils.assert_(isinstance(albums_config, dict), 'invalid albums_config')
     utils.assert_(isinstance(albums_config.get('albums_index_file_path'), str) and albums_config['albums_index_file_path'], 'invalid albums_index_file_path')
     utils.assert_(isinstance(albums_config.get('albums'), list), 'invalid albums')
 
-    albums_index_file_path = utils.get_abs_joined_path(albums_dir_path, albums_config['albums_index_file_path'])
-    utils.assert_(utils.is_sub_path(albums_index_file_path, albums_dir_path), f'albums_index_file_path must be within albums_dir_path: {albums_index_file_path!r}')
+    albums_index_file_path = utils.get_abs_joined_path(base_dir_path, albums_config['albums_index_file_path'])
+    utils.assert_(utils.is_sub_path(albums_index_file_path, base_dir_path), f'albums_index_file_path must be within base_dir_path: {albums_index_file_path!r}')
     utils.assert_(os_path.isdir(os_path.dirname(albums_index_file_path)), f'Parent directory of albums_index_file_path does not exist: {albums_index_file_path!r}')
     albums_config['albums_index_file_path'] = albums_index_file_path
 
     for i, album_config_input in enumerate(albums_config['albums']):
-        albums_config['albums'][i] = normalize_album_config(album_config_input, albums_dir_path=albums_dir_path, is_abs_path=is_abs_path)
+        albums_config['albums'][i] = player.normalize_album_config(album_config_input, base_dir_path=base_dir_path, is_abs_path=is_abs_path)
 
     if not is_abs_path:
-        albums_config['albums_index_file_path'] = utils.get_rel_path(albums_config['albums_index_file_path'], albums_dir_path)
+        albums_config['albums_index_file_path'] = utils.get_rel_path(albums_config['albums_index_file_path'], base_dir_path)
 
     return albums_config
 
@@ -81,7 +37,7 @@ def get_config(albums_config_file_path: str, *, is_abs_path: bool = True) -> dic
         albums_config = json.load(f)
 
     albums_dir_path = os_path.dirname(albums_config_file_path)
-    albums_config = normalize_albums_config(albums_config, albums_dir_path=albums_dir_path, is_abs_path=is_abs_path)
+    albums_config = normalize_albums_config(albums_config, base_dir_path=albums_dir_path, is_abs_path=is_abs_path)
 
     return albums_config
 
@@ -101,7 +57,7 @@ def main(albums_config_file_path: str, overwrite: bool = False) -> None:
     indexes = []
     for i, album_config in enumerate(albums_config['albums']):
         logger.info('(%d/%d) Album dir path: %r', i + 1, len(albums_config['albums']), album_config['album_dir_path'])
-        player.generate(**album_config, overwrite=overwrite)
+        player.generate(album_config, base_dir_path=os_path.dirname(albums_config_file_path), overwrite=overwrite)
 
         player_path = utils.get_rel_path(os_path.join(album_config['album_dir_path'], album_config['output_filename']), os_path.dirname(albums_config['albums_index_file_path']))
         cover_path = utils.get_rel_path(os_path.join(album_config['album_dir_path'], album_config['cover_file']), os_path.dirname(albums_config['albums_index_file_path'])) if album_config['cover_file'] else None

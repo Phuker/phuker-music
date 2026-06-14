@@ -109,7 +109,7 @@ def api_scan():
 def api_save_config():
     try:
         albums_config = request.get_json()
-        albums_config = albums.normalize_albums_config(albums_config, albums_dir_path=albums_dir_path, is_abs_path=False)
+        albums_config = albums.normalize_albums_config(albums_config, base_dir_path=albums_dir_path, is_abs_path=False)
 
         with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
             json.dump(albums_config, f, indent=4, ensure_ascii=False)

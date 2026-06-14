@@ -98,7 +98,7 @@ class TestGetConfigFromTemp(unittest.TestCase):
             ],
         })
 
-        with self.assertRaisesRegex(AssertionError, 'Album directory does not exist'):
+        with self.assertRaisesRegex(AssertionError, 'album_dir_path does not exist'):
             get_config(self.albums_config_file_path)
 
     def test_invalid_type_recursively(self):

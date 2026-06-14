@@ -43,7 +43,7 @@ make demo      # 等价于: python -m phuker_music albums -v -f ./docs/albums.js
 
 - **`player.generate()` 的 `album_dir_path` 不能以 `/` 或 `\` 结尾** — `player.py:123` 有 `assert_` 校验；但 CLI（`cli.py:23`）和 albums 配置（`albums.py:35`）会先经 `os.path.abspath()` 自动去掉尾部斜杠，所以正常使用不会触发
 - **`output_filename` 不能包含 `/` 或 `\`** — `player.py:124` 有校验，CLI 和 albums 两条路径都受保护；CLI 通过 `-o`/`--output-filename` 指定，默认 `player.html`
-- **`generate()` 参数顺序**: `album_dir_path, title, cover_file, output_filename, recursively, sort_type, overwrite` — 各调用点、CLI 参数声明顺序均保持一致
+- **`album_config` 字段顺序**：`album_dir_path, title, cover_file, output_filename, recursively, sort_type` — 各调用点、CLI 参数声明顺序均保持一致
 - **`utils.assert_()` 抛出 `AssertionError`**，不是 `ValueError` — 如果捕获异常，注意类型
 - **`-v` / `--verbose` 启用调试日志** — 顶层和子命令级 `-v` 叠加，`>=1` 即设 `DEBUG` 级别（`cli.py:109`）
 - **`--force` / `-f`** — 输出文件已存在会报 `FileExistsError`（报错信息中会提示使用 `-f`），加 `-f` 强制覆盖

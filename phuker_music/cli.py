@@ -21,15 +21,15 @@ def _help_formatter(prog: str) -> argparse.HelpFormatter:
 
 
 def _player_command(shell_args: argparse.Namespace) -> None:
-    player.generate(
-        album_dir_path=shell_args.album_dir_path,
-        title=shell_args.title,
-        cover_file=shell_args.cover,
-        output_filename=shell_args.output_filename,
-        recursively=shell_args.recursively,
-        sort_type=shell_args.sort_type,
-        overwrite=shell_args.force,
-    )
+    album_config = {
+        'album_dir_path': shell_args.album_dir_path,
+        'title': shell_args.title,
+        'cover_file': shell_args.cover,
+        'output_filename': shell_args.output_filename,
+        'recursively': shell_args.recursively,
+        'sort_type': shell_args.sort_type,
+    }
+    player.generate(album_config, overwrite=shell_args.force)
 
 
 def _albums_command(shell_args: argparse.Namespace) -> None:
