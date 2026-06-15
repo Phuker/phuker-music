@@ -58,10 +58,10 @@ First, `cd` to a directory that contains audio files, for example one cover imag
 
 ```text
 .
-├── Cafe ambience.m4a
-├── Cover.jpg
-├── Crowd Talking Quietly Stadium.mp3
-└── Distant train with cicadas.m4a
+|-- Cafe ambience.m4a
+|-- Cover.jpg
+|-- Crowd Talking Quietly Stadium.mp3
+`-- Distant train with cicadas.m4a
 ```
 
 Then run:
@@ -74,11 +74,11 @@ You will get:
 
 ```text
 .
-├── Cafe ambience.m4a
-├── Cover.jpg
-├── Crowd Talking Quietly Stadium.mp3
-├── Distant train with cicadas.m4a
-└── player.html                        <-- player HTML file
+|-- Cafe ambience.m4a
+|-- Cover.jpg
+|-- Crowd Talking Quietly Stadium.mp3
+|-- Distant train with cicadas.m4a
+`-- player.html                        <-- player HTML file
 ```
 
 Open `player.html` in a browser to use the player.
@@ -89,19 +89,19 @@ Open `player.html` in a browser to use the player.
 
 ```text
 .
-├── Ambience
-│   ├── Cafe ambience.m4a
-│   ├── Cover.jpg
-│   ├── Crowd Talking Quietly Stadium.mp3
-│   └── Distant train with cicadas.m4a
-└── Nature
-    ├── Cover.jpg
-    ├── FL Mocking birds.mp3
-    ├── Frogs and nature in Southern Brasil in August.m4a
-    ├── Morning birds.m4a
-    ├── Nature.m4a
-    ├── Rain.ogg
-    └── Thunder.mp3
+|-- Ambience
+|   |-- Cafe ambience.m4a
+|   |-- Cover.jpg
+|   |-- Crowd Talking Quietly Stadium.mp3
+|   `-- Distant train with cicadas.m4a
+`-- Nature
+    |-- Cover.jpg
+    |-- FL Mocking birds.mp3
+    |-- Frogs and nature in Southern Brasil in August.m4a
+    |-- Morning birds.m4a
+    |-- Nature.m4a
+    |-- Rain.ogg
+    `-- Thunder.mp3
 ```
 
 Then run:
@@ -114,23 +114,23 @@ Visit <http://127.0.0.1:8000/> in a browser, drag albums from the Available colu
 
 ```text
 .
-├── albums.json                                            <-- config file
-├── Ambience
-│   ├── Cafe ambience.m4a
-│   ├── Cover.jpg
-│   ├── Crowd Talking Quietly Stadium.mp3
-│   ├── Distant train with cicadas.m4a
-│   └── player.html                                        <-- player HTML file
-├── index.html                                             <-- index HTML file
-└── Nature
-    ├── Cover.jpg
-    ├── FL Mocking birds.mp3
-    ├── Frogs and nature in Southern Brasil in August.m4a
-    ├── Morning birds.m4a
-    ├── Nature.m4a
-    ├── player.html                                        <-- player HTML file
-    ├── Rain.ogg
-    └── Thunder.mp3
+|-- albums.json                                            <-- config file
+|-- Ambience
+|   |-- Cafe ambience.m4a
+|   |-- Cover.jpg
+|   |-- Crowd Talking Quietly Stadium.mp3
+|   |-- Distant train with cicadas.m4a
+|   `-- player.html                                        <-- player HTML file
+|-- index.html                                             <-- index HTML file
+`-- Nature
+    |-- Cover.jpg
+    |-- FL Mocking birds.mp3
+    |-- Frogs and nature in Southern Brasil in August.m4a
+    |-- Morning birds.m4a
+    |-- Nature.m4a
+    |-- player.html                                        <-- player HTML file
+    |-- Rain.ogg
+    `-- Thunder.mp3
 ```
 
 Open `index.html` in a browser to view the index page.
