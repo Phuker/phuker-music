@@ -139,17 +139,17 @@ phuker-music albums-webui ./albums.json
 
 ```console
 $ phuker-music --help
-usage: phuker-music [-h] [-v] [-V] command ...
+用法：phuker-music [-h] [-v] [-V] command ...
 
-Music player HTML generator
+音乐播放器 HTML 生成器
 
-positional arguments:
+位置参数：
   command
     player        为单张专辑生成音乐播放器 HTML
     albums        为多张专辑生成播放器和索引页 HTML
     albums-webui  启动 Web UI 以编辑专辑配置并生成播放器和索引页 HTML
 
-options:
+可选参数：
   -h, --help      显示此帮助信息并退出
   -v, --verbose   增加日志详细程度
   -V, --version   显示版本号并退出
@@ -157,34 +157,34 @@ options:
 
 ```console
 $ phuker-music player --help
-usage: phuker-music player [-h] [-t title] [-c file] [-o filename] [-r] [--sort-type type] [-f] [-v] dir_path
+用法：phuker-music player [-h] [-t title] [-c file] [-o filename] [-r] [--sort-type type] [-f] [-v] dir_path
 
 为单张专辑生成音乐播放器 HTML
 
-positional arguments:
+位置参数：
   dir_path                        专辑目录路径
 
-options:
+可选参数：
   -h, --help                      显示此帮助信息并退出
   -t, --title title               专辑标题，默认：目录名
   -c, --cover file                专辑封面文件路径，相对于 dir_path
   -o, --output-filename filename  输出文件名，默认：player.html
   -r, --recursively               递归扫描子目录中的音频文件
-  --sort-type type                排序方式，默认：filename，可选：filename, mtime_desc
+  --sort-type type                排序方式，可选：filename, mtime_desc，默认：filename
   -f, --force                     若输出文件已存在则覆盖
   -v, --verbose                   增加日志详细程度
 ```
 
 ```console
 $ phuker-music albums --help
-usage: phuker-music albums [-h] [-f] [-v] config_file
+用法：phuker-music albums [-h] [-f] [-v] config_file
 
 为多张专辑生成播放器和索引页 HTML
 
-positional arguments:
+位置参数：
   config_file    专辑配置文件路径
 
-options:
+可选参数：
   -h, --help     显示此帮助信息并退出
   -f, --force    若输出文件已存在则覆盖
   -v, --verbose  增加日志详细程度
@@ -192,18 +192,19 @@ options:
 
 ```console
 $ phuker-music albums-webui --help
-usage: phuker-music albums-webui [-h] [--host HOST] [--port PORT] [-v] config_file
+用法：phuker-music albums-webui [-h] [--host host] [--port port] [--trusted-host host] [-v] config_file
 
 启动 Web UI 以编辑专辑配置并生成播放器和索引页 HTML
 
-positional arguments:
-  config_file    专辑配置文件路径
+位置参数：
+  config_file          专辑配置文件路径
 
-options:
-  -h, --help     显示此帮助信息并退出
-  --host HOST    绑定的主机地址，默认：127.0.0.1
-  --port PORT    绑定的端口，默认：8000
-  -v, --verbose  增加日志详细程度
+可选参数：
+  -h, --help           显示此帮助信息并退出
+  --host host          绑定的主机地址，默认：127.0.0.1
+  --port port          绑定的端口，默认：8000
+  --trusted-host host  添加受信任的请求主机名，可多次指定，默认：['127.0.0.1', 'localhost']
+  -v, --verbose        增加日志详细程度
 ```
 
 ## 许可证

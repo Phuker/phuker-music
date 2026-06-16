@@ -170,7 +170,7 @@ options:
   -c, --cover file                Album cover file path, relative to dir_path
   -o, --output-filename filename  Output filename, default: player.html
   -r, --recursively               Recursively scan subdirectories for audio files
-  --sort-type type                Sort type, default: filename, choices: filename, mtime_desc
+  --sort-type type                Sort type, choices: filename, mtime_desc, default: filename
   -f, --force                     Overwrite output file if it exists
   -v, --verbose                   Increase verbosity level
 ```
@@ -192,18 +192,19 @@ options:
 
 ```console
 $ phuker-music albums-webui --help
-usage: phuker-music albums-webui [-h] [--host HOST] [--port PORT] [-v] config_file
+usage: phuker-music albums-webui [-h] [--host host] [--port port] [--trusted-host host] [-v] config_file
 
 Launch a web UI to edit albums config and generate player and index HTML for multiple albums
 
 positional arguments:
-  config_file    Albums config file path
+  config_file          Albums config file path
 
 options:
-  -h, --help     show this help message and exit
-  --host HOST    Host to bind to, default: 127.0.0.1
-  --port PORT    Port to bind to, default: 8000
-  -v, --verbose  Increase verbosity level
+  -h, --help           show this help message and exit
+  --host host          Host to bind to, default: 127.0.0.1
+  --port port          Port to bind to, default: 8000
+  --trusted-host host  Add a trusted request hostname, can be specified multiple times, default: ['127.0.0.1', 'localhost']
+  -v, --verbose        Increase verbosity level
 ```
 
 ## License
