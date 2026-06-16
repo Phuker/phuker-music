@@ -41,3 +41,7 @@ DEFAULT_OUTPUT_FILENAME: str = 'player.html'
 # albums_webui
 DEFAULT_WEBUI_HOST: str = '127.0.0.1'
 DEFAULT_WEBUI_PORT: int = 8000
+DEFAULT_WEBUI_TRUSTED_HOSTS: list[str] = [
+    '127.0.0.1',
+    'localhost',
+]

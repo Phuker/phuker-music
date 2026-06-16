@@ -181,7 +181,7 @@ def index():
     return send_from_directory('static', 'albums_webui.html')
 
 
-def main(_albums_config_file_path: str, host: str = constants.DEFAULT_WEBUI_HOST, port: int = constants.DEFAULT_WEBUI_PORT) -> None:
+def main(_albums_config_file_path: str, host: str, port: int, *, trusted_hosts: list[str]) -> None:
     global albums_config_file_path, albums_dir_path
 
     albums_config_file_path = utils.get_abs_joined_path(_albums_config_file_path)
@@ -189,6 +189,9 @@ def main(_albums_config_file_path: str, host: str = constants.DEFAULT_WEBUI_HOST
 
     albums_dir_path = os_path.dirname(albums_config_file_path)
     logger.info('Albums directory: %r', albums_dir_path)
+
+    logger.debug('Flask TRUSTED_HOSTS config: %r', trusted_hosts)
+    app.config['TRUSTED_HOSTS'] = trusted_hosts
 
     logger.info('Albums WebUI listening on %s:%d, open http://127.0.0.1:%d/ in browser to view', host, port, port)
     app.run(host=host, port=port, debug=False, threaded=True)
