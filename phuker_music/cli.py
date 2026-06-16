@@ -54,7 +54,7 @@ def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:
     parser_player.add_argument('-c', '--cover', metavar='file', help='Album cover file path, relative to dir_path')
     parser_player.add_argument('-o', '--output-filename', metavar='filename', default=constants.DEFAULT_OUTPUT_FILENAME, help='Output filename, default: %(default)s')
     parser_player.add_argument('-r', '--recursively', action='store_true', help='Recursively scan subdirectories for audio files')
-    parser_player.add_argument('--sort-type', choices=constants.CHOICES_SORT_TYPE, default=constants.DEFAULT_SORT_TYPE, metavar='type', help='Sort type, choices: %(choices)s, default: %(default)s')
+    parser_player.add_argument('--sort-type', metavar='type', choices=constants.CHOICES_SORT_TYPE, default=constants.DEFAULT_SORT_TYPE, help='Sort type, choices: %(choices)s, default: %(default)s')
     parser_player.add_argument('-f', '--force', action='store_true', help='Overwrite output file if it exists')
     parser_player.add_argument('-v', '--verbose', action='count', default=0, dest='sub_verbose', help='Increase verbosity level')
 
@@ -85,8 +85,8 @@ def _add_albums_webui_subparser(subparsers: argparse._SubParsersAction) -> None:
     )
 
     parser_webui.add_argument('albums_config_file_path', metavar='config_file', help='Albums config file path')
-    parser_webui.add_argument('--host', default=constants.DEFAULT_WEBUI_HOST, help='Host to bind to, default: %(default)s')
-    parser_webui.add_argument('--port', type=int, default=constants.DEFAULT_WEBUI_PORT, help='Port to bind to, default: %(default)s')
+    parser_webui.add_argument('--host', metavar='host', default=constants.DEFAULT_WEBUI_HOST, help='Host to bind to, default: %(default)s')
+    parser_webui.add_argument('--port', metavar='port', type=int, default=constants.DEFAULT_WEBUI_PORT, help='Port to bind to, default: %(default)s')
     parser_webui.add_argument('--trusted-host', metavar='host', dest='trusted_hosts', action='append', default=constants.DEFAULT_WEBUI_TRUSTED_HOSTS, help='Add a trusted request hostname, can be specified multiple times, default: %(default)s')
     parser_webui.add_argument('-v', '--verbose', action='count', default=0, dest='sub_verbose', help='Increase verbosity level')
 
