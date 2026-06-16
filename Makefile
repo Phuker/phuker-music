@@ -33,6 +33,6 @@ dev-install: uninstall clean
 	$(PYTHON) -m pip install -e .
 	rm -rf *.egg-info
 
-upload: build
+upload:
 	$(PYTHON) -m twine check dist/*.whl dist/*.tar.gz
 	$(PYTHON) -m twine upload dist/*.whl dist/*.tar.gz
