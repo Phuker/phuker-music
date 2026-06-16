@@ -142,9 +142,9 @@ class TestGenerate(unittest.TestCase):
         self.album_dir_path = os_path.join(self.tmpdir, 'album_' + os.urandom(8).hex())
         shutil.copytree(src, self.album_dir_path)
 
-        player_html = os_path.join(self.album_dir_path, constants.DEFAULT_OUTPUT_FILENAME)
-        if os_path.exists(player_html):
-            os.remove(player_html)
+        player_file_path = os_path.join(self.album_dir_path, constants.DEFAULT_OUTPUT_FILENAME)
+        if os_path.exists(player_file_path):
+            os.remove(player_file_path)
 
     def tearDown(self):
         shutil.rmtree(self.tmpdir, ignore_errors=True)
