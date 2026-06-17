@@ -114,7 +114,7 @@ def api_scan():
                 albums_config = albums.get_config(albums_config_file_path, absolute=False)
             else:
                 albums_config = {
-                    'albums_index_file_path': './index.html',
+                    'albums_index_file_path': constants.DEFAULT_ALBUMS_INDEX_FILE_PATH,
                     'albums': [],
                 }
 
