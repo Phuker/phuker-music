@@ -24,27 +24,24 @@ class TestAlbumsWebUI(unittest.TestCase):
         albums_webui.albums_config_file_path = self.albums_config_file_path
         albums_webui.albums_dir_path = self.tmpdir
 
+        albums_webui.scan_thread = None
         albums_webui.scan_status['status'] = 'idle'
         albums_webui.scan_status['scanned_dirs'] = 0
         albums_webui.scan_status['available_albums'] = None
         albums_webui.scan_status['message'] = None
 
+        albums_webui.generate_thread = None
         albums_webui.generate_status['status'] = 'idle'
         albums_webui.generate_status['message'] = None
 
         self.app = albums_webui.app.test_client()
 
     def tearDown(self):
-        albums_webui.albums_config_file_path = ''
-        albums_webui.albums_dir_path = ''
+        if albums_webui.scan_thread and albums_webui.scan_thread.is_alive():
+            albums_webui.scan_thread.join()
 
-        albums_webui.scan_status['status'] = 'idle'
-        albums_webui.scan_status['scanned_dirs'] = 0
-        albums_webui.scan_status['available_albums'] = None
-        albums_webui.scan_status['message'] = None
-
-        albums_webui.generate_status['status'] = 'idle'
-        albums_webui.generate_status['message'] = None
+        if albums_webui.generate_thread and albums_webui.generate_thread.is_alive():
+            albums_webui.generate_thread.join()
 
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 

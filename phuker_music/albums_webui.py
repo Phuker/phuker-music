@@ -22,6 +22,7 @@ albums_config_file_path: str = ''
 albums_dir_path: str = ''
 
 scan_lock = threading.Lock()
+scan_thread = None
 scan_status = {
     'status': 'idle', # 'idle' 'running' 'done' 'error'
     'scanned_dirs': 0,
@@ -30,6 +31,7 @@ scan_status = {
 }
 
 generate_lock = threading.Lock()
+generate_thread = None
 generate_status = {
     'status': 'idle', # 'idle' 'running' 'done' 'error'
     'message': None,
@@ -76,6 +78,8 @@ def background_scan() -> None:
 
 @app.route('/api/scan', methods=['POST'])
 def api_scan():
+    global scan_thread
+
     def _reset_scan_status(status):
         scan_status['status'] = status
         scan_status['scanned_dirs'] = 0
@@ -85,7 +89,9 @@ def api_scan():
     with scan_lock:
         if scan_status['status'] == 'idle':
             _reset_scan_status('running')
-            threading.Thread(target=background_scan, daemon=True).start()
+            scan_thread = threading.Thread(target=background_scan, daemon=True)
+            scan_thread.start()
+
             return jsonify({
                 'status': 'running',
                 'data': {
@@ -156,6 +162,8 @@ def background_generate() -> None:
 
 @app.route('/api/generate', methods=['POST'])
 def api_generate():
+    global generate_thread
+
     def _reset_generate_status(status):
         generate_status['status'] = status
         generate_status['message'] = None
@@ -163,7 +171,9 @@ def api_generate():
     with generate_lock:
         if generate_status['status'] == 'idle':
             _reset_generate_status('running')
-            threading.Thread(target=background_generate, daemon=True).start()
+            generate_thread = threading.Thread(target=background_generate, daemon=True)
+            generate_thread.start()
+
             return jsonify({'status': 'running'})
         elif generate_status['status'] == 'running':
             return jsonify({'status': 'running'})
