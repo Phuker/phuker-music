@@ -169,13 +169,17 @@ class TestGetAbsJoinedPath(unittest.TestCase):
         self.assertNotIn('\\', result)
 
     def test_multiple_paths(self):
+        # Avoid asserting full abspath on Windows: depends on current drive, '/' == 'C:\\' 'D:\\' ...
+
         result = get_abs_joined_path('/tmp', 'sub', 'file.txt')
         self.assertTrue(os.path.isabs(result))
-        self.assertEqual(result, '/tmp/sub/file.txt')
+        self.assertNotIn('\\', result)
+        self.assertEqual(result, get_abs_joined_path('/tmp/sub/file.txt'))
 
         result = get_abs_joined_path('sub1', '/tmp', './sub2/sub3/', '../file.txt')
         self.assertTrue(os.path.isabs(result))
-        self.assertEqual(result, '/tmp/sub2/file.txt')
+        self.assertNotIn('\\', result)
+        self.assertEqual(result, get_abs_joined_path('/tmp/sub2/file.txt'))
 
     def test_expanduser(self):
         result = get_abs_joined_path('~')
