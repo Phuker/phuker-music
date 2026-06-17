@@ -8,6 +8,9 @@ from phuker_music.utils import (
     assert_,
     OsPathProxy,
     match_ext_list,
+    is_sub_path,
+    get_rel_path,
+    get_abs_joined_path,
 )
 
 
@@ -131,6 +134,69 @@ class TestMatchExtList(unittest.TestCase):
         ext_list = ('.flac',)
         self.assertTrue(match_ext_list('/a/b/c/song.flac', ext_list))
         self.assertFalse(match_ext_list('/path/to/song.ogg', ext_list))
+
+
+class TestIsSubPath(unittest.TestCase):
+    def test_child_in_parent(self):
+        self.assertTrue(is_sub_path('/tmp/a/b', '/tmp/a'))
+
+    def test_same_path(self):
+        self.assertTrue(is_sub_path('/tmp/a', '/tmp/a'))
+
+    def test_path_outside_parent(self):
+        self.assertFalse(is_sub_path('/tmp/', '/tmp/a/'))
+        self.assertFalse(is_sub_path('/tmp/b', '/tmp/a'))
+
+
+class TestGetRelPath(unittest.TestCase):
+    def test_same_path(self):
+        self.assertEqual(get_rel_path('/tmp/a', '/tmp/a'), '.')
+
+    def test_child_path(self):
+        self.assertEqual(get_rel_path('/tmp/a/b', '/tmp/a'), './b')
+
+    def test_deeper_child_path(self):
+        self.assertEqual(get_rel_path('/tmp/a/b/c', '/tmp/a'), './b/c')
+
+    def test_parent_of_start(self):
+        self.assertEqual(get_rel_path('/tmp/a', '/tmp/a/b'), './..')
+
+
+class TestGetAbsJoinedPath(unittest.TestCase):
+    def test_single_path(self):
+        result = get_abs_joined_path('/tmp')
+        self.assertTrue(os.path.isabs(result))
+        self.assertNotIn('\\', result)
+
+    def test_multiple_paths(self):
+        result = get_abs_joined_path('/tmp', 'sub', 'file.txt')
+        self.assertTrue(os.path.isabs(result))
+        self.assertEqual(result, '/tmp/sub/file.txt')
+
+        result = get_abs_joined_path('sub1', '/tmp', './sub2/sub3/', '../file.txt')
+        self.assertTrue(os.path.isabs(result))
+        self.assertEqual(result, '/tmp/sub2/file.txt')
+
+    def test_expanduser(self):
+        result = get_abs_joined_path('~')
+        self.assertTrue(os.path.isabs(result))
+        self.assertNotIn('~', result)
+
+    def test_empty_args_raises(self):
+        with self.assertRaises(AssertionError):
+            get_abs_joined_path()
+
+    def test_empty_string_raises(self):
+        with self.assertRaises(AssertionError):
+            get_abs_joined_path('')
+
+    def test_none_raises(self):
+        with self.assertRaises(AssertionError):
+            get_abs_joined_path(None)
+
+    def test_non_string_raises(self):
+        with self.assertRaises(AssertionError):
+            get_abs_joined_path(123)
 
 
 if __name__ == '__main__':
