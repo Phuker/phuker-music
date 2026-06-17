@@ -158,8 +158,9 @@ class TestGetRelPath(unittest.TestCase):
     def test_deeper_child_path(self):
         self.assertEqual(get_rel_path('/tmp/a/b/c', '/tmp/a'), './b/c')
 
-    def test_parent_of_start(self):
-        self.assertEqual(get_rel_path('/tmp/a', '/tmp/a/b'), './..')
+    def test_path_outside_start(self):
+        self.assertEqual(get_rel_path('/tmp/a', '/tmp/a/b'), '..')
+        self.assertEqual(get_rel_path('/tmp/a/c', '/tmp/a/b'), '../c')
 
 
 class TestGetAbsJoinedPath(unittest.TestCase):

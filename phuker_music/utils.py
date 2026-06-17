@@ -103,10 +103,11 @@ def get_rel_path(path: str, start_dir_path: str) -> str:
     path = os_path.expanduser(path)
     start_dir_path = os_path.expanduser(start_dir_path)
 
-    if path == start_dir_path:
-        return '.'
+    result = os_path.relpath(path, start_dir_path)
+    if result in ('.', '..') or result.startswith('../'):
+        return result
     else:
-        return './' + os_path.relpath(path, start_dir_path)
+        return './' + result
 
 
 def get_abs_joined_path(*paths: str) -> str:
