@@ -10,23 +10,23 @@ https://github.com/Phuker/phuker-music
     <meta name="viewport" content="width=device-width" />
     <meta name="google" content="notranslate" />
     <style type="text/css">
-    {{ read_file('css/player.css') | trim | indent(4) | safe }}
+    {{ read_static_file_as_text('css/player.css') | trim | indent(4) | safe }}
     </style>
 </head>
 <body>
 <div id="pageLoading" role="status" aria-label="Loading">
     <h1>{{ title }}</h1>
-    <img src="{{ cover_file or read_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover image of: {{ title }}" />
+    <img src="{{ cover_file or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover image of: {{ title }}" />
 </div>
 <div class="container" id="container">
 <h1 id="album-title" title="{{ title }}" role="button" tabindex="0" aria-label="View album details">{{ title }}</h1>
 <dialog id="album-details">
     <div class="album-details-inner">
-        <img src="{{ cover_file or read_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover image of: {{ title }}" />
+        <img src="{{ cover_file or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover image of: {{ title }}" />
         <p class="album-details-title">{{ title }}</p>
     </div>
 </dialog>
-<img src="{{ read_file_as_data_url('images/loading.gif', 'image/gif') }}" id="imgLoading" alt="" />
+<img src="{{ read_static_file_as_data_url('images/loading.gif', 'image/gif') }}" id="imgLoading" alt="" />
 
 <ul id="itemsList">
 {%- for music_info_group in music_info_groups %}
@@ -42,16 +42,16 @@ https://github.com/Phuker/phuker-music
 <div id="playerLine">
     <div id="ctrlBtnGroup">
         <button class="ctrlBtn" id="btnPlayPrevious" aria-label="Previous track">
-            <img src="{{ read_file_as_data_url('images/left.png', 'image/png') }}" class="icon" alt="" />
+            <img src="{{ read_static_file_as_data_url('images/left.png', 'image/png') }}" class="icon" alt="" />
         </button>
         <button class="ctrlBtn" id="btnPlayMode" aria-label="Switch play mode">
-            <img src="{{ read_file_as_data_url('images/loop.png', 'image/png') }}" id="imgPlayModeIcon" class="icon" alt="" />
+            <img src="{{ read_static_file_as_data_url('images/loop.png', 'image/png') }}" id="imgPlayModeIcon" class="icon" alt="" />
         </button>
         <button class="ctrlBtn" id="btnShare" aria-label="Copy share link">
-            <img src="{{ read_file_as_data_url('images/share.png', 'image/png') }}" id="imgShareIcon" class="icon" alt="" />
+            <img src="{{ read_static_file_as_data_url('images/share.png', 'image/png') }}" id="imgShareIcon" class="icon" alt="" />
         </button>
         <button class="ctrlBtn" id="btnPlayNext" aria-label="Next track">
-            <img src="{{ read_file_as_data_url('images/right.png', 'image/png') }}" class="icon" alt="" />
+            <img src="{{ read_static_file_as_data_url('images/right.png', 'image/png') }}" class="icon" alt="" />
         </button>
     </div>
     <audio src="" controls id="player" class="player" preload="auto">Your browser does not support the audio element.</audio>
@@ -59,22 +59,22 @@ https://github.com/Phuker/phuker-music
 </footer>
 
 <script type="text/javascript">
-    const IMG_BASE64_DATA_CHECK = {{ read_file_as_data_url('images/check.png', 'image/png') | json_encode | safe }};
-    const IMG_BASE64_DATA_SHARE = {{ read_file_as_data_url('images/share.png', 'image/png') | json_encode | safe }};
-    const IMG_BASE64_DATA_LOOP = {{ read_file_as_data_url('images/loop.png', 'image/png') | json_encode | safe }};
-    const IMG_BASE64_DATA_RANDOM = {{ read_file_as_data_url('images/random.png', 'image/png') | json_encode | safe }};
-    const IMG_BASE64_DATA_SINGLE = {{ read_file_as_data_url('images/single.png', 'image/png') | json_encode | safe }};
-    const SILENCE_AUDIO_DATA_URL = {{ read_file_as_data_url('audio/silence_4s.m4a', 'audio/mp4') | json_encode | safe }};
+    const IMG_BASE64_DATA_CHECK = {{ read_static_file_as_data_url('images/check.png', 'image/png') | safe_json_encode | safe }};
+    const IMG_BASE64_DATA_SHARE = {{ read_static_file_as_data_url('images/share.png', 'image/png') | safe_json_encode | safe }};
+    const IMG_BASE64_DATA_LOOP = {{ read_static_file_as_data_url('images/loop.png', 'image/png') | safe_json_encode | safe }};
+    const IMG_BASE64_DATA_RANDOM = {{ read_static_file_as_data_url('images/random.png', 'image/png') | safe_json_encode | safe }};
+    const IMG_BASE64_DATA_SINGLE = {{ read_static_file_as_data_url('images/single.png', 'image/png') | safe_json_encode | safe }};
+    const SILENCE_AUDIO_DATA_URL = {{ read_static_file_as_data_url('audio/silence_4s.m4a', 'audio/mp4') | safe_json_encode | safe }};
 
-    const ALBUM_TITLE = {{ title | json_encode | safe }};
-    const ALBUM_COVER_FILE = {{ (cover_file or read_file_as_data_url('images/album-256.png', 'image/png')) | json_encode | safe }};
-    const MUSIC_INFO_LIST = {{ music_info_list | json_encode | indent(4) | safe }};
-    const STORAGE_KEY_PREFIX = {{ storage_key_prefix | json_encode | safe }};
+    const ALBUM_TITLE = {{ title | safe_json_encode | safe }};
+    const ALBUM_COVER_FILE = {{ (cover_file or read_static_file_as_data_url('images/album-256.png', 'image/png')) | safe_json_encode | safe }};
+    const MUSIC_INFO_LIST = {{ music_info_list | safe_json_encode | indent(4) | safe }};
+    const STORAGE_KEY_PREFIX = {{ storage_key_prefix | safe_json_encode | safe }};
 </script>
 
 <!-- New script tag, make sure 'use strict' is before any other statements -->
 <script type="text/javascript">
-    {{ read_file('js/player.js') | trim | indent(4) | safe }}
+    {{ read_static_file_as_text('js/player.js') | trim | indent(4) | safe }}
 </script>
 </div>
 </body>

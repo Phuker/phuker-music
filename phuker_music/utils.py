@@ -120,6 +120,49 @@ def get_abs_joined_path(*paths: str) -> str:
     return os_path.abspath(os_path.join(*expanded))
 
 
+STATIC_DIR_PATH: str = os_path.join(os_path.dirname(os_path.abspath(__file__)), 'static')
+
+
+def read_static_file_as_text(relative_file_path: str) -> str:
+    file_path = os_path.join(STATIC_DIR_PATH, relative_file_path)
+
+    with open(file_path, 'r', encoding='UTF-8') as f:
+        return f.read()
+
+
+def read_static_file_as_data_url(relative_file_path: str, mime: str) -> str:
+    file_path = os_path.join(STATIC_DIR_PATH, relative_file_path)
+
+    with open(file_path, 'rb') as f:
+        content = f.read()
+        base64_content = base64.b64encode(content).decode()
+
+    return f'data:{mime};base64,{base64_content}'
+
+
+def safe_json_encode(obj: object) -> str:
+    result = json.dumps(obj, indent=4)
+
+    # Like PHP JSON_HEX_TAG, prevent XSS
+    # https://www.php.net/manual/en/json.constants.php
+    result = result.replace('<', '\\u003c').replace('>', '\\u003e')
+
+    return result
+
+
+def get_jinja_env() -> jinja2.Environment:
+    templates_dir_path = os_path.join(os_path.dirname(os_path.abspath(__file__)), 'templates')
+    loader = jinja2.FileSystemLoader(templates_dir_path)
+    env = jinja2.Environment(loader=loader, autoescape=True, keep_trailing_newline=True)
+
+    env.globals['version'] = __version__
+    env.globals['read_static_file_as_text'] = read_static_file_as_text
+    env.globals['read_static_file_as_data_url'] = read_static_file_as_data_url
+    env.filters['safe_json_encode'] = safe_json_encode
+
+    return env
+
+
 def detect_language(text: str) -> str:
     global lang_identifier
 
@@ -142,46 +185,3 @@ def detect_language(text: str) -> str:
         return lang
     else:
         return 'en'
-
-
-static_dir_path: str = os_path.join(os_path.dirname(os_path.abspath(__file__)), 'static')
-
-
-def jinja_env_global_read_file(relative_file_path: str) -> str:
-    file_path = os_path.join(static_dir_path, relative_file_path)
-
-    with open(file_path, 'r', encoding='UTF-8') as f:
-        return f.read()
-
-
-def jinja_env_global_read_file_as_data_url(relative_file_path: str, mime: str) -> str:
-    file_path = os_path.join(static_dir_path, relative_file_path)
-
-    with open(file_path, 'rb') as f:
-        content = f.read()
-        base64_content = base64.b64encode(content).decode()
-
-    return f'data:{mime};base64,{base64_content}'
-
-
-def jinja_env_filter_json_encode(obj: object) -> str:
-    result = json.dumps(obj, indent=4)
-
-    # Like PHP JSON_HEX_TAG, prevent XSS
-    # https://www.php.net/manual/en/json.constants.php
-    result = result.replace('<', '\\u003c').replace('>', '\\u003e')
-
-    return result
-
-
-def get_jinja_env() -> jinja2.Environment:
-    templates_dir_path = os_path.join(os_path.dirname(os_path.abspath(__file__)), 'templates')
-    loader = jinja2.FileSystemLoader(templates_dir_path)
-    env = jinja2.Environment(loader=loader, autoescape=True, keep_trailing_newline=True)
-
-    env.globals['version'] = __version__
-    env.globals['read_file'] = jinja_env_global_read_file
-    env.globals['read_file_as_data_url'] = jinja_env_global_read_file_as_data_url
-    env.filters['json_encode'] = jinja_env_filter_json_encode
-
-    return env

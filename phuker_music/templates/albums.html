@@ -10,11 +10,11 @@ https://github.com/Phuker/phuker-music
     <meta name="viewport" content="width=device-width" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="icon" href="{{ read_file_as_data_url('images/album-256.png', 'image/png') }}">
+    <link rel="icon" href="{{ read_static_file_as_data_url('images/album-256.png', 'image/png') }}">
 
     <title>My Music Collections</title>
     <style type="text/css">
-    {{ read_file('css/albums.css') | trim | indent(4) | safe }}
+    {{ read_static_file_as_text('css/albums.css') | trim | indent(4) | safe }}
     </style>
 </head>
 
@@ -26,7 +26,7 @@ https://github.com/Phuker/phuker-music
         <li>
             <a href="{{ player_path }}">
                 <span class="cover-container">
-                    <img src="{{ cover_path or read_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover image of: {{ title }}">
+                    <img src="{{ cover_path or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover image of: {{ title }}">
                 </span>
                 <span class="title">{{ title }}</span>
             </a>
