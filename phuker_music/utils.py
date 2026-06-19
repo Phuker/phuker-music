@@ -140,6 +140,32 @@ def read_static_file_as_data_url(relative_file_path: str, mime: str) -> str:
     return f'data:{mime};base64,{base64_content}'
 
 
+def get_web_app_manifest_data_url(albums_index_file_path: str) -> str:
+    manifest = {
+        'short_name': 'Music',
+        'name': 'Music',
+        'start_url': './' + os_path.basename(albums_index_file_path),
+        'display': 'minimal-ui',
+        'icons': [
+            {
+                'type': 'image/png',
+                'sizes': '512x512',
+                'src': read_static_file_as_data_url('images/album-512.png', 'image/png'),
+            },
+            {
+                'type': 'image/png',
+                'sizes': '192x192',
+                'src': read_static_file_as_data_url('images/album-192.png', 'image/png'),
+            },
+        ],
+    }
+
+    manifest_json = json.dumps(manifest, separators=(',', ':'))
+    manifest_base64 = base64.b64encode(manifest_json.encode()).decode()
+
+    return f'data:application/manifest+json;base64,{manifest_base64}'
+
+
 def safe_json_encode(obj: object) -> str:
     result = json.dumps(obj, indent=4)
 
