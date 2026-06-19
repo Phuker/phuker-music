@@ -16,13 +16,13 @@ https://github.com/Phuker/phuker-music
 <body>
 <div id="pageLoading" role="status" aria-label="Loading">
     <h1>{{ title }}</h1>
-    <img src="{{ cover_file or read_file_as_data_url('images/album.png', 'image/png') }}" alt="Album cover image of: {{ title }}" />
+    <img src="{{ cover_file or read_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover image of: {{ title }}" />
 </div>
 <div class="container" id="container">
 <h1 id="album-title" title="{{ title }}" role="button" tabindex="0" aria-label="View album details">{{ title }}</h1>
 <dialog id="album-details">
     <div class="album-details-inner">
-        <img src="{{ cover_file or read_file_as_data_url('images/album.png', 'image/png') }}" alt="Album cover image of: {{ title }}" />
+        <img src="{{ cover_file or read_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover image of: {{ title }}" />
         <p class="album-details-title">{{ title }}</p>
     </div>
 </dialog>
@@ -67,7 +67,7 @@ https://github.com/Phuker/phuker-music
     const SILENCE_AUDIO_DATA_URL = {{ read_file_as_data_url('audio/silence_4s.m4a', 'audio/mp4') | json_encode | safe }};
 
     const ALBUM_TITLE = {{ title | json_encode | safe }};
-    const ALBUM_COVER_FILE = {{ (cover_file or read_file_as_data_url('images/album.png', 'image/png')) | json_encode | safe }};
+    const ALBUM_COVER_FILE = {{ (cover_file or read_file_as_data_url('images/album-256.png', 'image/png')) | json_encode | safe }};
     const MUSIC_INFO_LIST = {{ music_info_list | json_encode | indent(4) | safe }};
     const STORAGE_KEY_PREFIX = {{ storage_key_prefix | json_encode | safe }};
 </script>
