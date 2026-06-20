@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from phuker_music import constants
 from phuker_music.utils import os_path
-from phuker_music.albums import get_config, main
+from phuker_music.albums import normalize_albums_config, get_config, main
 
 
 TEST_ALBUMS_DIR_PATH = os_path.join(os_path.dirname(__file__), 'files', 'albums')
@@ -66,6 +66,14 @@ class TestGetConfigFromDocs(unittest.TestCase):
         album4 = albums_config['albums'][3]
         self.assertEqual(album4['recursively'], True)
         self.assertIsNotNone(album4['cover_file'])
+
+    def test_idempotent_normalize(self):
+        albums_config_dir_path = os_path.dirname(TEST_ALBUMS_CONFIG_FILE_PATH)
+
+        for absolute in (True, False):
+            result1 = get_config(TEST_ALBUMS_CONFIG_FILE_PATH, absolute=absolute)
+            result2 = normalize_albums_config(result1, albums_config_dir_path=albums_config_dir_path, absolute=absolute)
+            self.assertEqual(result1, result2)
 
 
 class TestGetConfigFromTemp(unittest.TestCase):
@@ -247,6 +255,39 @@ class TestMain(unittest.TestCase):
         self.assertNotIn('<script>alert(1);</script>', player_content)
         self.assertIn('&lt;script&gt;alert(1);&lt;/script&gt;', index_content)
         self.assertIn('&lt;script&gt;alert(1);&lt;/script&gt;', player_content)
+
+    def test_main_separate_config_and_albums_dirs(self):
+        src = os_path.join(TEST_ALBUMS_DIR_PATH, 'test 1 file')
+        albums_dir_path = os_path.join(self.tmpdir, 'albums')
+        os.makedirs(albums_dir_path)
+        album_dir_path = os_path.join(albums_dir_path, 'album')
+        shutil.copytree(src, album_dir_path)
+
+        title = 'title_' + os.urandom(8).hex()
+        albums_config = {
+            'albums_dir_path': './albums',
+            'albums_index_filename': 'index.html',
+            'albums': [
+                {
+                    'album_dir_path': './album',
+                    'title': title,
+                },
+            ],
+        }
+
+        albums_config_file_path = os_path.join(self.tmpdir, 'config.json')
+        with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
+            json.dump(albums_config, f)
+            f.write('\n')
+
+        main(albums_config_file_path, overwrite=True)
+
+        albums_index_file_path = os_path.join(albums_dir_path, 'index.html')
+        player_file_path = os_path.join(album_dir_path, constants.DEFAULT_PLAYER_FILENAME)
+        for file_path in (albums_index_file_path, player_file_path):
+            self.assertTrue(os_path.exists(file_path))
+            with open(file_path, 'r', encoding='UTF-8') as f:
+                self.assertIn(title, f.read())
 
 
 if __name__ == '__main__':

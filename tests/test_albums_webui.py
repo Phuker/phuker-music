@@ -47,12 +47,15 @@ class TestAlbumsWebUI(unittest.TestCase):
 
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
-    def _copy_test_audio_dir(self, name):
+    def _copy_test_audio_dir(self, name, dest_dir=None):
+        if dest_dir is None:
+            dest_dir = self.tmpdir
+
         src = os_path.join(TEST_ALBUMS_DIR_PATH, name)
-        dest = os_path.join(self.tmpdir, name)
+        dest = os_path.join(dest_dir, name)
         shutil.copytree(src, dest)
 
-        player_file_path = os_path.join(self.tmpdir, name, constants.DEFAULT_PLAYER_FILENAME)
+        player_file_path = os_path.join(dest_dir, name, constants.DEFAULT_PLAYER_FILENAME)
         if os_path.exists(player_file_path):
             os.remove(player_file_path)
 
@@ -205,6 +208,58 @@ class TestAlbumsWebUI(unittest.TestCase):
 
         player_file_path = os_path.join(self.tmpdir, 'test 1 file', constants.DEFAULT_PLAYER_FILENAME)
         self.assertTrue(os_path.isfile(player_file_path))
+
+    def test_separate_config_and_albums_dirs(self):
+        albums_dir_path = os_path.join(self.tmpdir, 'albums')
+        os.makedirs(albums_dir_path)
+        albums_webui.albums_dir_path = albums_dir_path
+
+        self._copy_test_audio_dir('test 1 file', dest_dir=albums_dir_path)
+        album_dir_path = os_path.join(albums_dir_path, 'test 1 file')
+
+        resp = self.app.post('/api/scan')
+        self.assertEqual(resp.json['status'], 'running')
+
+        data = self._poll('/api/scan')
+        self.assertIn('albums_config', data['data'])
+        self.assertIn('albums_dir_path', data['data']['albums_config'])
+        self.assertEqual(data['data']['albums_config']['albums_dir_path'], './albums')
+
+        available = data['data']['available_albums']
+        self.assertEqual(len(available), 2)
+        self.assertIn('./test 1 file', available)
+
+        title = 'title_' + os.urandom(8).hex()
+        config = {
+            'albums_dir_path': './albums',
+            'albums_index_filename': 'index.html',
+            'albums': [
+                {
+                    'album_dir_path': './test 1 file',
+                    'title': title,
+                },
+            ],
+        }
+        resp = self.app.post('/api/save-config', json=config)
+        self.assertEqual(resp.json['status'], 'done')
+
+        with open(self.albums_config_file_path, 'r', encoding='UTF-8') as f:
+            saved_config = json.load(f)
+
+        self.assertIn('albums_dir_path', saved_config)
+        self.assertEqual(saved_config['albums_dir_path'], './albums')
+
+        resp = self.app.post('/api/generate')
+        self.assertEqual(resp.json['status'], 'running')
+
+        self._poll('/api/generate')
+
+        albums_index_file_path = os_path.join(albums_dir_path, 'index.html')
+        player_file_path = os_path.join(album_dir_path, constants.DEFAULT_PLAYER_FILENAME)
+        for file_path in (albums_index_file_path, player_file_path):
+            self.assertTrue(os_path.isfile(file_path))
+            with open(file_path, 'r', encoding='UTF-8') as f:
+                self.assertIn(title, f.read())
 
 
 if __name__ == '__main__':
