@@ -22,6 +22,7 @@ class TestAlbumsWebUI(unittest.TestCase):
         self.albums_config_file_path = os_path.join(self.tmpdir, 'config.json')
 
         albums_webui.albums_config_file_path = self.albums_config_file_path
+        albums_webui.albums_config_dir_path = self.tmpdir
         albums_webui.albums_dir_path = self.tmpdir
 
         albums_webui.scan_thread = None
@@ -112,7 +113,8 @@ class TestAlbumsWebUI(unittest.TestCase):
         self.assertFalse(os_path.isfile(self.albums_config_file_path))
 
         config = {
-            'albums_index_file_path': 'index.html',
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
             'albums': [],
         }
 
@@ -123,19 +125,19 @@ class TestAlbumsWebUI(unittest.TestCase):
         with open(self.albums_config_file_path, 'r', encoding='UTF-8') as f:
             saved_config = json.load(f)
 
-        self.assertIn('albums_index_file_path', saved_config)
-        self.assertIn('albums', saved_config)
+        self.assertIn('albums_dir_path', saved_config)
+        self.assertIn('albums_index_filename', saved_config)
 
     def test_save_config_with_albums(self):
         self._copy_test_audio_dir('test 1 file')
-        album_dir_path = os_path.join(self.tmpdir, 'test 1 file')
         title = 'title_' + os.urandom(8).hex()
 
         config = {
-            'albums_index_file_path': 'index.html',
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
             'albums': [
                 {
-                    'album_dir_path': album_dir_path,
+                    'album_dir_path': './test 1 file',
                     'title': title,
                 },
             ],
@@ -154,7 +156,8 @@ class TestAlbumsWebUI(unittest.TestCase):
         self._copy_test_audio_dir('test 1 file')
 
         config = {
-            'albums_index_file_path': './index.html',
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
             'albums': [
                 {
                     'album_dir_path': './test 1 file',
@@ -174,12 +177,15 @@ class TestAlbumsWebUI(unittest.TestCase):
         self.assertEqual(resp.status_code, 500)
 
     def test_save_config_updates_existing_file(self):
+        self._copy_test_audio_dir('test 1 file')
+
         title1 = 'title_1_' + os.urandom(8).hex()
         config1 = {
-            'albums_index_file_path': 'index.html',
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
             'albums': [
                 {
-                    'album_dir_path': self.tmpdir,
+                    'album_dir_path': './test 1 file',
                     'title': title1,
                 }
             ],
@@ -190,10 +196,11 @@ class TestAlbumsWebUI(unittest.TestCase):
 
         title2 = 'title_2_' + os.urandom(8).hex()
         config2 = {
-            'albums_index_file_path': 'index.html',
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
             'albums': [
                 {
-                    'album_dir_path': self.tmpdir,
+                    'album_dir_path': './test 1 file',
                     'title': title2,
                 },
             ],
@@ -212,7 +219,8 @@ class TestAlbumsWebUI(unittest.TestCase):
         self._copy_test_audio_dir('test 1 file')
 
         config = {
-            'albums_index_file_path': './index.html',
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
             'albums': [
                 {
                     'album_dir_path': './test 1 file',

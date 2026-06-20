@@ -39,7 +39,8 @@ DEFAULT_SORT_TYPE: str = 'filename'
 DEFAULT_OUTPUT_FILENAME: str = 'player.html'
 
 # albums_config
-DEFAULT_ALBUMS_INDEX_FILE_PATH: str = './index.html'
+DEFAULT_ALBUMS_DIR_PATH: str = '.'
+DEFAULT_ALBUMS_INDEX_FILENAME: str = 'index.html'
 
 # albums_webui
 DEFAULT_WEBUI_HOST: str = '127.0.0.1'

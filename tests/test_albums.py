@@ -21,11 +21,11 @@ class TestGetConfigFromDocs(unittest.TestCase):
 
         albums_config = get_config(albums_config_file_path)
 
-        self.assertIn('albums_index_file_path', albums_config)
+        self.assertTrue(os_path.isabs(albums_config['albums_dir_path']))
+        self.assertTrue(albums_config['albums_dir_path'].endswith('/files'))
+        self.assertEqual(albums_config['albums_index_filename'], 'albums.html')
         self.assertIn('albums', albums_config)
         self.assertEqual(len(albums_config['albums']), 4)
-        self.assertTrue(os_path.isabs(albums_config['albums_index_file_path']))
-        self.assertTrue(albums_config['albums_index_file_path'].endswith('albums.html'))
 
     def test_album_fields(self):
         albums_config_file_path = os_path.join(TEST_FILES_DIR, 'albums.test.json')
@@ -90,7 +90,8 @@ class TestGetConfigFromTemp(unittest.TestCase):
 
     def test_nonexistent_album_dir_path(self):
         self._write_config({
-            'albums_index_file_path': './index.html',
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
             'albums': [
                 {
                     'album_dir_path': 'nonexistent_subdir',
@@ -106,10 +107,11 @@ class TestGetConfigFromTemp(unittest.TestCase):
         test_dir = os_path.join(self.tmpdir, 'testdir')
         os.makedirs(test_dir)
         self._write_config({
-            'albums_index_file_path': os_path.join(self.tmpdir, 'index.html'),
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
             'albums': [
                 {
-                    'album_dir_path': test_dir,
+                    'album_dir_path': 'testdir',
                     'title': 'Test',
                     'recursively': 'not-a-bool',
                 },
@@ -123,10 +125,11 @@ class TestGetConfigFromTemp(unittest.TestCase):
         test_dir = os_path.join(self.tmpdir, 'dirname_' + os.urandom(8).hex())
         os.makedirs(test_dir)
         self._write_config({
-            'albums_index_file_path': os_path.join(self.tmpdir, 'index.html'),
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
             'albums': [
                 {
-                    'album_dir_path': test_dir,
+                    'album_dir_path': os_path.basename(test_dir),
                 },
             ],
         })
@@ -138,10 +141,11 @@ class TestGetConfigFromTemp(unittest.TestCase):
         test_dir = os_path.join(self.tmpdir, 'dirname_' + os.urandom(8).hex())
         os.makedirs(test_dir)
         self._write_config({
-            'albums_index_file_path': os_path.join(self.tmpdir, 'index.html'),
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
             'albums': [
                 {
-                    'album_dir_path': test_dir,
+                    'album_dir_path': os_path.basename(test_dir),
                     'title': '',
                 },
             ],
@@ -169,10 +173,11 @@ class TestMain(unittest.TestCase):
 
         title = 'title_' + os.urandom(8).hex()
         albums_config = {
-            'albums_index_file_path': os_path.join(self.tmpdir, 'index.html'),
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
             'albums': [
                 {
-                    'album_dir_path': album_dir,
+                    'album_dir_path': 'album',
                     'title': title,
                 },
             ],
@@ -189,7 +194,7 @@ class TestMain(unittest.TestCase):
         with open(player_html, 'r', encoding='UTF-8') as f:
             self.assertIn(title, f.read())
 
-        index_html = albums_config['albums_index_file_path']
+        index_html = os_path.join(self.tmpdir, 'index.html')
         self.assertTrue(os_path.exists(index_html))
 
         with open(index_html, 'r', encoding='UTF-8') as f:
@@ -209,10 +214,11 @@ class TestMain(unittest.TestCase):
 
         title = 'title_' + os.urandom(8).hex()
         albums_config = {
-            'albums_index_file_path': os_path.join(self.tmpdir, 'index.html'),
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
             'albums': [
                 {
-                    'album_dir_path': album_dir,
+                    'album_dir_path': 'album',
                     'title': title,
                 },
             ],
@@ -235,10 +241,11 @@ class TestMain(unittest.TestCase):
 
         title = '<script>alert(1);</script>'
         albums_config = {
-            'albums_index_file_path': os_path.join(self.tmpdir, 'index.html'),
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
             'albums': [
                 {
-                    'album_dir_path': album_dir,
+                    'album_dir_path': 'album',
                     'title': title,
                 },
             ],
@@ -251,7 +258,7 @@ class TestMain(unittest.TestCase):
 
         main(albums_config_file_path, overwrite=True)
 
-        index_html = albums_config['albums_index_file_path']
+        index_html = os_path.join(self.tmpdir, 'index.html')
         with open(index_html, 'r', encoding='UTF-8') as f:
             index_content = f.read()
 

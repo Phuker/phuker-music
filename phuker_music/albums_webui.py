@@ -19,6 +19,7 @@ logger: logging.Logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 albums_config_file_path: str = ''
+albums_config_dir_path: str = ''
 albums_dir_path: str = ''
 
 scan_lock = threading.Lock()
@@ -114,7 +115,8 @@ def api_scan():
                 albums_config = albums.get_config(albums_config_file_path, absolute=False)
             else:
                 albums_config = {
-                    'albums_index_file_path': constants.DEFAULT_ALBUMS_INDEX_FILE_PATH,
+                    'albums_dir_path': utils.get_rel_path(albums_dir_path, albums_config_dir_path),
+                    'albums_index_filename': constants.DEFAULT_ALBUMS_INDEX_FILENAME,
                     'albums': [],
                 }
 
@@ -136,7 +138,7 @@ def api_scan():
 def api_save_config():
     try:
         albums_config = request.get_json()
-        albums_config = albums.normalize_albums_config(albums_config, base_dir_path=albums_dir_path, absolute=False)
+        albums_config = albums.normalize_albums_config(albums_config, albums_config_dir_path=albums_config_dir_path, absolute=False)
 
         with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
             json.dump(albums_config, f, indent=4, ensure_ascii=False)
@@ -191,13 +193,14 @@ def index():
     return send_from_directory('static', 'albums_webui.html')
 
 
-def main(_albums_config_file_path: str, host: str, port: int, *, trusted_hosts: list[str]) -> None:
-    global albums_config_file_path, albums_dir_path
+def main(_albums_config_file_path: str, _albums_dir_path: str, host: str, port: int, *, trusted_hosts: list[str]) -> None:
+    global albums_config_file_path, albums_config_dir_path, albums_dir_path
 
     albums_config_file_path = utils.get_abs_joined_path(_albums_config_file_path)
+    albums_config_dir_path = os_path.dirname(albums_config_file_path)
     logger.info('Albums config file: %r', albums_config_file_path)
 
-    albums_dir_path = os_path.dirname(albums_config_file_path)
+    albums_dir_path = utils.get_abs_joined_path(_albums_dir_path)
     logger.info('Albums directory: %r', albums_dir_path)
 
     logger.debug('Flask TRUSTED_HOSTS config: %r', trusted_hosts)

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
-import os
 import sys
 import argparse
 import logging
@@ -38,7 +37,7 @@ def _albums_command(shell_args: argparse.Namespace) -> None:
 
 
 def _albums_webui_command(shell_args: argparse.Namespace) -> None:
-    albums_webui.main(shell_args.albums_config_file_path, shell_args.host, shell_args.port, trusted_hosts=shell_args.trusted_hosts)
+    albums_webui.main(shell_args.albums_config_file_path, shell_args.albums_dir_path, shell_args.host, shell_args.port, trusted_hosts=shell_args.trusted_hosts)
 
 
 def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:
@@ -85,6 +84,7 @@ def _add_albums_webui_subparser(subparsers: argparse._SubParsersAction) -> None:
     )
 
     parser_webui.add_argument('albums_config_file_path', metavar='config_file', help='Albums config file path')
+    parser_webui.add_argument('albums_dir_path', metavar='dir_path', help='Albums directory path')
     parser_webui.add_argument('--host', metavar='host', default=constants.DEFAULT_WEBUI_HOST, help='Host to bind to, default: %(default)s')
     parser_webui.add_argument('--port', metavar='port', type=int, default=constants.DEFAULT_WEBUI_PORT, help='Port to bind to, default: %(default)s')
     parser_webui.add_argument('--trusted-host', metavar='host', dest='trusted_hosts', action='append', default=constants.DEFAULT_WEBUI_TRUSTED_HOSTS, help='Add a trusted request hostname, can be specified multiple times, default: %(default)s')

@@ -15,8 +15,11 @@
     <div id="app">
         <div id="top-bar">
             <label>
-                Albums index HTML file path:
-                <input type="text" v-model="albumsIndexFilePath" placeholder="index.html">
+                Albums directory: <span>{{ albumsDirPath }}</span>
+            </label>
+            <label>
+                Index filename:
+                <input type="text" v-model="albumsIndexFilename" placeholder="index.html">
             </label>
             <button id="btn-publish" @click="actionPublish" :disabled="isPublishing">Save &amp; Generate</button>
         </div>
