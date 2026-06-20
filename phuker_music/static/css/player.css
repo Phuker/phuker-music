@@ -8,6 +8,9 @@ body {
     height: 100%;
     padding: 0;
     margin: 0;
+
+    background-color: #fffff8;
+    background-image: var(--body-background-image);
 }
 
 h1 {
@@ -88,41 +91,54 @@ ul {
     padding: 0;
     margin: 0;
     font-family: Consolas, Monaco, "Droid Sans Mono", "Courier New", "Microsoft YaHei", "PingFang SC", "WenQuanYi Micro Hei", monospace;
+    scrollbar-width: none;
+}
+
+ul::-webkit-scrollbar {
+    display: none;
 }
 
 li.dirname {
-    margin: 0 0 2px 0;
+    margin: 0 0 8px 0;
     display: block;
-    background: #F8F8F8;
     font-weight: bold;
     height: 2em;
     line-height: 2em;
     padding: 8px;
+
     /*For long item*/
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
+
     user-select: none;
 }
 
 li.item {
     cursor: pointer;
-    margin: 0 0 2px 0;
+    margin: 0 0 8px 0;
     display: block;
-    background: #ddd;
     height: 2em;
     line-height: 2em;
     padding: 8px;
+
     /*For long item*/
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
+
     user-select: none;
+
+    border-style: solid;
+    border-width: 1px 0.5px;
+    border-color: rgba(255, 255, 255, 0.5) rgba(255, 255, 255, 0.4);
+    border-radius: 6px;
+    backdrop-filter: blur(1.5px) brightness(0.94) saturate(0.94);
 }
 
 .ctrlBtn {
     border: none;
-    background-color: #FFF;
+    background-color: transparent;
 }
 
 .ctrlBtn:focus-visible {

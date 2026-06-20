@@ -15,6 +15,10 @@ https://github.com/Phuker/phuker-music
 
     <title>My Music Collections</title>
     <style type="text/css">
+    :root {
+        --body-background-image: url({{ read_static_file_as_data_url('images/background.svg', 'image/svg+xml') }});
+    }
+
     {{ read_static_file_as_text('css/albums.css') | trim | indent(4) | safe }}
     </style>
 </head>

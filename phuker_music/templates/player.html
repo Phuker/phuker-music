@@ -10,6 +10,10 @@ https://github.com/Phuker/phuker-music
     <meta name="viewport" content="width=device-width" />
     <meta name="google" content="notranslate" />
     <style type="text/css">
+    :root {
+        --body-background-image: url({{ read_static_file_as_data_url('images/background.svg', 'image/svg+xml') }});
+    }
+
     {{ read_static_file_as_text('css/player.css') | trim | indent(4) | safe }}
     </style>
 </head>
