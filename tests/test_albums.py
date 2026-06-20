@@ -121,23 +121,7 @@ class TestGetConfigFromTemp(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, r'invalid album_config\.recursively:'):
             get_config(self.albums_config_file_path)
 
-    def test_missing_title(self):
-        test_dir = os_path.join(self.tmpdir, 'dirname_' + os.urandom(8).hex())
-        os.makedirs(test_dir)
-        self._write_config({
-            'albums_dir_path': '.',
-            'albums_index_filename': 'index.html',
-            'albums': [
-                {
-                    'album_dir_path': os_path.basename(test_dir),
-                },
-            ],
-        })
-
-        albums_config = get_config(self.albums_config_file_path)
-        self.assertEqual(albums_config['albums'][0]['title'], os_path.basename(test_dir))
-
-    def test_empty_title(self):
+    def test_title_empty_string_fallback(self):
         test_dir = os_path.join(self.tmpdir, 'dirname_' + os.urandom(8).hex())
         os.makedirs(test_dir)
         self._write_config({

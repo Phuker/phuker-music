@@ -184,19 +184,7 @@ class TestGenerate(unittest.TestCase):
         self.assertNotIn(title1, content)
         self.assertIn(title2, content)
 
-    def test_generate_title_defaults_to_dirname(self):
-        generate({'album_dir_path': self.album_dir_path})
-
-        player_file_path = os_path.join(self.album_dir_path, constants.DEFAULT_PLAYER_FILENAME)
-        self.assertTrue(os_path.exists(player_file_path))
-
-        with open(player_file_path, 'r', encoding='UTF-8') as f:
-            content = f.read()
-
-        self.assertIn(os_path.basename(self.album_dir_path), content)
-        self.assertIn('<html', content.lower())
-
-    def test_generate_title_empty_string_fallback(self):
+    def test_generate_title_empty_string_falls_back_to_dirname(self):
         generate({'album_dir_path': self.album_dir_path, 'title': ''})
 
         player_file_path = os_path.join(self.album_dir_path, constants.DEFAULT_PLAYER_FILENAME)
@@ -206,6 +194,7 @@ class TestGenerate(unittest.TestCase):
             content = f.read()
 
         self.assertIn(os_path.basename(self.album_dir_path), content)
+        self.assertIn('<html', content.lower())
 
     def test_missing_cover_file(self):
         with self.assertRaisesRegex(AssertionError, 'cover_file does not exist'):

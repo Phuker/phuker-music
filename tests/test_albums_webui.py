@@ -55,6 +55,16 @@ class TestAlbumsWebUI(unittest.TestCase):
         if os_path.exists(player_file_path):
             os.remove(player_file_path)
 
+    def _poll(self, *args, **kwargs):
+        for _ in range(50):
+            time.sleep(0.2)
+            resp = self.app.post(*args, **kwargs)
+            data = resp.json
+            if data['status'] == 'done':
+                return data
+        else:
+            self.fail(f'{args!r} {kwargs!r} status not done')
+
     def test_index_page(self):
         resp = self.app.get('/')
         self.assertEqual(resp.status_code, 200)
@@ -76,15 +86,7 @@ class TestAlbumsWebUI(unittest.TestCase):
         resp = self.app.post('/api/scan')
         self.assertEqual(resp.json['status'], 'running')
 
-        for _ in range(50):
-            time.sleep(0.2)
-            resp = self.app.post('/api/scan')
-            data = resp.json
-            if data['status'] == 'done':
-                break
-        else:
-            self.fail('/api/scan status not done')
-
+        data = self._poll('/api/scan')
         self.assertIn('albums_config', data['data'])
 
         self.assertIn('available_albums', data['data'])
@@ -98,13 +100,7 @@ class TestAlbumsWebUI(unittest.TestCase):
         resp = self.app.post('/api/scan')
         self.assertEqual(resp.json['status'], 'running')
 
-        for _ in range(50):
-            time.sleep(0.2)
-            resp = self.app.post('/api/scan')
-            if resp.json['status'] == 'done':
-                break
-        else:
-            self.fail('/api/scan status not done')
+        self._poll('/api/scan')
 
         resp2 = self.app.post('/api/scan')
         self.assertEqual(resp2.json['status'], 'running')
@@ -152,23 +148,6 @@ class TestAlbumsWebUI(unittest.TestCase):
         self.assertEqual(len(saved_config['albums']), 1)
         self.assertEqual(saved_config['albums'][0]['title'], title)
 
-    def test_save_config_with_relative_album_dir_path(self):
-        self._copy_test_audio_dir('test 1 file')
-
-        config = {
-            'albums_dir_path': '.',
-            'albums_index_filename': 'index.html',
-            'albums': [
-                {
-                    'album_dir_path': './test 1 file',
-                    'title': 'Relative Path Test',
-                },
-            ],
-        }
-
-        resp = self.app.post('/api/save-config', json=config)
-        self.assertEqual(resp.json['status'], 'done')
-
     def test_save_config_invalid_input(self):
         resp = self.app.post('/api/save-config', json='not-a-dict', content_type='application/json')
         self.assertEqual(resp.status_code, 500)
@@ -179,41 +158,25 @@ class TestAlbumsWebUI(unittest.TestCase):
     def test_save_config_updates_existing_file(self):
         self._copy_test_audio_dir('test 1 file')
 
-        title1 = 'title_1_' + os.urandom(8).hex()
-        config1 = {
-            'albums_dir_path': '.',
-            'albums_index_filename': 'index.html',
-            'albums': [
-                {
-                    'album_dir_path': './test 1 file',
-                    'title': title1,
-                }
-            ],
-        }
+        for title in ['title_1_' + os.urandom(8).hex(), 'title_2_' + os.urandom(8).hex()]:
+            config = {
+                'albums_dir_path': '.',
+                'albums_index_filename': 'index.html',
+                'albums': [
+                    {
+                        'album_dir_path': './test 1 file',
+                        'title': title,
+                    },
+                ],
+            }
+            resp = self.app.post('/api/save-config', json=config)
+            self.assertEqual(resp.json['status'], 'done')
 
-        resp = self.app.post('/api/save-config', json=config1)
-        self.assertEqual(resp.json['status'], 'done')
+            with open(self.albums_config_file_path, 'r', encoding='UTF-8') as f:
+                saved_config = json.load(f)
 
-        title2 = 'title_2_' + os.urandom(8).hex()
-        config2 = {
-            'albums_dir_path': '.',
-            'albums_index_filename': 'index.html',
-            'albums': [
-                {
-                    'album_dir_path': './test 1 file',
-                    'title': title2,
-                },
-            ],
-        }
-
-        resp = self.app.post('/api/save-config', json=config2)
-        self.assertEqual(resp.json['status'], 'done')
-
-        with open(self.albums_config_file_path, 'r', encoding='UTF-8') as f:
-            saved_config = json.load(f)
-
-        self.assertEqual(len(saved_config['albums']), 1)
-        self.assertEqual(saved_config['albums'][0]['title'], title2)
+            self.assertEqual(len(saved_config['albums']), 1)
+            self.assertEqual(saved_config['albums'][0]['title'], title)
 
     def test_generate(self):
         self._copy_test_audio_dir('test 1 file')
@@ -234,13 +197,7 @@ class TestAlbumsWebUI(unittest.TestCase):
         resp = self.app.post('/api/generate')
         self.assertEqual(resp.json['status'], 'running')
 
-        for _ in range(50):
-            time.sleep(0.2)
-            resp = self.app.post('/api/generate')
-            if resp.json['status'] == 'done':
-                break
-        else:
-            self.fail('/api/generate status not done')
+        self._poll('/api/generate')
 
         index_file_path = os_path.join(self.tmpdir, 'index.html')
         self.assertTrue(os_path.isfile(index_file_path))
