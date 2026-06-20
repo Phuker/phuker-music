@@ -200,8 +200,8 @@ class TestAlbumsWebUI(unittest.TestCase):
 
         self._poll('/api/generate')
 
-        index_file_path = os_path.join(self.tmpdir, 'index.html')
-        self.assertTrue(os_path.isfile(index_file_path))
+        albums_index_file_path = os_path.join(self.tmpdir, 'index.html')
+        self.assertTrue(os_path.isfile(albums_index_file_path))
 
         player_file_path = os_path.join(self.tmpdir, 'test 1 file', constants.DEFAULT_PLAYER_FILENAME)
         self.assertTrue(os_path.isfile(player_file_path))

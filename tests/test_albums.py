@@ -171,10 +171,10 @@ class TestMain(unittest.TestCase):
         with open(player_file_path, 'r', encoding='UTF-8') as f:
             self.assertIn(title, f.read())
 
-        index_html = os_path.join(self.tmpdir, 'index.html')
-        self.assertTrue(os_path.exists(index_html))
+        albums_index_file_path = os_path.join(self.tmpdir, 'index.html')
+        self.assertTrue(os_path.exists(albums_index_file_path))
 
-        with open(index_html, 'r', encoding='UTF-8') as f:
+        with open(albums_index_file_path, 'r', encoding='UTF-8') as f:
             content = f.read()
 
         self.assertIn(title, content)
@@ -235,8 +235,8 @@ class TestMain(unittest.TestCase):
 
         main(albums_config_file_path, overwrite=True)
 
-        index_html = os_path.join(self.tmpdir, 'index.html')
-        with open(index_html, 'r', encoding='UTF-8') as f:
+        albums_index_file_path = os_path.join(self.tmpdir, 'index.html')
+        with open(albums_index_file_path, 'r', encoding='UTF-8') as f:
             index_content = f.read()
 
         player_file_path = os_path.join(album_dir_path, constants.DEFAULT_PLAYER_FILENAME)
