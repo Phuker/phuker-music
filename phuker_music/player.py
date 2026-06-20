@@ -120,12 +120,12 @@ def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.'
     album_config.update({k: v for k, v in album_config_input.items() if k in album_config})
 
     utils.assert_(isinstance(album_config['album_dir_path'], str) and album_config['album_dir_path'], f'invalid album_dir_path: {album_config["album_dir_path"]!r}')
-    utils.assert_(isinstance(album_config['title'], (str, type(None))), f'invalid album_config: {album_config!r}')
-    utils.assert_(isinstance(album_config['cover_file'], (str, type(None))), f'invalid album_config: {album_config!r}')
-    utils.assert_(isinstance(album_config['player_filename'], str), f'invalid album_config: {album_config!r}')
-    utils.assert_('/' not in album_config['player_filename'] and '\\' not in album_config['player_filename'], f'player_filename must not contain path separators: {album_config["player_filename"]!r}')
-    utils.assert_(isinstance(album_config['recursively'], bool), f'invalid album_config: {album_config!r}')
-    utils.assert_(isinstance(album_config['sort_type'], str), f'invalid album_config: {album_config!r}')
+    utils.assert_(isinstance(album_config['title'], (str, type(None))), f'invalid album_config.title: {album_config["title"]!r}')
+    utils.assert_(isinstance(album_config['cover_file'], (str, type(None))), f'invalid album_config.cover_file: {album_config["cover_file"]!r}')
+    utils.assert_(isinstance(album_config['player_filename'], str), f'invalid album_config.player_filename: {album_config["player_filename"]!r}')
+    utils.assert_('/' not in album_config['player_filename'] and '\\' not in album_config['player_filename'], f'album_config.player_filename must not contain path separators: {album_config["player_filename"]!r}')
+    utils.assert_(isinstance(album_config['recursively'], bool), f'invalid album_config.recursively: {album_config["recursively"]!r}')
+    utils.assert_(isinstance(album_config['sort_type'], str), f'invalid album_config.sort_type: {album_config["sort_type"]!r}')
 
     album_dir_path = utils.get_abs_joined_path(base_dir_path, album_config['album_dir_path'])
     utils.assert_(os_path.isdir(album_dir_path), f'album_dir_path does not exist: {album_dir_path!r}')

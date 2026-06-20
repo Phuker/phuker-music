@@ -118,7 +118,7 @@ class TestGetConfigFromTemp(unittest.TestCase):
             ],
         })
 
-        with self.assertRaisesRegex(AssertionError, 'invalid album_config:'):
+        with self.assertRaisesRegex(AssertionError, r'invalid album_config\.recursively:'):
             get_config(self.albums_config_file_path)
 
     def test_missing_title(self):
