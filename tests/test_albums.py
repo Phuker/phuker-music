@@ -12,25 +12,22 @@ from phuker_music.utils import os_path
 from phuker_music.albums import get_config, main
 
 
-TEST_FILES_DIR = os_path.join(os_path.dirname(__file__), 'files')
+TEST_ALBUMS_DIR_PATH = os_path.join(os_path.dirname(__file__), 'files', 'albums')
+TEST_ALBUMS_CONFIG_FILE_PATH = os_path.join(os_path.dirname(__file__), 'files', 'config', 'albums.test.json')
 
 
 class TestGetConfigFromDocs(unittest.TestCase):
     def test_valid_config(self):
-        albums_config_file_path = os_path.join(TEST_FILES_DIR, 'albums.test.json')
-
-        albums_config = get_config(albums_config_file_path)
+        albums_config = get_config(TEST_ALBUMS_CONFIG_FILE_PATH)
 
         self.assertTrue(os_path.isabs(albums_config['albums_dir_path']))
-        self.assertTrue(albums_config['albums_dir_path'].endswith('/files'))
+        self.assertTrue(albums_config['albums_dir_path'].endswith('/files/albums'))
         self.assertEqual(albums_config['albums_index_filename'], 'albums.html')
         self.assertIn('albums', albums_config)
         self.assertEqual(len(albums_config['albums']), 4)
 
     def test_album_fields(self):
-        albums_config_file_path = os_path.join(TEST_FILES_DIR, 'albums.test.json')
-
-        albums_config = get_config(albums_config_file_path)
+        albums_config = get_config(TEST_ALBUMS_CONFIG_FILE_PATH)
 
         for album in albums_config['albums']:
             self.assertIn('album_dir_path', album)
@@ -52,18 +49,14 @@ class TestGetConfigFromDocs(unittest.TestCase):
             self.assertEqual(album['player_filename'], constants.DEFAULT_PLAYER_FILENAME)
 
     def test_default_fields(self):
-        albums_config_file_path = os_path.join(TEST_FILES_DIR, 'albums.test.json')
-
-        albums_config = get_config(albums_config_file_path)
+        albums_config = get_config(TEST_ALBUMS_CONFIG_FILE_PATH)
 
         self.assertEqual(albums_config['albums'][0]['recursively'], False)
         self.assertEqual(albums_config['albums'][0]['sort_type'], constants.DEFAULT_SORT_TYPE)
         self.assertIsNone(albums_config['albums'][0]['cover_file'])
 
     def test_specific_album_config(self):
-        albums_config_file_path = os_path.join(TEST_FILES_DIR, 'albums.test.json')
-
-        albums_config = get_config(albums_config_file_path)
+        albums_config = get_config(TEST_ALBUMS_CONFIG_FILE_PATH)
 
         album3 = albums_config['albums'][2]
         self.assertEqual(album3['sort_type'], 'mtime_desc')
@@ -147,7 +140,7 @@ class TestMain(unittest.TestCase):
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
     def test_main_generates_player_and_index(self):
-        src = os_path.join(TEST_FILES_DIR, 'test 1 file')
+        src = os_path.join(TEST_ALBUMS_DIR_PATH, 'test 1 file')
         album_dir = os_path.join(self.tmpdir, 'album')
         shutil.copytree(src, album_dir)
 
@@ -188,7 +181,7 @@ class TestMain(unittest.TestCase):
         self.assertIn('<html', content.lower())
 
     def test_main_file_exists_no_force(self):
-        src = os_path.join(TEST_FILES_DIR, 'test 1 file')
+        src = os_path.join(TEST_ALBUMS_DIR_PATH, 'test 1 file')
         album_dir = os_path.join(self.tmpdir, 'album')
         shutil.copytree(src, album_dir)
 
@@ -219,7 +212,7 @@ class TestMain(unittest.TestCase):
             main(albums_config_file_path, overwrite=False)
 
     def test_main_title_xss_encoding(self):
-        src = os_path.join(TEST_FILES_DIR, 'test 1 file')
+        src = os_path.join(TEST_ALBUMS_DIR_PATH, 'test 1 file')
         album_dir = os_path.join(self.tmpdir, 'album')
         shutil.copytree(src, album_dir)
 

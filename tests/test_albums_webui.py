@@ -13,7 +13,8 @@ from phuker_music.utils import os_path
 from phuker_music import albums_webui
 
 
-TEST_FILES_DIR = os_path.join(os_path.dirname(__file__), 'files')
+TEST_ALBUMS_DIR_PATH = os_path.join(os_path.dirname(__file__), 'files', 'albums')
+TEST_ALBUMS_CONFIG_FILE_PATH = os_path.join(os_path.dirname(__file__), 'files', 'config', 'albums.test.json')
 
 
 class TestAlbumsWebUI(unittest.TestCase):
@@ -47,7 +48,7 @@ class TestAlbumsWebUI(unittest.TestCase):
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
     def _copy_test_audio_dir(self, name):
-        src = os_path.join(TEST_FILES_DIR, name)
+        src = os_path.join(TEST_ALBUMS_DIR_PATH, name)
         dest = os_path.join(self.tmpdir, name)
         shutil.copytree(src, dest)
 

@@ -16,7 +16,7 @@ from phuker_music.player import (
 )
 
 
-TEST_FILES_DIR = os_path.join(os_path.dirname(__file__), 'files')
+TEST_ALBUMS_DIR_PATH = os_path.join(os_path.dirname(__file__), 'files', 'albums')
 
 
 class TestGetDurationStr(unittest.TestCase):
@@ -57,13 +57,13 @@ class TestGetHash(unittest.TestCase):
 
 class TestGetMusicGroups(unittest.TestCase):
     def test_empty_dir(self):
-        path = os_path.join(TEST_FILES_DIR, 'test 0 files')
+        path = os_path.join(TEST_ALBUMS_DIR_PATH, 'test 0 files')
 
         groups = get_music_groups(path)
         self.assertEqual(groups, [])
 
     def test_one_file(self):
-        path = os_path.join(TEST_FILES_DIR, 'test 1 file')
+        path = os_path.join(TEST_ALBUMS_DIR_PATH, 'test 1 file')
 
         groups = get_music_groups(path)
         self.assertEqual(len(groups), 1)
@@ -80,7 +80,7 @@ class TestGetMusicGroups(unittest.TestCase):
         self.assertIn('duration_str', music)
 
     def test_mtime_desc_sort(self):
-        path = os_path.join(TEST_FILES_DIR, 'test n files with cover sort_type mtime_desc')
+        path = os_path.join(TEST_ALBUMS_DIR_PATH, 'test n files with cover sort_type mtime_desc')
 
         groups = get_music_groups(path, sort_type='mtime_desc')
         self.assertEqual(len(groups), 1)
@@ -96,7 +96,7 @@ class TestGetMusicGroups(unittest.TestCase):
         self.assertEqual(mtimes, sorted(mtimes, reverse=True))
 
     def test_default_sort_is_filename(self):
-        path = os_path.join(TEST_FILES_DIR, 'test n files with cover sort_type mtime_desc')
+        path = os_path.join(TEST_ALBUMS_DIR_PATH, 'test n files with cover sort_type mtime_desc')
 
         groups = get_music_groups(path)  # default sort_type='filename'
         self.assertEqual(len(groups), 1)
@@ -106,7 +106,7 @@ class TestGetMusicGroups(unittest.TestCase):
         self.assertEqual(paths, sorted(paths))
 
     def test_recursive(self):
-        path = os_path.join(TEST_FILES_DIR, 'test n files with cover recursively')
+        path = os_path.join(TEST_ALBUMS_DIR_PATH, 'test n files with cover recursively')
 
         groups = get_music_groups(path, recursively=True)
         self.assertEqual(len(groups), 4)
@@ -121,7 +121,7 @@ class TestGetMusicGroups(unittest.TestCase):
         self.assertEqual(total_files, 6)
 
     def test_non_recursive_only_top_level(self):
-        path = os_path.join(TEST_FILES_DIR, 'test n files with cover recursively')
+        path = os_path.join(TEST_ALBUMS_DIR_PATH, 'test n files with cover recursively')
 
         groups = get_music_groups(path, recursively=False)
         self.assertEqual(len(groups), 1)
@@ -129,7 +129,7 @@ class TestGetMusicGroups(unittest.TestCase):
         self.assertEqual(len(groups[0]['music_info_sub_list']), 2)
 
     def test_invalid_sort_type(self):
-        path = os_path.join(TEST_FILES_DIR, 'test 1 file')
+        path = os_path.join(TEST_ALBUMS_DIR_PATH, 'test 1 file')
 
         with self.assertRaises(ValueError):
             get_music_groups(path, sort_type='invalid')
@@ -138,7 +138,7 @@ class TestGetMusicGroups(unittest.TestCase):
 class TestGenerate(unittest.TestCase):
     def setUp(self):
         self.tmpdir = tempfile.mkdtemp()
-        src = os_path.join(TEST_FILES_DIR, 'test 1 file')
+        src = os_path.join(TEST_ALBUMS_DIR_PATH, 'test 1 file')
         self.album_dir_path = os_path.join(self.tmpdir, 'album_' + os.urandom(8).hex())
         shutil.copytree(src, self.album_dir_path)
 

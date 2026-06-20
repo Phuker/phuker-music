@@ -1,5 +1,5 @@
 {
-    "albums_dir_path": ".",
+    "albums_dir_path": "../albums",
     "albums_index_filename": "albums.html",
     "albums": [
         {
