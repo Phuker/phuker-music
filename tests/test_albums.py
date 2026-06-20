@@ -141,12 +141,12 @@ class TestMain(unittest.TestCase):
 
     def test_main_generates_player_and_index(self):
         src = os_path.join(TEST_ALBUMS_DIR_PATH, 'test 1 file')
-        album_dir = os_path.join(self.tmpdir, 'album')
-        shutil.copytree(src, album_dir)
+        album_dir_path = os_path.join(self.tmpdir, 'album')
+        shutil.copytree(src, album_dir_path)
 
-        player_html = os_path.join(album_dir, constants.DEFAULT_PLAYER_FILENAME)
-        if os_path.exists(player_html):
-            os.remove(player_html)
+        player_file_path = os_path.join(album_dir_path, constants.DEFAULT_PLAYER_FILENAME)
+        if os_path.exists(player_file_path):
+            os.remove(player_file_path)
 
         title = 'title_' + os.urandom(8).hex()
         albums_config = {
@@ -167,8 +167,8 @@ class TestMain(unittest.TestCase):
 
         main(albums_config_file_path, overwrite=True)
 
-        self.assertTrue(os_path.exists(player_html))
-        with open(player_html, 'r', encoding='UTF-8') as f:
+        self.assertTrue(os_path.exists(player_file_path))
+        with open(player_file_path, 'r', encoding='UTF-8') as f:
             self.assertIn(title, f.read())
 
         index_html = os_path.join(self.tmpdir, 'index.html')
@@ -182,12 +182,12 @@ class TestMain(unittest.TestCase):
 
     def test_main_file_exists_no_force(self):
         src = os_path.join(TEST_ALBUMS_DIR_PATH, 'test 1 file')
-        album_dir = os_path.join(self.tmpdir, 'album')
-        shutil.copytree(src, album_dir)
+        album_dir_path = os_path.join(self.tmpdir, 'album')
+        shutil.copytree(src, album_dir_path)
 
-        player_html = os_path.join(album_dir, constants.DEFAULT_PLAYER_FILENAME)
-        if os_path.exists(player_html):
-            os.remove(player_html)
+        player_file_path = os_path.join(album_dir_path, constants.DEFAULT_PLAYER_FILENAME)
+        if os_path.exists(player_file_path):
+            os.remove(player_file_path)
 
         title = 'title_' + os.urandom(8).hex()
         albums_config = {
@@ -213,8 +213,8 @@ class TestMain(unittest.TestCase):
 
     def test_main_title_xss_encoding(self):
         src = os_path.join(TEST_ALBUMS_DIR_PATH, 'test 1 file')
-        album_dir = os_path.join(self.tmpdir, 'album')
-        shutil.copytree(src, album_dir)
+        album_dir_path = os_path.join(self.tmpdir, 'album')
+        shutil.copytree(src, album_dir_path)
 
         title = '<script>alert(1);</script>'
         albums_config = {
@@ -239,8 +239,8 @@ class TestMain(unittest.TestCase):
         with open(index_html, 'r', encoding='UTF-8') as f:
             index_content = f.read()
 
-        player_html = os_path.join(album_dir, constants.DEFAULT_PLAYER_FILENAME)
-        with open(player_html, 'r', encoding='UTF-8') as f:
+        player_file_path = os_path.join(album_dir_path, constants.DEFAULT_PLAYER_FILENAME)
+        with open(player_file_path, 'r', encoding='UTF-8') as f:
             player_content = f.read()
 
         self.assertNotIn('<script>alert(1);</script>', index_content)
