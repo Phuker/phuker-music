@@ -51,7 +51,7 @@ class TestAlbumsWebUI(unittest.TestCase):
         dest = os_path.join(self.tmpdir, name)
         shutil.copytree(src, dest)
 
-        player_file_path = os_path.join(self.tmpdir, name, constants.DEFAULT_OUTPUT_FILENAME)
+        player_file_path = os_path.join(self.tmpdir, name, constants.DEFAULT_PLAYER_FILENAME)
         if os_path.exists(player_file_path):
             os.remove(player_file_path)
 
@@ -245,7 +245,7 @@ class TestAlbumsWebUI(unittest.TestCase):
         index_file_path = os_path.join(self.tmpdir, 'index.html')
         self.assertTrue(os_path.isfile(index_file_path))
 
-        player_file_path = os_path.join(self.tmpdir, 'test 1 file', constants.DEFAULT_OUTPUT_FILENAME)
+        player_file_path = os_path.join(self.tmpdir, 'test 1 file', constants.DEFAULT_PLAYER_FILENAME)
         self.assertTrue(os_path.isfile(player_file_path))
 
 

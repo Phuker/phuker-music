@@ -36,7 +36,7 @@ IMAGE_EXT_LIST: tuple[str, ...] = (
 # album_config
 CHOICES_SORT_TYPE: tuple[str, ...] = ('filename', 'mtime_desc')
 DEFAULT_SORT_TYPE: str = 'filename'
-DEFAULT_OUTPUT_FILENAME: str = 'player.html'
+DEFAULT_PLAYER_FILENAME: str = 'player.html'
 
 # albums_config
 DEFAULT_ALBUMS_DIR_PATH: str = '.'

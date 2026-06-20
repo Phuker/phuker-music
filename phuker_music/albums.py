@@ -60,14 +60,14 @@ def main(albums_config_file_path: str, overwrite: bool = False) -> None:
     albums_index_file_path = os_path.join(albums_dir_path, albums_config['albums_index_filename'])
 
     if os_path.exists(albums_index_file_path) and not overwrite:
-        raise FileExistsError(f'Output file already exists: {albums_index_file_path!r}, use -f/--force to overwrite')
+        raise FileExistsError(f'Index page file already exists: {albums_index_file_path!r}, use -f/--force to overwrite')
 
     indexes = []
     for i, album_config in enumerate(albums_config['albums']):
         logger.info('(%d/%d) Album dir path: %r', i + 1, len(albums_config['albums']), album_config['album_dir_path'])
         player.generate(album_config, base_dir_path=albums_dir_path, overwrite=overwrite)
 
-        player_path = utils.get_rel_path(os_path.join(album_config['album_dir_path'], album_config['output_filename']), albums_dir_path)
+        player_path = utils.get_rel_path(os_path.join(album_config['album_dir_path'], album_config['player_filename']), albums_dir_path)
         cover_path = utils.get_rel_path(os_path.join(album_config['album_dir_path'], album_config['cover_file']), albums_dir_path) if album_config['cover_file'] else None
 
         indexes.append((

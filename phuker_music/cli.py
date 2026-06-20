@@ -25,7 +25,7 @@ def _player_command(shell_args: argparse.Namespace) -> None:
         'album_dir_path': shell_args.album_dir_path,
         'title': shell_args.title,
         'cover_file': shell_args.cover,
-        'output_filename': shell_args.output_filename,
+        'player_filename': shell_args.player_filename,
         'recursively': shell_args.recursively,
         'sort_type': shell_args.sort_type,
     }
@@ -51,10 +51,10 @@ def _add_player_subparser(subparsers: argparse._SubParsersAction) -> None:
     parser_player.add_argument('album_dir_path', metavar='dir_path', help='Path to the album directory')
     parser_player.add_argument('-t', '--title', metavar='title', help='Album title, default: directory name')
     parser_player.add_argument('-c', '--cover', metavar='file', help='Album cover file path, relative to dir_path')
-    parser_player.add_argument('-o', '--output-filename', metavar='filename', default=constants.DEFAULT_OUTPUT_FILENAME, help='Output filename, default: %(default)s')
+    parser_player.add_argument('--player-filename', metavar='filename', default=constants.DEFAULT_PLAYER_FILENAME, help='Player filename, default: %(default)s')
     parser_player.add_argument('-r', '--recursively', action='store_true', help='Recursively scan subdirectories for audio files')
     parser_player.add_argument('--sort-type', metavar='type', choices=constants.CHOICES_SORT_TYPE, default=constants.DEFAULT_SORT_TYPE, help='Sort type, choices: %(choices)s, default: %(default)s')
-    parser_player.add_argument('-f', '--force', action='store_true', help='Overwrite output file if it exists')
+    parser_player.add_argument('-f', '--force', action='store_true', help='Overwrite player file if it exists')
     parser_player.add_argument('-v', '--verbose', action='count', default=0, dest='sub_verbose', help='Increase verbosity level')
 
     parser_player.set_defaults(func=_player_command)
@@ -69,7 +69,7 @@ def _add_albums_subparser(subparsers: argparse._SubParsersAction) -> None:
     )
 
     parser_albums.add_argument('albums_config_file_path', metavar='config_file', help='Albums config file path')
-    parser_albums.add_argument('-f', '--force', action='store_true', help='Overwrite output file if it exists')
+    parser_albums.add_argument('-f', '--force', action='store_true', help='Overwrite index page and player files if they exist')
     parser_albums.add_argument('-v', '--verbose', action='count', default=0, dest='sub_verbose', help='Increase verbosity level')
 
     parser_albums.set_defaults(func=_albums_command)

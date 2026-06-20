@@ -36,7 +36,7 @@ def generate(album_config: dict, *, base_dir_path: str = '.', overwrite: bool = 
 - 第一个参数为 `album_config` 字典，不展开为独立 kwargs
 - 内部首先调用 `normalize_album_config(album_config, base_dir_path=base_dir_path)` 校验和标准化（默认 `absolute=True`，返回绝对路径）
 - **`overwrite` 不在 `album_config` 字典中**，是独立参数
-- `album_config` 字段：`album_dir_path`、`title`、`cover_file`、`output_filename`、`recursively`、`sort_type`，各调用点、CLI 参数声明、保存配置文件均保持顺序一致
+- `album_config` 字段：`album_dir_path`、`title`、`cover_file`、`player_filename`、`recursively`、`sort_type`，各调用点、CLI 参数声明、保存配置文件均保持顺序一致
 
 ## `normalize_album_config()` — `player.py:111`
 
@@ -70,7 +70,7 @@ def generate(album_config: dict, *, base_dir_path: str = '.', overwrite: bool = 
 
 # 路径逃逸限制
 
-- **`album_config` 中**：`cover_file` 必须位于 `album_dir_path` 内（`player.py:141`），`output_filename` 不能包含 `/` 或 `\`（`player.py:126`）
+- **`album_config` 中**：`cover_file` 必须位于 `album_dir_path` 内（`player.py:141`），`player_filename` 不能包含 `/` 或 `\`（`player.py:126`）
 - **`albums_config` 中**：`albums_index_file_path` 和每个 `album_dir_path` 必须位于 `base_dir_path` 内（`albums.py:22, 28-31`）
 - **`player` CLI**：无路径逃逸限制（`normalize_album_config` 不做 `is_sub_path` 检查）
 

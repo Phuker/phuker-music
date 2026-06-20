@@ -113,7 +113,7 @@ def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.'
         'album_dir_path': None,
         'title': None,
         'cover_file': None,
-        'output_filename': constants.DEFAULT_OUTPUT_FILENAME,
+        'player_filename': constants.DEFAULT_PLAYER_FILENAME,
         'recursively': False,
         'sort_type': constants.DEFAULT_SORT_TYPE,
     }
@@ -122,8 +122,8 @@ def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.'
     utils.assert_(isinstance(album_config['album_dir_path'], str) and album_config['album_dir_path'], f'invalid album_dir_path: {album_config["album_dir_path"]!r}')
     utils.assert_(isinstance(album_config['title'], (str, type(None))), f'invalid album_config: {album_config!r}')
     utils.assert_(isinstance(album_config['cover_file'], (str, type(None))), f'invalid album_config: {album_config!r}')
-    utils.assert_(isinstance(album_config['output_filename'], str), f'invalid album_config: {album_config!r}')
-    utils.assert_('/' not in album_config['output_filename'] and '\\' not in album_config['output_filename'], f'output_filename must not contain path separators: {album_config["output_filename"]!r}')
+    utils.assert_(isinstance(album_config['player_filename'], str), f'invalid album_config: {album_config!r}')
+    utils.assert_('/' not in album_config['player_filename'] and '\\' not in album_config['player_filename'], f'player_filename must not contain path separators: {album_config["player_filename"]!r}')
     utils.assert_(isinstance(album_config['recursively'], bool), f'invalid album_config: {album_config!r}')
     utils.assert_(isinstance(album_config['sort_type'], str), f'invalid album_config: {album_config!r}')
 
@@ -141,8 +141,8 @@ def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.'
         utils.assert_(utils.is_sub_path(album_config['cover_file'], album_dir_path), f'cover_file must be within album_dir_path: {album_config["cover_file"]!r}')
         utils.assert_(os_path.isfile(album_config['cover_file']), f'cover_file does not exist: {album_config["cover_file"]!r}')
 
-    if not album_config['output_filename']:
-        album_config['output_filename'] = constants.DEFAULT_OUTPUT_FILENAME
+    if not album_config['player_filename']:
+        album_config['player_filename'] = constants.DEFAULT_PLAYER_FILENAME
 
     if not absolute:
         album_config['album_dir_path'] = utils.get_rel_path(album_config['album_dir_path'], base_dir_path)
@@ -179,10 +179,10 @@ def generate(album_config: dict, *, base_dir_path: str = '.', overwrite: bool = 
         storage_key_prefix=storage_key_prefix,
     )
 
-    output_file_path = os_path.join(album_config['album_dir_path'], album_config['output_filename'])
-    if os_path.exists(output_file_path) and not overwrite:
-        raise FileExistsError(f'Output file already exists: {output_file_path!r}, use -f/--force to overwrite')
+    player_file_path = os_path.join(album_config['album_dir_path'], album_config['player_filename'])
+    if os_path.exists(player_file_path) and not overwrite:
+        raise FileExistsError(f'Player file already exists: {player_file_path!r}, use -f/--force to overwrite')
 
-    logger.info('Writing to file: %r', output_file_path)
-    with open(output_file_path, 'w', encoding='UTF-8') as f:
+    logger.info('Writing to file: %r', player_file_path)
+    with open(player_file_path, 'w', encoding='UTF-8') as f:
         f.write(result)

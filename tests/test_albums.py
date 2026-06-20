@@ -48,8 +48,8 @@ class TestGetConfigFromDocs(unittest.TestCase):
             self.assertIn('sort_type', album)
             self.assertIsInstance(album['sort_type'], str)
 
-            self.assertIn('output_filename', album)
-            self.assertEqual(album['output_filename'], constants.DEFAULT_OUTPUT_FILENAME)
+            self.assertIn('player_filename', album)
+            self.assertEqual(album['player_filename'], constants.DEFAULT_PLAYER_FILENAME)
 
     def test_default_fields(self):
         albums_config_file_path = os_path.join(TEST_FILES_DIR, 'albums.test.json')
@@ -167,7 +167,7 @@ class TestMain(unittest.TestCase):
         album_dir = os_path.join(self.tmpdir, 'album')
         shutil.copytree(src, album_dir)
 
-        player_html = os_path.join(album_dir, constants.DEFAULT_OUTPUT_FILENAME)
+        player_html = os_path.join(album_dir, constants.DEFAULT_PLAYER_FILENAME)
         if os_path.exists(player_html):
             os.remove(player_html)
 
@@ -208,7 +208,7 @@ class TestMain(unittest.TestCase):
         album_dir = os_path.join(self.tmpdir, 'album')
         shutil.copytree(src, album_dir)
 
-        player_html = os_path.join(album_dir, constants.DEFAULT_OUTPUT_FILENAME)
+        player_html = os_path.join(album_dir, constants.DEFAULT_PLAYER_FILENAME)
         if os_path.exists(player_html):
             os.remove(player_html)
 
@@ -262,7 +262,7 @@ class TestMain(unittest.TestCase):
         with open(index_html, 'r', encoding='UTF-8') as f:
             index_content = f.read()
 
-        player_html = os_path.join(album_dir, constants.DEFAULT_OUTPUT_FILENAME)
+        player_html = os_path.join(album_dir, constants.DEFAULT_PLAYER_FILENAME)
         with open(player_html, 'r', encoding='UTF-8') as f:
             player_content = f.read()
 

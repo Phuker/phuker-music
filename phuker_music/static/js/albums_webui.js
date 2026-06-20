@@ -31,7 +31,7 @@ function createAlbumConfig(dirPath) {
         album_dir_path: dirPath,
         title: '',
         cover_file: null,
-        output_filename: 'player.html',
+        player_filename: 'player.html',
         recursively: false,
         sort_type: 'filename',
     };
