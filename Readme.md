@@ -107,7 +107,7 @@ Open `player.html` in a browser to use the player.
 Then run:
 
 ```bash
-phuker-music albums-webui ./albums.json
+phuker-music albums-webui ./albums.json .
 ```
 
 Visit <http://127.0.0.1:8000/> in a browser, drag albums from the Available column to the Albums column, click the `Save & Generate` button at the top, and you will get:
@@ -157,22 +157,22 @@ options:
 
 ```console
 $ phuker-music player --help
-usage: phuker-music player [-h] [-t title] [-c file] [-o filename] [-r] [--sort-type type] [-f] [-v] dir_path
+usage: phuker-music player [-h] [-t title] [-c file] [--player-filename filename] [-r] [--sort-type type] [-f] [-v] dir_path
 
 Generate music player HTML for a single album
 
 positional arguments:
-  dir_path                        Path to the album directory
+  dir_path                    Path to the album directory
 
 options:
-  -h, --help                      show this help message and exit
-  -t, --title title               Album title, default: directory name
-  -c, --cover file                Album cover file path, relative to dir_path
-  -o, --output-filename filename  Output filename, default: player.html
-  -r, --recursively               Recursively scan subdirectories for audio files
-  --sort-type type                Sort type, choices: filename, mtime_desc, default: filename
-  -f, --force                     Overwrite output file if it exists
-  -v, --verbose                   Increase verbosity level
+  -h, --help                  show this help message and exit
+  -t, --title title           Album title, default: directory name
+  -c, --cover file            Album cover file path, relative to dir_path
+  --player-filename filename  Player filename, default: player.html
+  -r, --recursively           Recursively scan subdirectories for audio files
+  --sort-type type            Sort type, choices: filename, mtime_desc, default: filename
+  -f, --force                 Overwrite player file if it exists
+  -v, --verbose               Increase verbosity level
 ```
 
 ```console
@@ -186,18 +186,19 @@ positional arguments:
 
 options:
   -h, --help     show this help message and exit
-  -f, --force    Overwrite output file if it exists
+  -f, --force    Overwrite index page and player files if they exist
   -v, --verbose  Increase verbosity level
 ```
 
 ```console
 $ phuker-music albums-webui --help
-usage: phuker-music albums-webui [-h] [--host host] [--port port] [--trusted-host host] [-v] config_file
+usage: phuker-music albums-webui [-h] [--host host] [--port port] [--trusted-host host] [-v] config_file dir_path
 
 Launch a web UI to edit albums config and generate player and index HTML for multiple albums
 
 positional arguments:
   config_file          Albums config file path
+  dir_path             Albums directory path
 
 options:
   -h, --help           show this help message and exit

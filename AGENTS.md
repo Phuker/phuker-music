@@ -133,3 +133,4 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
 - **测试 `mtime_desc` 排序** — Makefile 中 `make test` 先 touch 测试文件设置固定 mtime，再运行测试
 - **`albums-webui` CLI** — 需两个位置参数：`<albums_config_file_path> <albums_dir_path>`
 - **`albums_webui` 线程** — scan 和 generate 使用 `threading.Lock` + daemon thread，模块级全局状态（`scan_status`、`generate_status`）
+- **CSS 规范** — font-size 使用绝对大小关键字（`large`/`medium`/`small`/`x-large`），不硬编码 px；albums_webui.css 中 font-family 使用 CSS 变量 `var(--font-ui)`/`var(--font-mono)`

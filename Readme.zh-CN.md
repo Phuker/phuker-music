@@ -107,7 +107,7 @@ phuker-music player --force --cover Cover.jpg .
 然后运行：
 
 ```bash
-phuker-music albums-webui ./albums.json
+phuker-music albums-webui ./albums.json .
 ```
 
 在浏览器中访问 <http://127.0.0.1:8000/>，将专辑从 Available 列拖拽到 Albums 列，点击顶部的 `Save & Generate` 按钮，你将会得到：
@@ -147,7 +147,7 @@ $ phuker-music --help
   command
     player        为单张专辑生成音乐播放器 HTML
     albums        为多张专辑生成播放器和索引页 HTML
-    albums-webui  启动 Web UI 以编辑专辑配置并生成播放器和索引页 HTML
+    albums-webui  启动 Web UI 以编辑多张专辑配置并生成播放器和索引页 HTML
 
 可选参数：
   -h, --help      显示此帮助信息并退出
@@ -157,22 +157,22 @@ $ phuker-music --help
 
 ```console
 $ phuker-music player --help
-用法：phuker-music player [-h] [-t title] [-c file] [-o filename] [-r] [--sort-type type] [-f] [-v] dir_path
+用法：phuker-music player [-h] [-t title] [-c file] [--player-filename filename] [-r] [--sort-type type] [-f] [-v] dir_path
 
 为单张专辑生成音乐播放器 HTML
 
 位置参数：
-  dir_path                        专辑目录路径
+  dir_path                    专辑目录路径
 
 可选参数：
-  -h, --help                      显示此帮助信息并退出
-  -t, --title title               专辑标题，默认：目录名
-  -c, --cover file                专辑封面文件路径，相对于 dir_path
-  -o, --output-filename filename  输出文件名，默认：player.html
-  -r, --recursively               递归扫描子目录中的音频文件
-  --sort-type type                排序方式，可选：filename, mtime_desc，默认：filename
-  -f, --force                     若输出文件已存在则覆盖
-  -v, --verbose                   增加日志详细程度
+  -h, --help                  显示此帮助信息并退出
+  -t, --title title           专辑标题，默认：目录名
+  -c, --cover file            专辑封面文件路径，相对于 dir_path
+  --player-filename filename  播放器文件名，默认：player.html
+  -r, --recursively           递归扫描子目录中的音频文件
+  --sort-type type            排序方式，可选：filename, mtime_desc，默认：filename
+  -f, --force                 若播放器文件已存在则覆盖
+  -v, --verbose               增加日志详细程度
 ```
 
 ```console
@@ -182,22 +182,23 @@ $ phuker-music albums --help
 为多张专辑生成播放器和索引页 HTML
 
 位置参数：
-  config_file    专辑配置文件路径
+  config_file    多张专辑配置文件路径
 
 可选参数：
   -h, --help     显示此帮助信息并退出
-  -f, --force    若输出文件已存在则覆盖
+  -f, --force    若索引页和播放器文件已存在则覆盖
   -v, --verbose  增加日志详细程度
 ```
 
 ```console
 $ phuker-music albums-webui --help
-用法：phuker-music albums-webui [-h] [--host host] [--port port] [--trusted-host host] [-v] config_file
+用法：phuker-music albums-webui [-h] [--host host] [--port port] [--trusted-host host] [-v] config_file dir_path
 
-启动 Web UI 以编辑专辑配置并生成播放器和索引页 HTML
+启动 Web UI 以编辑多张专辑配置并生成播放器和索引页 HTML
 
 位置参数：
-  config_file          专辑配置文件路径
+  config_file          多张专辑配置文件路径
+  dir_path             多张专辑目录路径
 
 可选参数：
   -h, --help           显示此帮助信息并退出
