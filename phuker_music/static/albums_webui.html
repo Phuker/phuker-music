@@ -14,14 +14,8 @@
 <body>
     <div id="app">
         <div id="top-bar">
-            <label>
-                Albums directory: <span>{{ albumsDirPath }}</span>
-            </label>
-            <label>
-                Index filename:
-                <input type="text" v-model="albumsIndexFilename" placeholder="index.html">
-            </label>
-            <button id="btn-publish" @click="actionPublish" :disabled="isPublishing">Save &amp; Generate</button>
+            <h1>Albums config editor</h1>
+            <button id="btn-publish" @click="actionPublish" :disabled="scanStatus !== 'done' || isPublishing">Save &amp; Generate</button>
         </div>
 
         <div id="scan-progress" v-show="scanStatus !== 'done'" v-cloak>
@@ -32,6 +26,16 @@
         <div id="main-content" v-show="scanStatus === 'done'" v-cloak>
             <div id="columns">
                 <div id="column-left">
+                    <div class="column-header">
+                        <h2>Albums config</h2>
+                    </div>
+                    <div id="config-info">
+                        <label>Albums directory: <span>{{ albumsDirPath }}</span></label>
+                        <label>
+                            Index filename:
+                            <input type="text" v-model="albumsIndexFilename" placeholder="e.g. index.html">
+                        </label>
+                    </div>
                     <div class="column-header">
                         <h2>Albums</h2>
                     </div>
@@ -47,6 +51,7 @@
                                         <img class="drag-handle" src="./static/images/draggable.png" alt="Drag to reorder">
                                         <span class="card-label">Path:</span>
                                         <span class="card-path">{{ element.album_dir_path }}</span>
+                                        <button class="btn-delete" @click="actionDeleteAlbum(element)">&times;</button>
                                     </div>
                                     <div class="card-row">
                                         <label>Title:</label>
@@ -73,7 +78,6 @@
                                             <option value="mtime_desc">mtime_desc</option>
                                         </select>
                                     </div>
-                                    <button class="btn-delete" @click="actionDeleteAlbum(element)">Delete</button>
                                 </div>
                             </template>
                         </draggable>
