@@ -72,7 +72,7 @@ class TestAlbumsWebUI(unittest.TestCase):
     def test_index_page(self):
         resp = self.app.get('/')
         self.assertEqual(resp.status_code, 200)
-        self.assertIn('Albums config editor', resp.text)
+        self.assertIn('Albums Manager', resp.text)
 
     def test_scan_empty_dir(self):
         resp = self.app.post('/api/scan')
