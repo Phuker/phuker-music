@@ -160,14 +160,14 @@ def get_web_app_manifest_data_url(albums_index_file_path: str) -> str:
         ],
     }
 
-    manifest_json = json.dumps(manifest, separators=(',', ':'))
+    manifest_json = json.dumps(manifest, separators=(',', ':'), ensure_ascii=False)
     manifest_base64 = base64.b64encode(manifest_json.encode()).decode()
 
     return f'data:application/manifest+json;base64,{manifest_base64}'
 
 
 def safe_json_encode(obj: object) -> str:
-    result = json.dumps(obj, indent=4)
+    result = json.dumps(obj, indent=4, ensure_ascii=False)
 
     # Like PHP JSON_HEX_TAG, prevent XSS
     # https://www.php.net/manual/en/json.constants.php

@@ -86,7 +86,7 @@ class TestGetConfigFromTemp(unittest.TestCase):
 
     def _write_config(self, albums_config):
         with open(self.albums_config_file_path, 'w', encoding='UTF-8') as f:
-            json.dump(albums_config, f)
+            json.dump(albums_config, f, indent=4, ensure_ascii=False)
             f.write('\n')
 
     def test_nonexistent_album_dir_path(self):
@@ -170,7 +170,7 @@ class TestMain(unittest.TestCase):
 
         albums_config_file_path = os_path.join(self.tmpdir, 'config.json')
         with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
-            json.dump(albums_config, f)
+            json.dump(albums_config, f, indent=4, ensure_ascii=False)
             f.write('\n')
 
         main(albums_config_file_path, overwrite=True)
@@ -211,7 +211,7 @@ class TestMain(unittest.TestCase):
 
         albums_config_file_path = os_path.join(self.tmpdir, 'config.json')
         with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
-            json.dump(albums_config, f)
+            json.dump(albums_config, f, indent=4, ensure_ascii=False)
             f.write('\n')
 
         main(albums_config_file_path, overwrite=True)  # first run succeeds
@@ -238,7 +238,7 @@ class TestMain(unittest.TestCase):
 
         albums_config_file_path = os_path.join(self.tmpdir, 'config.json')
         with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
-            json.dump(albums_config, f)
+            json.dump(albums_config, f, indent=4, ensure_ascii=False)
             f.write('\n')
 
         main(albums_config_file_path, overwrite=True)
@@ -277,7 +277,7 @@ class TestMain(unittest.TestCase):
 
         albums_config_file_path = os_path.join(self.tmpdir, 'config.json')
         with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
-            json.dump(albums_config, f)
+            json.dump(albums_config, f, indent=4, ensure_ascii=False)
             f.write('\n')
 
         main(albums_config_file_path, overwrite=True)
