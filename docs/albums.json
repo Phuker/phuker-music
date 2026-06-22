@@ -8,7 +8,8 @@
         },
         {
             "album_dir_path": "./Nature/",
-            "cover_file": "Cover.jpg"
+            "cover_file": "Cover.jpg",
+            "recursively": true
         }
     ]
 }
