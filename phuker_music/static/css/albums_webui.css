@@ -103,7 +103,7 @@ body {
     margin-bottom: 8px;
     background: #fff;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: 8px;
 }
 
 #config-info label {
@@ -194,7 +194,7 @@ body {
 .album-card {
     background: #fff;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 12px;
     margin-bottom: 8px;
 }
@@ -244,7 +244,7 @@ body {
     width: 0;
     padding: 3px 6px;
     border: 1px solid #ddd;
-    border-radius: 3px;
+    border-radius: 4px;
     font-size: medium;
 }
 
@@ -270,7 +270,7 @@ body {
     gap: 6px;
     padding: 8px 12px;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: 8px;
     background: #fff;
     margin-bottom: 8px;
     font-family: var(--font-mono);
@@ -295,7 +295,7 @@ body {
 
 .toast-item {
     padding: 10px 24px;
-    border-radius: 6px;
+    border-radius: 4px;
     color: #fff;
     max-width: 100%;
 }
