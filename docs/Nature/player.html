@@ -133,16 +133,44 @@ https://github.com/Phuker/phuker-music
 
     li.dirname {
         font-weight: bold;
+        height: auto;
+        white-space: normal;
+        word-break: break-word;
     }
 
     li.item {
+        display: flex;
+        align-items: center;
         cursor: pointer;
+        scrollbar-width: none;
 
         border-style: solid;
         border-width: 2px;
         border-color: rgba(255, 255, 255, 0.85) rgba(255, 255, 255, 0.5);
         border-radius: 8px;
         background-color: rgba(224, 224, 224, 0.6);
+    }
+
+    li.item::-webkit-scrollbar {
+        display: none;
+    }
+
+    span.music_name {
+        flex: 1;
+        min-width: 0;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    span.music_name::-webkit-scrollbar {
+        display: none;
+    }
+
+    span.metadata {
+        flex-shrink: 0;
+        margin-left: 1em;
+        white-space: nowrap;
+        color: #aaa;
     }
 
     .ctrlBtn {
@@ -207,11 +235,6 @@ https://github.com/Phuker/phuker-music
         opacity: 0;
         transition: opacity 0.3s;
         -webkit-transition: opacity 0.3s;
-    }
-
-    span.metadata {
-        margin-left: 1em;
-        color: #aaa;
     }
 
     @media (max-width: 767px) {
@@ -284,15 +307,39 @@ https://github.com/Phuker/phuker-music
 
 <ul id="itemsList">
     <li class="dirname">Weather</li>
-    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(0)" onkeydown="keydownPlayItem(event, 0)" id="item0">Rain<span class="metadata">0:06</span></li>
-    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(1)" onkeydown="keydownPlayItem(event, 1)" id="item1">Thunder Clap2<span class="metadata">0:07</span></li>
-    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(2)" onkeydown="keydownPlayItem(event, 2)" id="item2">Thunder<span class="metadata">0:06</span></li>
+    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(0)" onkeydown="keydownPlayItem(event, 0)" id="item0">
+        <span class="music_name">Rain</span>
+        <span class="metadata">0:06</span>
+    </li>
+    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(1)" onkeydown="keydownPlayItem(event, 1)" id="item1">
+        <span class="music_name">Thunder Clap2</span>
+        <span class="metadata">0:07</span>
+    </li>
+    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(2)" onkeydown="keydownPlayItem(event, 2)" id="item2">
+        <span class="music_name">Thunder</span>
+        <span class="metadata">0:06</span>
+    </li>
     <li class="dirname">Wildlife</li>
-    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(3)" onkeydown="keydownPlayItem(event, 3)" id="item3">FL Mocking birds<span class="metadata">0:07</span></li>
-    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(4)" onkeydown="keydownPlayItem(event, 4)" id="item4">Frogs and nature in Southern Brasil in August<span class="metadata">0:06</span></li>
-    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(5)" onkeydown="keydownPlayItem(event, 5)" id="item5">Morning birds<span class="metadata">0:07</span></li>
-    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(6)" onkeydown="keydownPlayItem(event, 6)" id="item6">Nature<span class="metadata">0:15</span></li>
-    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(7)" onkeydown="keydownPlayItem(event, 7)" id="item7">cricket<span class="metadata">0:07</span></li>
+    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(3)" onkeydown="keydownPlayItem(event, 3)" id="item3">
+        <span class="music_name">FL Mocking birds</span>
+        <span class="metadata">0:07</span>
+    </li>
+    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(4)" onkeydown="keydownPlayItem(event, 4)" id="item4">
+        <span class="music_name">Frogs and nature in Southern Brasil in August</span>
+        <span class="metadata">0:06</span>
+    </li>
+    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(5)" onkeydown="keydownPlayItem(event, 5)" id="item5">
+        <span class="music_name">Morning birds</span>
+        <span class="metadata">0:07</span>
+    </li>
+    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(6)" onkeydown="keydownPlayItem(event, 6)" id="item6">
+        <span class="music_name">Nature</span>
+        <span class="metadata">0:15</span>
+    </li>
+    <li class="item" tabindex="0" role="button" onclick="clickPlayItem(7)" onkeydown="keydownPlayItem(event, 7)" id="item7">
+        <span class="music_name">cricket</span>
+        <span class="metadata">0:07</span>
+    </li>
 </ul>
 <footer>
 <div id="playerLine">

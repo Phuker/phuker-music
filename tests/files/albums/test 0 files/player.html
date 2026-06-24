@@ -133,16 +133,44 @@ https://github.com/Phuker/phuker-music
 
     li.dirname {
         font-weight: bold;
+        height: auto;
+        white-space: normal;
+        word-break: break-word;
     }
 
     li.item {
+        display: flex;
+        align-items: center;
         cursor: pointer;
+        scrollbar-width: none;
 
         border-style: solid;
         border-width: 2px;
         border-color: rgba(255, 255, 255, 0.85) rgba(255, 255, 255, 0.5);
         border-radius: 8px;
         background-color: rgba(224, 224, 224, 0.6);
+    }
+
+    li.item::-webkit-scrollbar {
+        display: none;
+    }
+
+    span.music_name {
+        flex: 1;
+        min-width: 0;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    span.music_name::-webkit-scrollbar {
+        display: none;
+    }
+
+    span.metadata {
+        flex-shrink: 0;
+        margin-left: 1em;
+        white-space: nowrap;
+        color: #aaa;
     }
 
     .ctrlBtn {
@@ -207,11 +235,6 @@ https://github.com/Phuker/phuker-music
         opacity: 0;
         transition: opacity 0.3s;
         -webkit-transition: opacity 0.3s;
-    }
-
-    span.metadata {
-        margin-left: 1em;
-        color: #aaa;
     }
 
     @media (max-width: 767px) {
