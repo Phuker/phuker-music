@@ -23,7 +23,10 @@ https://github.com/Phuker/phuker-music
     <img src="{{ cover_file or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover of: {{ title }}" />
 </div>
 <div class="container" id="container">
+<header>
 <h1 id="album-title" title="{{ title }}" role="button" tabindex="0">{{ title }}</h1>
+</header>
+
 <dialog id="album-details">
     <div class="album-details-inner">
         <img src="{{ cover_file or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover of: {{ title }}" />
@@ -32,6 +35,7 @@ https://github.com/Phuker/phuker-music
 </dialog>
 <img src="{{ read_static_file_as_data_url('images/loading.gif', 'image/gif') }}" id="imgLoading" alt="" />
 
+<main>
 <ul id="itemsList">
 {%- for music_info_group in music_info_groups %}
     {%- if music_info_group.name %}
@@ -45,7 +49,7 @@ https://github.com/Phuker/phuker-music
     {%- endfor %}
 {%- endfor %}
 </ul>
-<footer>
+
 <div id="playerLine">
     <div id="ctrlBtnGroup">
         <button class="ctrlBtn" id="btnPlayPrevious" aria-label="Previous track">
@@ -63,7 +67,8 @@ https://github.com/Phuker/phuker-music
     </div>
     <audio src="" controls id="player" class="player" preload="auto">Your browser does not support the audio element.</audio>
 </div>
-</footer>
+</main>
+</div>
 
 <script type="text/javascript">
     const IMG_BASE64_DATA_CHECK = {{ read_static_file_as_data_url('images/check.png', 'image/png') | safe_json_encode | safe }};
@@ -83,6 +88,5 @@ https://github.com/Phuker/phuker-music
 <script type="text/javascript">
     {{ read_static_file_as_text('js/player.js') | trim | indent(4) | safe }}
 </script>
-</div>
 </body>
 </html>

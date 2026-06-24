@@ -14,8 +14,11 @@ body {
     background-attachment: fixed;
 }
 
-h1 {
+header {
     flex-shrink: 0;
+}
+
+h1 {
     max-width: 100%;
     width: fit-content;
     margin: 0.5em 0;
@@ -27,15 +30,6 @@ h1 {
     font-family: Georgia, "Nimbus Roman No9 L", "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "Source Han Serif CN", STSong, "AR PL New Sung", "AR PL SungtiL GB", NSimSun, SimSun, "TW-Sung", "WenQuanYi Bitmap Song", "AR PL UMing CN", "AR PL UMing HK", "AR PL UMing TW", "AR PL UMing TW MBE", PMingLiU, MingLiU, serif;
     font-weight: lighter;
     font-size: x-large;
-}
-
-footer {
-    flex-shrink: 0;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    padding-top: 1em;
-    padding-bottom: 1em;
 }
 
 dialog#album-details {
@@ -85,6 +79,13 @@ dialog[open]#album-details::backdrop {
 audio.player {
     flex: 1;
     border: none;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
 }
 
 ul {
@@ -179,6 +180,9 @@ img.icon {
 }
 
 #playerLine {
+    flex-shrink: 0;
+    padding: 1em 0;
+
     display: flex;
     align-items: center;
     gap: 8px;
@@ -208,6 +212,10 @@ img.icon {
     max-width: 70%;
     max-height: 70%;
     border-radius: 4px;
+}
+
+#pageLoading h1 {
+    flex-shrink: 0;
 }
 
 .container {

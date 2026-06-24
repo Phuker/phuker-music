@@ -23,8 +23,10 @@ body {
 }
 
 h1 {
+    max-width: 100%;
     width: fit-content;
     margin: 0.5em 0;
+    overflow-wrap: break-word;
 
     /* https://github.com/zenozeng/fonts.css */
     font-family: Georgia, "Nimbus Roman No9 L", "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "Source Han Serif CN", STSong, "AR PL New Sung", "AR PL SungtiL GB", NSimSun, SimSun, "TW-Sung", "WenQuanYi Bitmap Song", "AR PL UMing CN", "AR PL UMing HK", "AR PL UMing TW", "AR PL UMing TW MBE", PMingLiU, MingLiU, serif;
@@ -52,8 +54,7 @@ li a {
     color: black;
     text-decoration: none;
     padding: 8px;
-    display: inline-block;
-    width: 100%;
+    display: block;
 
     border-style: solid;
     border-width: 2px;
@@ -79,4 +80,5 @@ li a span.title {
     display: inline-block;
     width: calc(100% - 4em);
     vertical-align: middle;
+    overflow-wrap: break-word;
 }

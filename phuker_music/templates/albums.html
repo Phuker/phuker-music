@@ -25,7 +25,10 @@ https://github.com/Phuker/phuker-music
 
 <body>
 <div class="container">
+    <header>
     <h1>My Music Collections</h1>
+    </header>
+    <main>
     <ul>
         {%- for player_path, title, cover_path in indexes %}
         <li>
@@ -38,6 +41,7 @@ https://github.com/Phuker/phuker-music
         </li>
         {%- endfor %}
     </ul>
+    </main>
 </div>
 </body>
 
