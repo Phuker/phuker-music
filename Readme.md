@@ -2,18 +2,33 @@
 
 [Demo](https://phuker.github.io/phuker-music/) | [GitHub](https://github.com/Phuker/phuker-music) | [PyPI](https://pypi.org/project/phuker-music/) | Readme (English, [简体中文](https://github.com/Phuker/phuker-music/blob/main/Readme.zh-CN.md))
 
-Yet another HTML music player generator. Scan a directory of audio files and generate an offline, all-in-one single HTML player file. Also generates player pages for multiple albums plus an index page via a JSON config.
+Yet another HTML music player generator. Scan a directory of audio files and generate an offline, all-in-one single HTML player file. Also generates player pages for multiple albums plus an index page via a JSON config. You can open the generated HTML files directly in a browser, sync them along with your audio files across devices, or upload them to a web server.
 
-You can try the [demo](https://phuker.github.io/phuker-music/) to see what the generated index page and players look like. Grant system notification permission to display a notification when each track starts playing.
+You can try the [demo](https://phuker.github.io/phuker-music/) to see what the generated index page and players look like.
 
 ## Features
 
-- No loan ads or subscription popups
+### The crap you won't find
+
+- No account sign-up or paid subscription required
+- No 15-second preview limit
+- No loan ads popups
 - No AI
 - No tracking, analytics, statistics, or telemetry
 - No user data uploads
 - No extra assets — No JS/CSS dependencies, no web fonts, no CDN
 - **Only a fucking single HTML file**
+
+### What it does have
+
+- System notification on track start (requires permission)
+- Installable as a Progressive Web App (PWA)
+- Background playback persistence
+
+### What's not yet supported
+
+- Gapless playback
+- Follow system dark mode
 
 ## Install and run
 
@@ -147,7 +162,7 @@ positional arguments:
   command
     player        Generate music player HTML for a single album
     albums        Generate player and index HTML for multiple albums
-    albums-webui  Launch a web UI to edit albums config and generate player and index HTML for multiple albums
+    albums-webui  Launch a web UI to edit the albums config and generate player and index HTML for multiple albums
 
 options:
   -h, --help      show this help message and exit
@@ -194,7 +209,7 @@ options:
 $ phuker-music albums-webui --help
 usage: phuker-music albums-webui [-h] [--host host] [--port port] [--trusted-host host] [-v] config_file dir_path
 
-Launch a web UI to edit albums config and generate player and index HTML for multiple albums
+Launch a web UI to edit the albums config and generate player and index HTML for multiple albums
 
 positional arguments:
   config_file          Albums config file path
@@ -207,6 +222,13 @@ options:
   --trusted-host host  Add a trusted request hostname, can be specified multiple times, default: ['127.0.0.1', 'localhost']
   -v, --verbose        Increase verbosity level
 ```
+
+## Disclaimer
+
+1. This project is an open-source tool for personal learning and technical research only. It does not provide copyrighted music, pirated content, or cracking services.
+2. Users must comply with local laws and regulations when using this project. This software does not encourage, support, or participate in any form of intellectual property or copyright infringement.
+3. Any legal disputes, losses, or damages arising from the use of this project shall be borne solely by the user. The developer assumes no direct, indirect, or incidental legal liability.
+4. If any content in this project, including features, source code, or asset files, infringes upon your legal rights, please contact the developer promptly. We will remove or modify it upon verification.
 
 ## License
 

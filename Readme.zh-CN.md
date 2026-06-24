@@ -2,18 +2,33 @@
 
 [Demo](https://phuker.github.io/phuker-music/) | [GitHub](https://github.com/Phuker/phuker-music) | [PyPI](https://pypi.org/project/phuker-music/) | Readme ([English](https://github.com/Phuker/phuker-music/blob/main/Readme.md), 简体中文)
 
-HTML 音乐播放器生成器。扫描音频文件目录，生成离线单文件 HTML 播放器。也可以通过 JSON 配置文件，为多张专辑批量生成播放器页面及索引页。
+HTML 音乐播放器生成器。扫描音频文件目录，生成离线单文件 HTML 播放器。也可以通过 JSON 配置文件，为多张专辑批量生成播放器页面及索引页。你可以用浏览器直接打开生成的 HTML 文件，也可以将它们和音频文件一起在设备间同步，或上传到 Web 服务器使用。
 
-您可以访问 [demo](https://phuker.github.io/phuker-music/) 直接查看索引页和播放器的生成效果。授予系统通知权限后，每首曲目开始播放时，会弹出系统通知。
+您可以访问 [demo](https://phuker.github.io/phuker-music/) 直接查看索引页和播放器的生成效果。
 
 ## 功能特性
 
-- 没有贷款广告或会员订阅弹窗
+### 绝不存在的特性
+
+- 无需账号登录和付费订阅
+- 没有 15 秒试听限制
+- 没有贷款广告弹窗
 - 没有 AI
 - 没有追踪、分析、统计或遥测
 - 不上传任何用户数据
 - 没有额外资源 — 无 JS/CSS 依赖、无网络字体、无 CDN
 - **只有一个 HTML 文件**
+
+### 现有特性
+
+- 每首曲目开始播放时弹出系统通知（需要授予权限）
+- 可被安装为渐进式 Web 应用（PWA）
+- 后台播放防止冻结
+
+### 暂未支持
+
+- 无缝播放
+- 暗色模式跟随系统
 
 ## 安装与运行
 
@@ -70,7 +85,7 @@ phuker-music --help
 phuker-music player --force --cover Cover.jpg .
 ```
 
-你将会得到：
+结果如下：
 
 ```text
 .
@@ -110,7 +125,7 @@ phuker-music player --force --cover Cover.jpg .
 phuker-music albums-webui ./albums.json .
 ```
 
-在浏览器中访问 <http://127.0.0.1:8000/>，将专辑从 Available 列拖拽到 Albums 列，点击顶部的 `Save & Generate` 按钮，你将会得到：
+在浏览器中访问 <http://127.0.0.1:8000/>，将专辑从 Available 列拖拽到 Albums 列，点击顶部的 `Save & Generate` 按钮，结果如下：
 
 ```text
 .
@@ -207,6 +222,13 @@ $ phuker-music albums-webui --help
   --trusted-host host  添加受信任的请求主机名，可多次指定，默认：['127.0.0.1', 'localhost']
   -v, --verbose        增加日志详细程度
 ```
+
+## 免责声明
+
+1. 本项目是一个开源的、仅用于个人学习和技术研究的工具，不提供受版权保护的音乐、盗版内容或破解服务。
+2. 用户在使用本项目时，必须遵守当地的法律法规。本软件不鼓励、不支持、也不参与任何形式的侵犯知识产权或版权的行为。
+3. 任何个人或组织因使用本项目而导致的任何法律纠纷、损失或损害，均由使用者自行承担，开发者不承担任何直接、间接或附带的法律责任。
+4. 如果本项目中的任何内容（包括功能、代码或资产文件）侵犯了您的合法权益，请及时联系开发者，我们将在确认后第一时间进行删除或修改。
 
 ## 许可证
 
