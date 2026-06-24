@@ -18,15 +18,15 @@ https://github.com/Phuker/phuker-music
     </style>
 </head>
 <body>
-<div id="pageLoading" role="status" aria-label="Loading">
+<div id="pageLoading" role="status">
     <h1>{{ title }}</h1>
-    <img src="{{ cover_file or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover image of: {{ title }}" />
+    <img src="{{ cover_file or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover of: {{ title }}" />
 </div>
 <div class="container" id="container">
-<h1 id="album-title" title="{{ title }}" role="button" tabindex="0" aria-label="View album details">{{ title }}</h1>
+<h1 id="album-title" title="{{ title }}" role="button" tabindex="0">{{ title }}</h1>
 <dialog id="album-details">
     <div class="album-details-inner">
-        <img src="{{ cover_file or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover image of: {{ title }}" />
+        <img src="{{ cover_file or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover of: {{ title }}" />
         <p class="album-details-title">{{ title }}</p>
     </div>
 </dialog>
@@ -38,7 +38,7 @@ https://github.com/Phuker/phuker-music
     <li class="dirname">{{ music_info_group.name }}</li>
     {%- endif%}
     {%- for music_info in music_info_group.music_info_sub_list %}
-    <li class="item" tabindex="0" role="button" aria-label="{{ music_info.name }}" onclick="clickPlayItem({{ music_info.index }})" onkeydown="keydownPlayItem(event, {{ music_info.index }})" id="item{{ music_info.index }}">{{ music_info.name }}<span class="metadata">{{ music_info.duration_str or music_info.file_size_str }}</span></li>
+    <li class="item" tabindex="0" role="button" onclick="clickPlayItem({{ music_info.index }})" onkeydown="keydownPlayItem(event, {{ music_info.index }})" id="item{{ music_info.index }}">{{ music_info.name }}<span class="metadata">{{ music_info.duration_str or music_info.file_size_str }}</span></li>
     {%- endfor %}
 {%- endfor %}
 </ul>

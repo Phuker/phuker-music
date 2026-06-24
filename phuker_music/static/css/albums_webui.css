@@ -106,7 +106,7 @@ body {
     border-radius: 8px;
 }
 
-#config-info label {
+#config-info label, #config-info p {
     display: flex;
     align-items: center;
     gap: 4px;

@@ -18,19 +18,19 @@
             <button id="btn-publish" type="submit" form="column-left" :disabled="scanStatus !== 'done' || isPublishing">Save &amp; Generate</button>
         </div>
 
-        <div id="scan-progress" v-show="scanStatus !== 'done'" v-cloak>
+        <div id="scan-progress" v-show="scanStatus !== 'done'" v-cloak aria-live="polite" role="status">
             <div>Scanning directories for audio and image files...</div>
             <div>Scanned {{ scannedDirs }} directories</div>
         </div>
 
-        <div id="main-content" v-show="scanStatus === 'done'" v-cloak>
+        <div id="main-content" v-show="scanStatus === 'done'" v-cloak aria-live="polite">
             <div id="columns">
                 <form id="column-left" @submit.prevent="actionPublish">
                     <div class="column-header">
                         <h2>Albums config</h2>
                     </div>
                     <div id="config-info">
-                        <label>Albums directory: <span>{{ albumsDirPath }}</span></label>
+                        <p>Albums directory: <span>{{ albumsDirPath }}</span></p>
                         <label>
                             Index filename:
                             <input type="text" v-model="albumsIndexFilename" placeholder="e.g. index.html" required>
@@ -48,10 +48,10 @@
                             <template #item="{ element }">
                                 <div class="album-card">
                                     <div class="card-row">
-                                        <img class="drag-handle" src="./static/images/draggable.png" alt="Drag to reorder">
+                                        <img class="drag-handle" src="./static/images/draggable.png" alt="Drag to reorder" title="Drag to reorder">
                                         <span class="card-label">Path:</span>
                                         <span class="card-path">{{ element.album_dir_path }}</span>
-                                        <button class="btn-delete" @click="actionDeleteAlbum(element)">&times;</button>
+                                        <button class="btn-delete" @click="actionDeleteAlbum(element)" aria-label="Delete">&times;</button>
                                     </div>
                                     <div class="card-row">
                                         <label>Title:</label>
@@ -98,7 +98,7 @@
                             :animation="150">
                             <template #item="{ element }">
                                 <div class="available-item">
-                                    <img class="drag-handle" src="./static/images/draggable.png" alt="Drag">
+                                    <img class="drag-handle" src="./static/images/draggable.png" alt="Drag" title="Drag">
                                     {{ element.album_dir_path }}
                                 </div>
                             </template>
@@ -108,7 +108,7 @@
             </div>
         </div>
 
-        <div id="toast-container">
+        <div id="toast-container" aria-live="polite">
             <div v-for="toast in toasts" :key="toast.id" class="toast-item" :class="toast.type">{{ toast.text }}</div>
         </div>
     </div>
