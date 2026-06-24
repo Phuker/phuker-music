@@ -133,6 +133,8 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
 - **测试 `mtime_desc` 排序** — Makefile 中 `make test` 先 touch 测试文件设置固定 mtime，再运行测试
 - **`albums-webui` CLI** — 需两个位置参数：`<albums_config_file_path> <albums_dir_path>`
 - **`albums_webui` 线程** — scan 和 generate 使用 `threading.Lock` + daemon thread，模块级全局状态（`scan_status`、`generate_status`）
-- **CSS 规范** — font-size 使用绝对大小关键字（`large`/`medium`/`small`/`x-large`），不硬编码 px；albums_webui.css 中 font-family 使用 CSS 变量 `var(--font-ui)`/`var(--font-mono)`
+- **CSS 规范** — CSS 规则顺序按对应 HTML 中的 DOM 出现顺序排列，`@media` / `::-webkit-scrollbar` / `@starting-style` 等全局规则放文件末尾；font-size 使用绝对大小关键字（`large`/`medium`/`small`/`x-large`），不硬编码 px；albums_webui.css 中 font-family 使用 CSS 变量 `var(--font-ui)`/`var(--font-mono)`
 - **CSS 隐藏滚动条** — 使用两个规则 `scrollbar-width: none` + `::-webkit-scrollbar { display: none }`，player 中 `ul`、`li.item`、`span.music_name` 均遵循此模式
 - **player 前端 `li.item` 结构** — 为 flex 容器，歌曲名包在 `span.music_name` 可独立横向滚动（`flex: 1; min-width: 0`），`span.metadata` 始终靠右可见（`flex-shrink: 0`）
+- **player 前端 `li.dirname` 换行** — 目录名超宽时换行而非滚动（`height: auto; white-space: normal; word-break: break-word`）
+- **HTML 语义化标签** — `player.html` 和 `albums.html` 均使用 `<header>` + `<main>` 地标，`h1` 在 `<header>` 内，列表和播放器控件在 `<main>` 内
