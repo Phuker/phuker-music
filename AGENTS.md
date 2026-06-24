@@ -134,3 +134,5 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
 - **`albums-webui` CLI** — 需两个位置参数：`<albums_config_file_path> <albums_dir_path>`
 - **`albums_webui` 线程** — scan 和 generate 使用 `threading.Lock` + daemon thread，模块级全局状态（`scan_status`、`generate_status`）
 - **CSS 规范** — font-size 使用绝对大小关键字（`large`/`medium`/`small`/`x-large`），不硬编码 px；albums_webui.css 中 font-family 使用 CSS 变量 `var(--font-ui)`/`var(--font-mono)`
+- **CSS 隐藏滚动条** — 使用两个规则 `scrollbar-width: none` + `::-webkit-scrollbar { display: none }`，player 中 `ul`、`li.item`、`span.music_name` 均遵循此模式
+- **player 前端 `li.item` 结构** — 为 flex 容器，歌曲名包在 `span.music_name` 可独立横向滚动（`flex: 1; min-width: 0`），`span.metadata` 始终靠右可见（`flex-shrink: 0`）
