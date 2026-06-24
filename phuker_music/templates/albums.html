@@ -15,34 +15,34 @@ https://github.com/Phuker/phuker-music
 
     <title>My Music Collections</title>
     <style type="text/css">
-    :root {
-        --body-background-image: url({{ read_static_file_as_data_url('images/background.svg', 'image/svg+xml') }});
-    }
+        :root {
+            --body-background-image: url({{ read_static_file_as_data_url('images/background.svg', 'image/svg+xml') }});
+        }
 
-    {{ read_static_file_as_text('css/albums.css') | trim | indent(4) | safe }}
+        {{ read_static_file_as_text('css/albums.css') | trim | indent(8) | safe }}
     </style>
 </head>
 
 <body>
-<div class="container">
-    <header>
-    <h1>My Music Collections</h1>
-    </header>
-    <main>
-    <ul>
-        {%- for player_path, title, cover_path in indexes %}
-        <li>
-            <a href="{{ player_path }}">
-                <span class="cover-container">
-                    <img src="{{ cover_path or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover of: {{ title }}">
-                </span>
-                <span class="title">{{ title }}</span>
-            </a>
-        </li>
-        {%- endfor %}
-    </ul>
-    </main>
-</div>
+    <div class="container">
+        <header>
+            <h1>My Music Collections</h1>
+        </header>
+        <main>
+            <ul>
+                {%- for player_path, title, cover_path in indexes %}
+                <li>
+                    <a href="{{ player_path }}">
+                        <span class="cover-container">
+                            <img src="{{ cover_path or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover of: {{ title }}">
+                        </span>
+                        <span class="title">{{ title }}</span>
+                    </a>
+                </li>
+                {%- endfor %}
+            </ul>
+        </main>
+    </div>
 </body>
 
 </html>

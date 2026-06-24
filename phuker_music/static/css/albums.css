@@ -16,12 +16,6 @@ body {
     margin: 0 2em;
 }
 
-@media (max-width: 767px) {
-    .container {
-        margin: 0 10px;
-    }
-}
-
 h1 {
     max-width: 100%;
     width: fit-content;
@@ -38,8 +32,7 @@ ul {
     font-family: Consolas, Monaco, "Droid Sans Mono", "Courier New", "Microsoft YaHei", "PingFang SC", "WenQuanYi Micro Hei", monospace;
 }
 
-ul,
-li {
+ul, li {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -81,4 +74,10 @@ li a span.title {
     width: calc(100% - 4em);
     vertical-align: middle;
     overflow-wrap: break-word;
+}
+
+@media (max-width: 767px) {
+    .container {
+        margin: 0 10px;
+    }
 }

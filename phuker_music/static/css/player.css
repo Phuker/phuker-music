@@ -14,10 +14,6 @@ body {
     background-attachment: fixed;
 }
 
-header {
-    flex-shrink: 0;
-}
-
 h1 {
     max-width: 100%;
     width: fit-content;
@@ -30,6 +26,44 @@ h1 {
     font-family: Georgia, "Nimbus Roman No9 L", "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "Source Han Serif CN", STSong, "AR PL New Sung", "AR PL SungtiL GB", NSimSun, SimSun, "TW-Sung", "WenQuanYi Bitmap Song", "AR PL UMing CN", "AR PL UMing HK", "AR PL UMing TW", "AR PL UMing TW MBE", PMingLiU, MingLiU, serif;
     font-weight: lighter;
     font-size: x-large;
+}
+
+#pageLoading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#pageLoading h1 {
+    flex-shrink: 0;
+}
+
+#pageLoading img {
+    max-width: 70%;
+    max-height: 70%;
+    border-radius: 4px;
+}
+
+.container {
+    margin: 0 2em;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+    -webkit-transition: opacity 0.3s;
+}
+
+header {
+    flex-shrink: 0;
 }
 
 dialog#album-details {
@@ -47,16 +81,16 @@ dialog[open]#album-details {
     opacity: 1;
 }
 
-dialog#album-details img {
-    display: block;
-    width: 100%;
-}
-
 dialog#album-details .album-details-inner {
     display: inline-flex;
     flex-direction: column;
     width: fit-content;
     padding: 0.75em 0.75em 2em 0.75em;
+}
+
+dialog#album-details img {
+    display: block;
+    width: 100%;
 }
 
 dialog#album-details .album-details-title {
@@ -76,9 +110,11 @@ dialog[open]#album-details::backdrop {
     opacity: 1;
 }
 
-audio.player {
-    flex: 1;
-    border: none;
+#imgLoading {
+    display: none;
+    height: 2em;
+    vertical-align: middle;
+    margin-left: 0.5em;
 }
 
 main {
@@ -158,6 +194,21 @@ span.metadata {
     color: #aaa;
 }
 
+#playerLine {
+    flex-shrink: 0;
+    padding: 1em 0;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#ctrlBtnGroup {
+    display: flex;
+    flex-shrink: 0;
+    gap: 4px;
+}
+
 .ctrlBtn {
     border: none;
     background-color: transparent;
@@ -173,80 +224,29 @@ img.icon {
     height: 1.5em;
 }
 
-#ctrlBtnGroup {
-    display: flex;
-    flex-shrink: 0;
-    gap: 4px;
-}
-
-#playerLine {
-    flex-shrink: 0;
-    padding: 1em 0;
-
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-#imgLoading {
-    display: none;
-    height: 2em;
-    vertical-align: middle;
-    margin-left: 0.5em;
-}
-
-#pageLoading {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-#pageLoading img {
-    max-width: 70%;
-    max-height: 70%;
-    border-radius: 4px;
-}
-
-#pageLoading h1 {
-    flex-shrink: 0;
-}
-
-.container {
-    margin: 0 2em;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s;
-    -webkit-transition: opacity 0.3s;
+audio.player {
+    flex: 1;
+    border: none;
 }
 
 @media (max-width: 767px) {
+    .container {
+        margin: 0 10px;
+    }
+
     #playerLine {
         flex-direction: column;
         align-items: stretch;
         gap: 0.5em;
     }
 
-    .container {
-        margin: 0 10px;
+    #ctrlBtnGroup {
+        justify-content: space-around;
     }
 
     audio.player {
         flex: none;
         width: 100%;
-    }
-
-    #ctrlBtnGroup {
-        justify-content: space-around;
     }
 }
 
