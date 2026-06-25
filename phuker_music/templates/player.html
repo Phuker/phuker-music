@@ -6,10 +6,10 @@ https://github.com/Phuker/phuker-music
 <html lang="{{ lang }}">
 
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="google" content="notranslate">
     <title>{{ title }}</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="google" content="notranslate" />
     <style type="text/css">
         :root {
             --body-background-image: url({{ read_static_file_as_data_url('images/background.svg', 'image/svg+xml') }});
@@ -22,7 +22,7 @@ https://github.com/Phuker/phuker-music
 <body>
     <div id="pageLoading" role="status">
         <h1>{{ title }}</h1>
-        <img src="{{ cover_file or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover of: {{ title }}" />
+        <img src="{{ cover_file or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover of: {{ title }}">
     </div>
     <div class="container" id="container">
         <header>
@@ -31,11 +31,11 @@ https://github.com/Phuker/phuker-music
 
         <dialog id="album-details">
             <div class="album-details-inner">
-                <img src="{{ cover_file or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover of: {{ title }}" />
+                <img src="{{ cover_file or read_static_file_as_data_url('images/album-256.png', 'image/png') }}" alt="Album cover of: {{ title }}">
                 <p class="album-details-title">{{ title }}</p>
             </div>
         </dialog>
-        <img src="{{ read_static_file_as_data_url('images/loading.gif', 'image/gif') }}" id="imgLoading" alt="" />
+        <img src="{{ read_static_file_as_data_url('images/loading.gif', 'image/gif') }}" id="imgLoading" alt="">
 
         <main>
             <ul id="itemsList">
@@ -55,16 +55,16 @@ https://github.com/Phuker/phuker-music
             <div id="playerLine">
                 <div id="ctrlBtnGroup">
                     <button class="ctrlBtn" id="btnPlayPrevious" aria-label="Previous track">
-                        <img src="{{ read_static_file_as_data_url('images/left.png', 'image/png') }}" class="icon" alt="" />
+                        <img src="{{ read_static_file_as_data_url('images/left.png', 'image/png') }}" class="icon" alt="">
                     </button>
                     <button class="ctrlBtn" id="btnPlayMode" aria-label="Switch play mode">
-                        <img src="{{ read_static_file_as_data_url('images/loop.png', 'image/png') }}" id="imgPlayModeIcon" class="icon" alt="" />
+                        <img src="{{ read_static_file_as_data_url('images/loop.png', 'image/png') }}" id="imgPlayModeIcon" class="icon" alt="">
                     </button>
                     <button class="ctrlBtn" id="btnShare" aria-label="Copy share link">
-                        <img src="{{ read_static_file_as_data_url('images/share.png', 'image/png') }}" id="imgShareIcon" class="icon" alt="" />
+                        <img src="{{ read_static_file_as_data_url('images/share.png', 'image/png') }}" id="imgShareIcon" class="icon" alt="">
                     </button>
                     <button class="ctrlBtn" id="btnPlayNext" aria-label="Next track">
-                        <img src="{{ read_static_file_as_data_url('images/right.png', 'image/png') }}" class="icon" alt="" />
+                        <img src="{{ read_static_file_as_data_url('images/right.png', 'image/png') }}" class="icon" alt="">
                     </button>
                 </div>
                 <audio src="" controls id="player" class="player" preload="auto">Your browser does not support the audio element.</audio>
