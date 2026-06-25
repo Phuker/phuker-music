@@ -1,3 +1,14 @@
+:root {
+    --text-color-dim: #aaa;
+
+    --page-background-color: #fffff8;
+    --dialog-background-color: white;
+    --dialog-backdrop-background-color: rgba(0, 0, 0, 0.75);
+    --item-border-color: rgba(255, 255, 255, 0.85) rgba(255, 255, 255, 0.5);
+    --item-background-color: rgba(224, 224, 224, 0.6);
+    --control-button-focus-outline-color: #4A90D9;
+}
+
 html {
     height: 100%;
     padding: 0;
@@ -9,7 +20,7 @@ body {
     padding: 0;
     margin: 0;
 
-    background-color: #fffff8;
+    background-color: var(--page-background-color);
     background-image: var(--body-background-image);
     background-attachment: fixed;
 }
@@ -70,7 +81,7 @@ dialog#album-details {
     box-sizing: border-box;
     border: none;
     padding: 0;
-    background: white;
+    background: var(--dialog-background-color);
     max-width: min(600px, 75vw);
     max-height: 90vh;
     opacity: 0;
@@ -101,7 +112,7 @@ dialog#album-details .album-details-title {
 }
 
 dialog#album-details::backdrop {
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: var(--dialog-backdrop-background-color);
     opacity: 0;
     transition: opacity 0.15s, overlay 0.15s allow-discrete, display 0.15s allow-discrete;
 }
@@ -167,9 +178,9 @@ li.item {
 
     border-style: solid;
     border-width: 2px;
-    border-color: rgba(255, 255, 255, 0.85) rgba(255, 255, 255, 0.5);
+    border-color: var(--item-border-color);
     border-radius: 8px;
-    background-color: rgba(224, 224, 224, 0.6);
+    background-color: var(--item-background-color);
 }
 
 li.item::-webkit-scrollbar {
@@ -191,7 +202,7 @@ span.metadata {
     flex-shrink: 0;
     margin-left: 1em;
     white-space: nowrap;
-    color: #aaa;
+    color: var(--text-color-dim);
 }
 
 #playerLine {
@@ -216,7 +227,7 @@ span.metadata {
 }
 
 .ctrlBtn:focus-visible {
-    outline: 2px solid #4A90D9;
+    outline: 2px solid var(--control-button-focus-outline-color);
     outline-offset: 2px;
 }
 
@@ -248,27 +259,6 @@ audio.player {
         flex: none;
         width: 100%;
     }
-}
-
-::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-}
-
-::-webkit-scrollbar-track {
-    background-color: #ccc;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: #bbb;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: #aaa;
-}
-
-::-webkit-scrollbar-thumb:active {
-    background-color: #999;
 }
 
 @starting-style {

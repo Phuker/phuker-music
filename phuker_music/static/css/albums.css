@@ -1,3 +1,11 @@
+:root {
+    --text-color-primary: black;
+
+    --page-background-color: #fffff8;
+    --item-border-color: rgba(255, 255, 255, 0.85) rgba(255, 255, 255, 0.5);
+    --item-background-color: rgba(224, 224, 224, 0.6);
+}
+
 html {
     padding: 0;
     margin: 0;
@@ -7,7 +15,7 @@ body {
     padding: 0;
     margin: 0;
 
-    background-color: #fffff8;
+    background-color: var(--page-background-color);
     background-image: var(--body-background-image);
     background-attachment: fixed;
 }
@@ -44,16 +52,16 @@ li {
 
 li a {
     box-sizing: border-box;
-    color: black;
+    color: var(--text-color-primary);
     text-decoration: none;
     padding: 8px;
     display: block;
 
     border-style: solid;
     border-width: 2px;
-    border-color: rgba(255, 255, 255, 0.85) rgba(255, 255, 255, 0.5);
+    border-color: var(--item-border-color);
     border-radius: 8px;
-    background-color: rgba(224, 224, 224, 0.6);
+    background-color: var(--item-background-color);
 }
 
 li a span.cover-container {
