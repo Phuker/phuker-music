@@ -208,9 +208,15 @@ function selectMusic(index) {
     }
     items[index].style['color'] = 'blue';
     items[index].setAttribute('aria-current', 'true');
-    if (itemsList.scrollTop > (items[index].offsetTop - items[index].clientHeight) ||
-        (itemsList.scrollTop + itemsList.clientHeight) < items[index].offsetTop) {
-        itemsList.scrollTo(0, items[index].offsetTop - items[index].offsetHeight * 2);
+    if (
+        (items[index].offsetTop - 12) < itemsList.scrollTop ||
+        (items[index].offsetTop + items[index].offsetHeight + 12) > (itemsList.scrollTop + itemsList.clientHeight)
+    ) {
+        itemsList.scrollTo({
+            top: items[index].offsetTop - itemsList.clientHeight / 2 + items[index].offsetHeight / 2,
+            left: 0,
+            behavior: 'smooth',
+        });
     }
 
     // Media Session API seems buggy, change document.title for fail safe and compatibility
