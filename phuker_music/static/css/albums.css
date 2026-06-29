@@ -93,10 +93,12 @@ li {
 
 li a {
     box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    gap: 1em;
+    padding: 8px;
     color: var(--text-color-primary);
     text-decoration: none;
-    padding: 8px;
-    display: block;
 
     border-style: solid;
     border-width: var(--item-border-width);
@@ -106,10 +108,9 @@ li a {
 }
 
 li a span.cover-container {
-    display: inline-block;
+    flex-shrink: 0;
     width: 3em;
     height: 3em;
-    vertical-align: middle;
 }
 
 li a span.cover-container img {
@@ -119,9 +120,10 @@ li a span.cover-container img {
 }
 
 li a span.title {
-    display: inline-block;
-    width: calc(100% - 4em);
-    vertical-align: middle;
+    flex: 1;
+    min-width: 0;
+    margin-top: auto;
+    margin-bottom: auto;
     overflow-wrap: break-word;
 }
 
