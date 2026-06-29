@@ -8,6 +8,7 @@ https://github.com/Phuker/phuker-music
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <meta name="color-scheme" content="light dark">
     <meta name="google" content="notranslate">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -19,15 +20,46 @@ https://github.com/Phuker/phuker-music
             --body-background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1NiAyOCIgd2lkdGg9IjU2IiBoZWlnaHQ9IjI4Ij48cGF0aCBmaWxsPSIjRjhGOEY4IiBkPSJNNTYgMjZ2MmgtNy43NWMyLjMtMS4yNyA0Ljk0LTIgNy43NS0yem0tMjYgMmEyIDIgMCAxIDAtNCAwaC00LjA5QTI1Ljk4IDI1Ljk4IDAgMCAwIDAgMTZ2LTJjLjY3IDAgMS4zNC4wMiAyIC4wN1YxNGEyIDIgMCAwIDAtMi0ydi0yYTQgNCAwIDAgMSAzLjk4IDMuNiAyOC4wOSAyOC4wOSAwIDAgMSAyLjgtMy44NkE4IDggMCAwIDAgMCA2VjRhOS45OSA5Ljk5IDAgMCAxIDguMTcgNC4yM2MuOTQtLjk1IDEuOTYtMS44MyAzLjAzLTIuNjNBMTMuOTggMTMuOTggMCAwIDAgMCAwaDcuNzVjMiAxLjEgMy43MyAyLjYzIDUuMSA0LjQ1IDEuMTItLjcyIDIuMy0xLjM3IDMuNTMtMS45M0EyMC4xIDIwLjEgMCAwIDAgMTQuMjggMGgyLjdjLjQ1LjU2Ljg4IDEuMTQgMS4yOSAxLjc0IDEuMy0uNDggMi42My0uODcgNC0xLjE1LS4xMS0uMi0uMjMtLjQtLjM2LS41OUgyNnYuMDdhMjguNCAyOC40IDAgMCAxIDQgMFYwaDQuMDlsLS4zNy41OWMxLjM4LjI4IDIuNzIuNjcgNC4wMSAxLjE1LjQtLjYuODQtMS4xOCAxLjMtMS43NGgyLjY5YTIwLjEgMjAuMSAwIDAgMC0yLjEgMi41MmMxLjIzLjU2IDIuNDEgMS4yIDMuNTQgMS45M0ExNi4wOCAxNi4wOCAwIDAgMSA0OC4yNSAwSDU2Yy00LjU4IDAtOC42NSAyLjItMTEuMiA1LjYgMS4wNy44IDIuMDkgMS42OCAzLjAzIDIuNjNBOS45OSA5Ljk5IDAgMCAxIDU2IDR2MmE4IDggMCAwIDAtNi43NyAzLjc0YzEuMDMgMS4yIDEuOTcgMi41IDIuNzkgMy44NkE0IDQgMCAwIDEgNTYgMTB2MmEyIDIgMCAwIDAtMiAyLjA3IDI4LjQgMjguNCAwIDAgMSAyLS4wN3YyYy05LjIgMC0xNy4zIDQuNzgtMjEuOTEgMTJIMzB6TTcuNzUgMjhIMHYtMmMyLjgxIDAgNS40Ni43MyA3Ljc1IDJ6TTU2IDIwdjJjLTUuNiAwLTEwLjY1IDIuMy0xNC4yOCA2aC0yLjdjNC4wNC00Ljg5IDEwLjE1LTggMTYuOTgtOHptLTM5LjAzIDhoLTIuNjlDMTAuNjUgMjQuMyA1LjYgMjIgMCAyMnYtMmM2LjgzIDAgMTIuOTQgMy4xMSAxNi45NyA4em0xNS4wMS0uNGEyOC4wOSAyOC4wOSAwIDAgMSAyLjgtMy44NiA4IDggMCAwIDAtMTMuNTUgMGMxLjAzIDEuMiAxLjk3IDIuNSAyLjc5IDMuODZhNCA0IDAgMCAxIDcuOTYgMHptMTQuMjktMTEuODZjMS4zLS40OCAyLjYzLS44NyA0LTEuMTVhMjUuOTkgMjUuOTkgMCAwIDAtNDQuNTUgMGMxLjM4LjI4IDIuNzIuNjcgNC4wMSAxLjE1YTIxLjk4IDIxLjk4IDAgMCAxIDM2LjU0IDB6bS01LjQzIDIuNzFjMS4xMy0uNzIgMi4zLTEuMzcgMy41NC0xLjkzYTE5Ljk4IDE5Ljk4IDAgMCAwLTMyLjc2IDBjMS4yMy41NiAyLjQxIDEuMiAzLjU0IDEuOTNhMTUuOTggMTUuOTggMCAwIDEgMjUuNjggMHptLTQuNjcgMy43OGMuOTQtLjk1IDEuOTYtMS44MyAzLjAzLTIuNjNhMTMuOTggMTMuOTggMCAwIDAtMjIuNCAwYzEuMDcuOCAyLjA5IDEuNjggMy4wMyAyLjYzYTkuOTkgOS45OSAwIDAgMSAxNi4zNCAweiI+PC9wYXRoPjwvc3ZnPgo=);
         }
 
-        :root {
-            --text-color-dim: #aaa;
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --body-background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1NiAyOCIgd2lkdGg9IjU2IiBoZWlnaHQ9IjI4Ij48cGF0aCBmaWxsPSIjMDYwNjA2IiBkPSJNNTYgMjZ2MmgtNy43NWMyLjMtMS4yNyA0Ljk0LTIgNy43NS0yem0tMjYgMmEyIDIgMCAxIDAtNCAwaC00LjA5QTI1Ljk4IDI1Ljk4IDAgMCAwIDAgMTZ2LTJjLjY3IDAgMS4zNC4wMiAyIC4wN1YxNGEyIDIgMCAwIDAtMi0ydi0yYTQgNCAwIDAgMSAzLjk4IDMuNiAyOC4wOSAyOC4wOSAwIDAgMSAyLjgtMy44NkE4IDggMCAwIDAgMCA2VjRhOS45OSA5Ljk5IDAgMCAxIDguMTcgNC4yM2MuOTQtLjk1IDEuOTYtMS44MyAzLjAzLTIuNjNBMTMuOTggMTMuOTggMCAwIDAgMCAwaDcuNzVjMiAxLjEgMy43MyAyLjYzIDUuMSA0LjQ1IDEuMTItLjcyIDIuMy0xLjM3IDMuNTMtMS45M0EyMC4xIDIwLjEgMCAwIDAgMTQuMjggMGgyLjdjLjQ1LjU2Ljg4IDEuMTQgMS4yOSAxLjc0IDEuMy0uNDggMi42My0uODcgNC0xLjE1LS4xMS0uMi0uMjMtLjQtLjM2LS41OUgyNnYuMDdhMjguNCAyOC40IDAgMCAxIDQgMFYwaDQuMDlsLS4zNy41OWMxLjM4LjI4IDIuNzIuNjcgNC4wMSAxLjE1LjQtLjYuODQtMS4xOCAxLjMtMS43NGgyLjY5YTIwLjEgMjAuMSAwIDAgMC0yLjEgMi41MmMxLjIzLjU2IDIuNDEgMS4yIDMuNTQgMS45M0ExNi4wOCAxNi4wOCAwIDAgMSA0OC4yNSAwSDU2Yy00LjU4IDAtOC42NSAyLjItMTEuMiA1LjYgMS4wNy44IDIuMDkgMS42OCAzLjAzIDIuNjNBOS45OSA5Ljk5IDAgMCAxIDU2IDR2MmE4IDggMCAwIDAtNi43NyAzLjc0YzEuMDMgMS4yIDEuOTcgMi41IDIuNzkgMy44NkE0IDQgMCAwIDEgNTYgMTB2MmEyIDIgMCAwIDAtMiAyLjA3IDI4LjQgMjguNCAwIDAgMSAyLS4wN3YyYy05LjIgMC0xNy4zIDQuNzgtMjEuOTEgMTJIMzB6TTcuNzUgMjhIMHYtMmMyLjgxIDAgNS40Ni43MyA3Ljc1IDJ6TTU2IDIwdjJjLTUuNiAwLTEwLjY1IDIuMy0xNC4yOCA2aC0yLjdjNC4wNC00Ljg5IDEwLjE1LTggMTYuOTgtOHptLTM5LjAzIDhoLTIuNjlDMTAuNjUgMjQuMyA1LjYgMjIgMCAyMnYtMmM2LjgzIDAgMTIuOTQgMy4xMSAxNi45NyA4em0xNS4wMS0uNGEyOC4wOSAyOC4wOSAwIDAgMSAyLjgtMy44NiA4IDggMCAwIDAtMTMuNTUgMGMxLjAzIDEuMiAxLjk3IDIuNSAyLjc5IDMuODZhNCA0IDAgMCAxIDcuOTYgMHptMTQuMjktMTEuODZjMS4zLS40OCAyLjYzLS44NyA0LTEuMTVhMjUuOTkgMjUuOTkgMCAwIDAtNDQuNTUgMGMxLjM4LjI4IDIuNzIuNjcgNC4wMSAxLjE1YTIxLjk4IDIxLjk4IDAgMCAxIDM2LjU0IDB6bS01LjQzIDIuNzFjMS4xMy0uNzIgMi4zLTEuMzcgMy41NC0xLjkzYTE5Ljk4IDE5Ljk4IDAgMCAwLTMyLjc2IDBjMS4yMy41NiAyLjQxIDEuMiAzLjU0IDEuOTNhMTUuOTggMTUuOTggMCAwIDEgMjUuNjggMHptLTQuNjcgMy43OGMuOTQtLjk1IDEuOTYtMS44MyAzLjAzLTIuNjNhMTMuOTggMTMuOTggMCAwIDAtMjIuNCAwYzEuMDcuOCAyLjA5IDEuNjggMy4wMyAyLjYzYTkuOTkgOS45OSAwIDAgMSAxNi4zNCAweiI+PC9wYXRoPjwvc3ZnPgo=);
+            }
+        }
 
-            --page-background-color: #fffff8;
-            --dialog-background-color: white;
-            --dialog-backdrop-background-color: rgba(0, 0, 0, 0.75);
-            --item-border-color: rgba(255, 255, 255, 0.85) rgba(255, 255, 255, 0.5);
-            --item-background-color: rgba(224, 224, 224, 0.6);
-            --control-button-focus-outline-color: #4A90D9;
+        :root {
+            color-scheme: light dark;
+        }
+
+        :root {
+            --text-color-primary: #000000;
+            --text-color-active: #0000FF;
+            --text-color-dim: #AAAAAA;
+
+            --page-background-color: #FFFFF8;
+            --dialog-text-color: #000000;
+            --dialog-background-color: #FFFFFF;
+            --dialog-backdrop-background-color: rgb(0 0 0 / 0.75);
+            --item-border-width: 1px 2px;
+            --item-border-color: rgb(224 224 224 / 0.3);
+            --item-background-color: rgb(234 234 234 / 0.6);
+            --icon-img-filter: none;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-color-primary: #B8B8B8;
+                --text-color-active: #6060FF;
+                --text-color-dim: #888888;
+
+                --page-background-color: #000000;
+                --dialog-text-color: #000000;
+                --dialog-background-color: #FFFFFF;
+                --dialog-backdrop-background-color: rgb(0 0 0 / 0.85);
+                --item-border-width: 2px 1px;
+                --item-border-color: rgb(64 64 64 / 0.2);
+                --item-background-color: rgb(16 16 16 / 0.5);
+                --icon-img-filter: invert(100%);
+            }
         }
 
         html {
@@ -41,6 +73,7 @@ https://github.com/Phuker/phuker-music
             padding: 0;
             margin: 0;
 
+            color: var(--text-color-primary);
             background-color: var(--page-background-color);
             background-image: var(--body-background-image);
             background-attachment: fixed;
@@ -102,6 +135,7 @@ https://github.com/Phuker/phuker-music
             box-sizing: border-box;
             border: none;
             padding: 0;
+            color: var(--dialog-text-color);
             background: var(--dialog-background-color);
             max-width: min(600px, 75vw);
             max-height: 90vh;
@@ -199,7 +233,7 @@ https://github.com/Phuker/phuker-music
             scrollbar-width: none;
 
             border-style: solid;
-            border-width: 2px;
+            border-width: var(--item-border-width);
             border-color: var(--item-border-color);
             border-radius: 8px;
             background-color: var(--item-background-color);
@@ -207,6 +241,10 @@ https://github.com/Phuker/phuker-music
 
         li.item::-webkit-scrollbar {
             display: none;
+        }
+
+        li.item-active {
+            color: var(--text-color-active);
         }
 
         span.music_name {
@@ -244,17 +282,19 @@ https://github.com/Phuker/phuker-music
 
         .ctrlBtn {
             border: none;
+            padding: 8px 4px;
             background-color: transparent;
             cursor: pointer;
         }
 
         .ctrlBtn:focus-visible {
-            outline: 2px solid var(--control-button-focus-outline-color);
             outline-offset: 2px;
         }
 
         img.icon {
             height: 1.5em;
+            vertical-align: middle;
+            filter: var(--icon-img-filter);
         }
 
         audio.player {
@@ -570,10 +610,10 @@ https://github.com/Phuker/phuker-music
 
         function selectMusic(index) {
             for (let i = 0; i < items.length; i++) {
-                items[i].style['color'] = 'inherit';
+                items[i].classList.remove('item-active');
                 items[i].removeAttribute('aria-current');
             }
-            items[index].style['color'] = 'blue';
+            items[index].classList.add('item-active');
             items[index].setAttribute('aria-current', 'true');
             if (
                 (items[index].offsetTop - 12) < itemsList.scrollTop ||

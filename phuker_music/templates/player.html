@@ -8,6 +8,7 @@ https://github.com/Phuker/phuker-music
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <meta name="color-scheme" content="light dark">
     <meta name="google" content="notranslate">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -16,7 +17,13 @@ https://github.com/Phuker/phuker-music
     <title>{{ title }}</title>
     <style type="text/css">
         :root {
-            --body-background-image: url({{ read_static_file_as_data_url('images/background.svg', 'image/svg+xml') }});
+            --body-background-image: url({{ read_static_file_as_data_url('images/background-light.svg', 'image/svg+xml') }});
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --body-background-image: url({{ read_static_file_as_data_url('images/background-dark.svg', 'image/svg+xml') }});
+            }
         }
 
         {{ read_static_file_as_text('css/player.css') | trim | indent(8) | safe }}

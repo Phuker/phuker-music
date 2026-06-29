@@ -1,12 +1,37 @@
 :root {
-    --text-color-dim: #aaa;
+    color-scheme: light dark;
+}
 
-    --page-background-color: #fffff8;
-    --dialog-background-color: white;
-    --dialog-backdrop-background-color: rgba(0, 0, 0, 0.75);
-    --item-border-color: rgba(255, 255, 255, 0.85) rgba(255, 255, 255, 0.5);
-    --item-background-color: rgba(224, 224, 224, 0.6);
-    --control-button-focus-outline-color: #4A90D9;
+:root {
+    --text-color-primary: #000000;
+    --text-color-active: #0000FF;
+    --text-color-dim: #AAAAAA;
+
+    --page-background-color: #FFFFF8;
+    --dialog-text-color: #000000;
+    --dialog-background-color: #FFFFFF;
+    --dialog-backdrop-background-color: rgb(0 0 0 / 0.75);
+    --item-border-width: 1px 2px;
+    --item-border-color: rgb(224 224 224 / 0.3);
+    --item-background-color: rgb(234 234 234 / 0.6);
+    --icon-img-filter: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-color-primary: #B8B8B8;
+        --text-color-active: #6060FF;
+        --text-color-dim: #888888;
+
+        --page-background-color: #000000;
+        --dialog-text-color: #000000;
+        --dialog-background-color: #FFFFFF;
+        --dialog-backdrop-background-color: rgb(0 0 0 / 0.85);
+        --item-border-width: 2px 1px;
+        --item-border-color: rgb(64 64 64 / 0.2);
+        --item-background-color: rgb(16 16 16 / 0.5);
+        --icon-img-filter: invert(100%);
+    }
 }
 
 html {
@@ -20,6 +45,7 @@ body {
     padding: 0;
     margin: 0;
 
+    color: var(--text-color-primary);
     background-color: var(--page-background-color);
     background-image: var(--body-background-image);
     background-attachment: fixed;
@@ -81,6 +107,7 @@ dialog#album-details {
     box-sizing: border-box;
     border: none;
     padding: 0;
+    color: var(--dialog-text-color);
     background: var(--dialog-background-color);
     max-width: min(600px, 75vw);
     max-height: 90vh;
@@ -178,7 +205,7 @@ li.item {
     scrollbar-width: none;
 
     border-style: solid;
-    border-width: 2px;
+    border-width: var(--item-border-width);
     border-color: var(--item-border-color);
     border-radius: 8px;
     background-color: var(--item-background-color);
@@ -186,6 +213,10 @@ li.item {
 
 li.item::-webkit-scrollbar {
     display: none;
+}
+
+li.item-active {
+    color: var(--text-color-active);
 }
 
 span.music_name {
@@ -223,17 +254,19 @@ span.metadata {
 
 .ctrlBtn {
     border: none;
+    padding: 8px 4px;
     background-color: transparent;
     cursor: pointer;
 }
 
 .ctrlBtn:focus-visible {
-    outline: 2px solid var(--control-button-focus-outline-color);
     outline-offset: 2px;
 }
 
 img.icon {
     height: 1.5em;
+    vertical-align: middle;
+    filter: var(--icon-img-filter);
 }
 
 audio.player {

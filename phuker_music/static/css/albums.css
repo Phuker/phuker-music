@@ -1,9 +1,25 @@
 :root {
-    --text-color-primary: black;
+    color-scheme: light dark;
+}
 
-    --page-background-color: #fffff8;
-    --item-border-color: rgba(255, 255, 255, 0.85) rgba(255, 255, 255, 0.5);
-    --item-background-color: rgba(224, 224, 224, 0.6);
+:root {
+    --text-color-primary: #000000;
+
+    --page-background-color: #FFFFF8;
+    --item-border-width: 1px 2px;
+    --item-border-color: rgb(224 224 224 / 0.3);
+    --item-background-color: rgb(234 234 234 / 0.6);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-color-primary: #B8B8B8;
+
+        --page-background-color: #000000;
+        --item-border-width: 2px 1px;
+        --item-border-color: rgb(64 64 64 / 0.2);
+        --item-background-color: rgb(16 16 16 / 0.5);
+    }
 }
 
 html {
@@ -15,6 +31,7 @@ body {
     padding: 0;
     margin: 0;
 
+    color: var(--text-color-primary);
     background-color: var(--page-background-color);
     background-image: var(--body-background-image);
     background-attachment: fixed;
@@ -58,7 +75,7 @@ li a {
     display: block;
 
     border-style: solid;
-    border-width: 2px;
+    border-width: var(--item-border-width);
     border-color: var(--item-border-color);
     border-radius: 8px;
     background-color: var(--item-background-color);

@@ -23,12 +23,12 @@ You can try the [demo](https://phuker.github.io/phuker-music/) to see what the g
 
 - System notification on track start (requires permission)
 - Installable as a Progressive Web App (PWA)
+- Follow system dark mode
 - Background playback persistence
 
 ### What's not yet supported
 
 - Gapless playback
-- Follow system dark mode
 
 ## Install and run
 
