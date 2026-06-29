@@ -23,11 +23,13 @@
 }
 
 html {
+    height: 100%;
     padding: 0;
     margin: 0;
 }
 
 body {
+    height: 100%;
     padding: 0;
     margin: 0;
 
@@ -38,7 +40,14 @@ body {
 }
 
 .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     margin: 0 2em;
+}
+
+header {
+    flex-shrink: 0;
 }
 
 h1 {
@@ -53,8 +62,23 @@ h1 {
     font-size: x-large;
 }
 
+main {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
 ul {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    scrollbar-width: none;
     font-family: Consolas, Monaco, "Droid Sans Mono", "Courier New", "Microsoft YaHei", "PingFang SC", "WenQuanYi Micro Hei", monospace;
+}
+
+ul::-webkit-scrollbar {
+    display: none;
 }
 
 ul, li {
