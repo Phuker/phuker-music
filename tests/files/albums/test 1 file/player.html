@@ -141,8 +141,8 @@ https://github.com/Phuker/phuker-music
         #imgLoading {
             display: none;
             height: 2em;
-            vertical-align: middle;
-            margin-left: 0.5em;
+            vertical-align: top;
+            margin-right: 0.5em;
         }
 
         main {
@@ -437,7 +437,7 @@ https://github.com/Phuker/phuker-music
 
         function setLoading(show) {
             if (show) {
-                items[index].appendChild(imgLoading);
+                items[index].querySelector('span.metadata').prepend(imgLoading);
                 imgLoading.style['display'] = 'inline';
             } else {
                 imgLoading.style['display'] = 'none';

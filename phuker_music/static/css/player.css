@@ -124,8 +124,8 @@ dialog[open]#album-details::backdrop {
 #imgLoading {
     display: none;
     height: 2em;
-    vertical-align: middle;
-    margin-left: 0.5em;
+    vertical-align: top;
+    margin-right: 0.5em;
 }
 
 main {

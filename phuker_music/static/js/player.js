@@ -74,7 +74,7 @@ function isValidNumber(n) {
 
 function setLoading(show) {
     if (show) {
-        items[index].appendChild(imgLoading);
+        items[index].querySelector('span.metadata').prepend(imgLoading);
         imgLoading.style['display'] = 'inline';
     } else {
         imgLoading.style['display'] = 'none';
