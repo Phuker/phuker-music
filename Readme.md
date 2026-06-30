@@ -12,6 +12,7 @@ You can try the [demo](https://phuker.github.io/phuker-music/) to see what the g
 
 - No account sign-up or paid subscription required
 - No 15-second preview limit
+- No splash screen ads
 - No loan ads popups
 - No AI
 - No tracking, analytics, statistics, or telemetry
@@ -21,6 +22,7 @@ You can try the [demo](https://phuker.github.io/phuker-music/) to see what the g
 
 ### What it does have
 
+- System media controls and now playing information
 - System notification on track start (requires permission)
 - Installable as a Progressive Web App (PWA)
 - Follow system dark mode
