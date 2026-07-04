@@ -13,7 +13,7 @@ from . import player
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str, absolute: bool = True) -> dict:
+def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str, check_exists: bool = True, absolute: bool = True) -> dict:
     utils.assert_(isinstance(albums_config, dict), 'invalid albums_config')
     utils.assert_(isinstance(albums_config.get('albums_dir_path'), str) and albums_config['albums_dir_path'], 'invalid albums_dir_path')
     utils.assert_(isinstance(albums_config.get('albums_index_filename'), str) and albums_config['albums_index_filename'], 'invalid albums_index_filename')
@@ -21,11 +21,11 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
     utils.assert_(isinstance(albums_config.get('albums'), list), 'invalid albums')
 
     albums_dir_path = utils.get_abs_joined_path(albums_config_dir_path, albums_config['albums_dir_path'])
-    utils.assert_(os_path.isdir(albums_dir_path), f'albums_dir_path does not exist: {albums_dir_path!r}')
+    utils.assert_(not check_exists or os_path.isdir(albums_dir_path), f'albums_dir_path does not exist: {albums_dir_path!r}')
     albums_config['albums_dir_path'] = albums_dir_path
 
     for i, album_config_input in enumerate(albums_config['albums']):
-        albums_config['albums'][i] = player.normalize_album_config(album_config_input, base_dir_path=albums_dir_path, absolute=absolute)
+        albums_config['albums'][i] = player.normalize_album_config(album_config_input, base_dir_path=albums_dir_path, check_exists=check_exists, absolute=absolute)
         utils.assert_(
             utils.is_sub_path(utils.get_abs_joined_path(albums_dir_path, albums_config['albums'][i]['album_dir_path']), albums_dir_path),
             f'album_dir_path must be within albums_dir_path: {albums_config["albums"][i]["album_dir_path"]!r}',
@@ -37,12 +37,12 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
     return albums_config
 
 
-def get_config(albums_config_file_path: str, *, absolute: bool = True) -> dict[str, object]:
+def get_config(albums_config_file_path: str, *, check_exists: bool = True, absolute: bool = True) -> dict[str, object]:
     with open(albums_config_file_path, 'r', encoding='UTF-8') as f:
         albums_config = json.load(f)
 
     albums_config_dir_path = os_path.dirname(albums_config_file_path)
-    albums_config = normalize_albums_config(albums_config, albums_config_dir_path=albums_config_dir_path, absolute=absolute)
+    albums_config = normalize_albums_config(albums_config, albums_config_dir_path=albums_config_dir_path, check_exists=check_exists, absolute=absolute)
 
     return albums_config
 

@@ -108,7 +108,7 @@ def get_hash(s: str) -> str:
     return hashlib.sha256(s.encode('UTF-8')).hexdigest()[:16]
 
 
-def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.', absolute: bool = True) -> dict:
+def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.', check_exists: bool = True, absolute: bool = True) -> dict:
     album_config = {
         'album_dir_path': None,
         'title': None,
@@ -128,7 +128,7 @@ def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.'
     utils.assert_(isinstance(album_config['sort_type'], str), f'invalid album_config.sort_type: {album_config["sort_type"]!r}')
 
     album_dir_path = utils.get_abs_joined_path(base_dir_path, album_config['album_dir_path'])
-    utils.assert_(os_path.isdir(album_dir_path), f'album_dir_path does not exist: {album_dir_path!r}')
+    utils.assert_(not check_exists or os_path.isdir(album_dir_path), f'album_dir_path does not exist: {album_dir_path!r}')
     album_config['album_dir_path'] = album_dir_path
 
     if not album_config['title']:
@@ -139,7 +139,7 @@ def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.'
     else:
         album_config['cover_file'] = utils.get_abs_joined_path(album_dir_path, album_config['cover_file'])
         utils.assert_(utils.is_sub_path(album_config['cover_file'], album_dir_path), f'cover_file must be within album_dir_path: {album_config["cover_file"]!r}')
-        utils.assert_(os_path.isfile(album_config['cover_file']), f'cover_file does not exist: {album_config["cover_file"]!r}')
+        utils.assert_(not check_exists or os_path.isfile(album_config['cover_file']), f'cover_file does not exist: {album_config["cover_file"]!r}')
 
     if not album_config['player_filename']:
         album_config['player_filename'] = constants.DEFAULT_PLAYER_FILENAME

@@ -112,7 +112,7 @@ def api_scan():
             _reset_scan_status('idle')
 
             if os_path.isfile(albums_config_file_path):
-                albums_config = albums.get_config(albums_config_file_path, absolute=False)
+                albums_config = albums.get_config(albums_config_file_path, check_exists=False, absolute=False)
             else:
                 albums_config = {
                     'albums_dir_path': utils.get_rel_path(albums_dir_path, albums_config_dir_path),
@@ -201,6 +201,7 @@ def main(_albums_config_file_path: str, _albums_dir_path: str, host: str, port: 
     logger.info('Albums config file: %r', albums_config_file_path)
 
     albums_dir_path = utils.get_abs_joined_path(_albums_dir_path)
+    utils.assert_(os_path.isdir(albums_dir_path), f'Albums directory does not exist: {albums_dir_path!r}')
     logger.info('Albums directory: %r', albums_dir_path)
 
     logger.debug('Flask TRUSTED_HOSTS config: %r', trusted_hosts)
