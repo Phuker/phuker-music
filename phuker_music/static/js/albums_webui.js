@@ -48,7 +48,7 @@ createApp({
         const scannedDirs = ref(0);
         const albumsDirPath = ref('.');
         const albumsIndexFilename = ref('index.html');
-        const albumsTitle = ref('My Music Collections');
+        const albumsTitle = ref('Music');
         const isPublishing = ref(false);
         const albums = ref([]);
         const availableAlbums = ref({});
