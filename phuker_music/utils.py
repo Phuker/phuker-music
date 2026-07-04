@@ -140,11 +140,11 @@ def read_static_file_as_data_url(relative_file_path: str, mime: str) -> str:
     return f'data:{mime};base64,{base64_content}'
 
 
-def get_web_app_manifest_data_url(albums_index_file_path: str) -> str:
+def get_web_app_manifest_data_url(title: str, filename: str) -> str:
     manifest = {
-        'short_name': 'Music',
-        'name': 'Music',
-        'start_url': './' + os_path.basename(albums_index_file_path),
+        'short_name': title,
+        'name': title,
+        'start_url': f'./{filename}',
         'display': 'minimal-ui',
         'icons': [
             {

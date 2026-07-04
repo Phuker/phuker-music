@@ -78,12 +78,17 @@ def main(albums_config_file_path: str, overwrite: bool = False) -> None:
         ))
 
     lang = utils.detect_language(' '.join([albums_config['albums_title']] + [title for _, title, _ in indexes]))
-    manifest_url = utils.get_web_app_manifest_data_url(albums_index_file_path)
+    manifest_url = utils.get_web_app_manifest_data_url(albums_config['albums_title'], albums_config['albums_index_filename'])
 
     logger.info('Generating index page: %r', albums_index_file_path)
     env = utils.get_jinja_env()
     template = env.get_template('albums.html')
-    result = template.render(lang=lang, manifest_url=manifest_url, albums_title=albums_config['albums_title'], indexes=indexes)
+    result = template.render(
+        lang=lang,
+        manifest_url=manifest_url,
+        albums_title=albums_config['albums_title'],
+        indexes=indexes,
+    )
 
     logger.info('Writing index page: %r', albums_index_file_path)
     with open(albums_index_file_path, 'w', encoding='UTF-8') as f:

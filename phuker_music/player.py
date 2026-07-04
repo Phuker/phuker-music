@@ -164,6 +164,7 @@ def generate(album_config: dict, *, base_dir_path: str = '.', overwrite: bool = 
     logger.debug('music_info_list: %s', json.dumps(music_info_list, indent=4, ensure_ascii=False))
 
     lang = utils.detect_language(' '.join([album_config['title']] + [_['name'] for _ in music_info_list]))
+    manifest_url = utils.get_web_app_manifest_data_url(album_config['title'], album_config['player_filename'])
 
     # Get same result for same dir name, which may sync between computers
     storage_key_prefix = f'music_{get_hash(os_path.basename(album_config["album_dir_path"]))}_'
@@ -172,6 +173,7 @@ def generate(album_config: dict, *, base_dir_path: str = '.', overwrite: bool = 
     template = env.get_template('player.html')
     result = template.render(
         lang=lang,
+        manifest_url=manifest_url,
         title=album_config['title'],
         cover_file=utils.get_rel_path(album_config['cover_file'], album_config['album_dir_path']) if album_config['cover_file'] else None,
         music_info_groups=music_info_groups,

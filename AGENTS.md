@@ -91,16 +91,17 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
 
 ## 模板数据
 
-**`player.html` 模板变量**（`player.py:173-179`）：
+**`player.html` 模板变量**（`player.py:174-182`）：
 
 - `lang` — 语种代码
+- `manifest_url` — Web App Manifest data URL
 - `title` — 专辑标题
 - `cover_file` — 相对路径或 `None`
 - `music_info_groups` — `[{name: str, music_info_sub_list: [{index, path, name, file_size_str, duration_str}]}]`
 - `music_info_list` — `music_info_groups` 展平后的 list
 - `storage_key_prefix` — localStorage key 前缀
 
-**`albums.html` 模板变量**（`albums.py:86`）：
+**`albums.html` 模板变量**（`albums.py:86-91`）：
 
 - `lang` — 语种代码
 - `manifest_url` — Web App Manifest data URL
