@@ -148,6 +148,16 @@ dialog[open]#album-details::backdrop {
     opacity: 1;
 }
 
+@starting-style {
+    dialog[open]#album-details {
+        opacity: 0;
+    }
+
+    dialog[open]#album-details::backdrop {
+        opacity: 0;
+    }
+}
+
 #imgLoading {
     display: none;
     height: 1.5em;
@@ -294,15 +304,5 @@ audio.player {
     audio.player {
         flex: none;
         width: 100%;
-    }
-}
-
-@starting-style {
-    dialog[open]#album-details {
-        opacity: 0;
-    }
-
-    dialog[open]#album-details::backdrop {
-        opacity: 0;
     }
 }
