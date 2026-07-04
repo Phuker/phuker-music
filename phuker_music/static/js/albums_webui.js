@@ -66,12 +66,17 @@ createApp({
         }
 
         function getCoverOptions(dirPath, currentCover) {
-            const images = (availableAlbums.value[dirPath] || []).map(p => p);
-            if (currentCover && !images.includes(currentCover)) {
-                images.push(currentCover);
+            const images = availableAlbums.value[dirPath] || [];
+            const options = [{ value: null, label: '(No cover)' }];
+            for (const image of images) {
+                options.push({ value: image, label: image });
             }
 
-            return images;
+            if (currentCover && !images.includes(currentCover)) {
+                options.push({ value: currentCover, label: `${currentCover} (not exists)` });
+            }
+
+            return options;
         }
 
         function onAlbumsChange(evt) {
