@@ -113,6 +113,10 @@ def api_scan():
 
             if os_path.isfile(albums_config_file_path):
                 albums_config = albums.get_config(albums_config_file_path, check_exists=False, absolute=False)
+
+                # Handle mismatched albums_dir_path values between the CLI and the existing config
+                # Override the albums_dir_path field in the existing config with the authoritative CLI value
+                albums_config['albums_dir_path'] = utils.get_rel_path(albums_dir_path, albums_config_dir_path)
             else:
                 albums_config = {
                     'albums_dir_path': utils.get_rel_path(albums_dir_path, albums_config_dir_path),
