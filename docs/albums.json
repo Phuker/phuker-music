@@ -11,6 +11,10 @@
             "album_dir_path": "./Nature/",
             "cover_file": "Cover.jpg",
             "recursively": true
+        },
+        {
+            "album_dir_path": "./Science/",
+            "cover_file": "Cover.jpg"
         }
     ]
 }
