@@ -23,6 +23,7 @@ class TestGetConfigFromDocs(unittest.TestCase):
         self.assertTrue(os_path.isabs(albums_config['albums_dir_path']))
         self.assertTrue(albums_config['albums_dir_path'].endswith('/files/albums'))
         self.assertEqual(albums_config['albums_index_filename'], 'albums.html')
+        self.assertEqual(albums_config['albums_title'], 'Test Albums')
         self.assertIn('albums', albums_config)
         self.assertEqual(len(albums_config['albums']), 4)
 
@@ -89,10 +90,32 @@ class TestGetConfigFromTemp(unittest.TestCase):
             json.dump(albums_config, f, indent=4, ensure_ascii=False)
             f.write('\n')
 
+    def test_missing_albums_title(self):
+        self._write_config({
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
+            'albums': [],
+        })
+
+        with self.assertRaisesRegex(AssertionError, 'invalid albums_title'):
+            get_config(self.albums_config_file_path)
+
+    def test_empty_albums_title(self):
+        self._write_config({
+            'albums_dir_path': '.',
+            'albums_index_filename': 'index.html',
+            'albums_title': '',
+            'albums': [],
+        })
+
+        with self.assertRaisesRegex(AssertionError, 'invalid albums_title'):
+            get_config(self.albums_config_file_path)
+
     def test_nonexistent_album_dir_path(self):
         self._write_config({
             'albums_dir_path': '.',
             'albums_index_filename': 'index.html',
+            'albums_title': 'Test Albums',
             'albums': [
                 {
                     'album_dir_path': 'nonexistent_subdir',
@@ -110,6 +133,7 @@ class TestGetConfigFromTemp(unittest.TestCase):
         self._write_config({
             'albums_dir_path': '.',
             'albums_index_filename': 'index.html',
+            'albums_title': 'Test Albums',
             'albums': [
                 {
                     'album_dir_path': 'testdir',
@@ -128,6 +152,7 @@ class TestGetConfigFromTemp(unittest.TestCase):
         self._write_config({
             'albums_dir_path': '.',
             'albums_index_filename': 'index.html',
+            'albums_title': 'Test Albums',
             'albums': [
                 {
                     'album_dir_path': os_path.basename(test_dir),
@@ -156,10 +181,12 @@ class TestMain(unittest.TestCase):
         if os_path.exists(player_file_path):
             os.remove(player_file_path)
 
-        title = 'title_' + os.urandom(8).hex()
+        albums_title = 'albums_title_' + os.urandom(8).hex()
+        title = 'album_title_' + os.urandom(8).hex()
         albums_config = {
             'albums_dir_path': '.',
             'albums_index_filename': 'index.html',
+            'albums_title': albums_title,
             'albums': [
                 {
                     'album_dir_path': 'album',
@@ -175,18 +202,22 @@ class TestMain(unittest.TestCase):
 
         main(albums_config_file_path, overwrite=True)
 
-        self.assertTrue(os_path.exists(player_file_path))
-        with open(player_file_path, 'r', encoding='UTF-8') as f:
-            self.assertIn(title, f.read())
-
         albums_index_file_path = os_path.join(self.tmpdir, 'index.html')
         self.assertTrue(os_path.exists(albums_index_file_path))
-
         with open(albums_index_file_path, 'r', encoding='UTF-8') as f:
             content = f.read()
 
-        self.assertIn(title, content)
-        self.assertIn('<html', content.lower())
+            self.assertIn('<html', content)
+            self.assertIn(albums_title, content)
+            self.assertIn(title, content)
+
+        self.assertTrue(os_path.exists(player_file_path))
+        with open(player_file_path, 'r', encoding='UTF-8') as f:
+            content = f.read()
+
+            self.assertIn('<html', content)
+            self.assertNotIn(albums_title, content)
+            self.assertIn(title, content)
 
     def test_main_file_exists_no_force(self):
         src = os_path.join(TEST_ALBUMS_DIR_PATH, 'test 1 file')
@@ -197,14 +228,14 @@ class TestMain(unittest.TestCase):
         if os_path.exists(player_file_path):
             os.remove(player_file_path)
 
-        title = 'title_' + os.urandom(8).hex()
         albums_config = {
             'albums_dir_path': '.',
             'albums_index_filename': 'index.html',
+            'albums_title': 'Test Albums',
             'albums': [
                 {
                     'album_dir_path': 'album',
-                    'title': title,
+                    'title': 'Test',
                 },
             ],
         }
@@ -224,10 +255,12 @@ class TestMain(unittest.TestCase):
         album_dir_path = os_path.join(self.tmpdir, 'album')
         shutil.copytree(src, album_dir_path)
 
+        albums_title = '<script>alert(1);</script>'
         title = '<script>alert(1);</script>'
         albums_config = {
             'albums_dir_path': '.',
             'albums_index_filename': 'index.html',
+            'albums_title': albums_title,
             'albums': [
                 {
                     'album_dir_path': 'album',
@@ -263,10 +296,12 @@ class TestMain(unittest.TestCase):
         album_dir_path = os_path.join(albums_dir_path, 'album')
         shutil.copytree(src, album_dir_path)
 
-        title = 'title_' + os.urandom(8).hex()
+        albums_title = 'albums_title_' + os.urandom(8).hex()
+        title = 'album_title_' + os.urandom(8).hex()
         albums_config = {
             'albums_dir_path': './albums',
             'albums_index_filename': 'index.html',
+            'albums_title': albums_title,
             'albums': [
                 {
                     'album_dir_path': './album',
@@ -283,11 +318,20 @@ class TestMain(unittest.TestCase):
         main(albums_config_file_path, overwrite=True)
 
         albums_index_file_path = os_path.join(albums_dir_path, 'index.html')
+        self.assertTrue(os_path.exists(albums_index_file_path))
+        with open(albums_index_file_path, 'r', encoding='UTF-8') as f:
+            content = f.read()
+
+            self.assertIn(albums_title, content)
+            self.assertIn(title, content)
+
         player_file_path = os_path.join(album_dir_path, constants.DEFAULT_PLAYER_FILENAME)
-        for file_path in (albums_index_file_path, player_file_path):
-            self.assertTrue(os_path.exists(file_path))
-            with open(file_path, 'r', encoding='UTF-8') as f:
-                self.assertIn(title, f.read())
+        self.assertTrue(os_path.exists(player_file_path))
+        with open(player_file_path, 'r', encoding='UTF-8') as f:
+            content = f.read()
+
+            self.assertNotIn(albums_title, content)
+            self.assertIn(title, content)
 
 
 if __name__ == '__main__':

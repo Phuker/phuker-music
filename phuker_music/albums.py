@@ -18,6 +18,7 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
     utils.assert_(isinstance(albums_config.get('albums_dir_path'), str) and albums_config['albums_dir_path'], 'invalid albums_dir_path')
     utils.assert_(isinstance(albums_config.get('albums_index_filename'), str) and albums_config['albums_index_filename'], 'invalid albums_index_filename')
     utils.assert_('/' not in albums_config['albums_index_filename'] and '\\' not in albums_config['albums_index_filename'], f'albums_index_filename must not contain path separators: {albums_config["albums_index_filename"]!r}')
+    utils.assert_(isinstance(albums_config.get('albums_title'), str) and albums_config['albums_title'], 'invalid albums_title')
     utils.assert_(isinstance(albums_config.get('albums'), list), 'invalid albums')
 
     albums_dir_path = utils.get_abs_joined_path(albums_config_dir_path, albums_config['albums_dir_path'])
@@ -76,13 +77,13 @@ def main(albums_config_file_path: str, overwrite: bool = False) -> None:
             cover_path,
         ))
 
-    lang = utils.detect_language(' '.join(title for _, title, _ in indexes))
+    lang = utils.detect_language(' '.join([albums_config['albums_title']] + [title for _, title, _ in indexes]))
     manifest_url = utils.get_web_app_manifest_data_url(albums_index_file_path)
 
     logger.info('Generating index page: %r', albums_index_file_path)
     env = utils.get_jinja_env()
     template = env.get_template('albums.html')
-    result = template.render(lang=lang, manifest_url=manifest_url, indexes=indexes)
+    result = template.render(lang=lang, manifest_url=manifest_url, albums_title=albums_config['albums_title'], indexes=indexes)
 
     logger.info('Writing index page: %r', albums_index_file_path)
     with open(albums_index_file_path, 'w', encoding='UTF-8') as f:

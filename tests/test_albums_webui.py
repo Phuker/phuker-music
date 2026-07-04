@@ -112,9 +112,11 @@ class TestAlbumsWebUI(unittest.TestCase):
     def test_save_config_creates_file(self):
         self.assertFalse(os_path.isfile(self.albums_config_file_path))
 
+        albums_title = 'albums_title_' + os.urandom(8).hex()
         config = {
             'albums_dir_path': '.',
             'albums_index_filename': 'index.html',
+            'albums_title': albums_title,
             'albums': [],
         }
 
@@ -127,14 +129,18 @@ class TestAlbumsWebUI(unittest.TestCase):
 
         self.assertIn('albums_dir_path', saved_config)
         self.assertIn('albums_index_filename', saved_config)
+        self.assertEqual(saved_config['albums_title'], albums_title)
+        self.assertEqual(len(saved_config['albums']), 0)
 
     def test_save_config_with_albums(self):
         self._copy_test_audio_dir('test 1 file')
-        title = 'title_' + os.urandom(8).hex()
 
+        albums_title = 'albums_title_' + os.urandom(8).hex()
+        title = 'album_title_' + os.urandom(8).hex()
         config = {
             'albums_dir_path': '.',
             'albums_index_filename': 'index.html',
+            'albums_title': albums_title,
             'albums': [
                 {
                     'album_dir_path': './test 1 file',
@@ -149,6 +155,7 @@ class TestAlbumsWebUI(unittest.TestCase):
         with open(self.albums_config_file_path, 'r', encoding='UTF-8') as f:
             saved_config = json.load(f)
 
+        self.assertEqual(saved_config['albums_title'], albums_title)
         self.assertEqual(len(saved_config['albums']), 1)
         self.assertEqual(saved_config['albums'][0]['title'], title)
 
@@ -162,10 +169,14 @@ class TestAlbumsWebUI(unittest.TestCase):
     def test_save_config_updates_existing_file(self):
         self._copy_test_audio_dir('test 1 file')
 
-        for title in ['title_1_' + os.urandom(8).hex(), 'title_2_' + os.urandom(8).hex()]:
+        for albums_title, title in [
+            ('albums_title_1_' + os.urandom(8).hex(), 'album_title_1_' + os.urandom(8).hex()),
+            ('albums_title_2_' + os.urandom(8).hex(), 'album_title_2_' + os.urandom(8).hex()),
+        ]:
             config = {
                 'albums_dir_path': '.',
                 'albums_index_filename': 'index.html',
+                'albums_title': albums_title,
                 'albums': [
                     {
                         'album_dir_path': './test 1 file',
@@ -179,6 +190,7 @@ class TestAlbumsWebUI(unittest.TestCase):
             with open(self.albums_config_file_path, 'r', encoding='UTF-8') as f:
                 saved_config = json.load(f)
 
+            self.assertEqual(saved_config['albums_title'], albums_title)
             self.assertEqual(len(saved_config['albums']), 1)
             self.assertEqual(saved_config['albums'][0]['title'], title)
 
@@ -188,6 +200,7 @@ class TestAlbumsWebUI(unittest.TestCase):
         config = {
             'albums_dir_path': '.',
             'albums_index_filename': 'index.html',
+            'albums_title': 'Test Albums',
             'albums': [
                 {
                     'album_dir_path': './test 1 file',
@@ -224,15 +237,18 @@ class TestAlbumsWebUI(unittest.TestCase):
         self.assertIn('albums_config', data['data'])
         self.assertIn('albums_dir_path', data['data']['albums_config'])
         self.assertEqual(data['data']['albums_config']['albums_dir_path'], './albums')
+        self.assertEqual(data['data']['albums_config']['albums_title'], constants.DEFAULT_ALBUMS_TITLE)
 
         available = data['data']['available_albums']
         self.assertEqual(len(available), 2)
         self.assertIn('./test 1 file', available)
 
-        title = 'title_' + os.urandom(8).hex()
+        albums_title = 'albums_title_' + os.urandom(8).hex()
+        title = 'album_title_' + os.urandom(8).hex()
         config = {
             'albums_dir_path': './albums',
             'albums_index_filename': 'index.html',
+            'albums_title': albums_title,
             'albums': [
                 {
                     'album_dir_path': './test 1 file',
@@ -255,11 +271,20 @@ class TestAlbumsWebUI(unittest.TestCase):
         self._poll('/api/generate')
 
         albums_index_file_path = os_path.join(albums_dir_path, 'index.html')
+        self.assertTrue(os_path.isfile(albums_index_file_path))
+        with open(albums_index_file_path, 'r', encoding='UTF-8') as f:
+            content = f.read()
+
+            self.assertIn(albums_title, content)
+            self.assertIn(title, content)
+
         player_file_path = os_path.join(album_dir_path, constants.DEFAULT_PLAYER_FILENAME)
-        for file_path in (albums_index_file_path, player_file_path):
-            self.assertTrue(os_path.isfile(file_path))
-            with open(file_path, 'r', encoding='UTF-8') as f:
-                self.assertIn(title, f.read())
+        self.assertTrue(os_path.isfile(player_file_path))
+        with open(player_file_path, 'r', encoding='UTF-8') as f:
+            content = f.read()
+
+            self.assertNotIn(albums_title, content)
+            self.assertIn(title, content)
 
 
 if __name__ == '__main__':

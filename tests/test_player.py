@@ -150,8 +150,7 @@ class TestGenerate(unittest.TestCase):
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
     def test_generate_success(self):
-        title = 'title_' + os.urandom(8).hex()
-
+        title = 'album_title_' + os.urandom(8).hex()
         generate({'album_dir_path': self.album_dir_path, 'title': title})
 
         player_file_path = os_path.join(self.album_dir_path, constants.DEFAULT_PLAYER_FILENAME)
@@ -160,20 +159,19 @@ class TestGenerate(unittest.TestCase):
         with open(player_file_path, 'r', encoding='UTF-8') as f:
             content = f.read()
 
+        self.assertIn('<html', content)
         self.assertIn(title, content)
-        self.assertIn('<html', content.lower())
 
     def test_file_exists_no_force(self):
-        title = 'title_' + os.urandom(8).hex()
-
+        title = 'album_title_' + os.urandom(8).hex()
         generate({'album_dir_path': self.album_dir_path, 'title': title})
 
         with self.assertRaises(FileExistsError):
             generate({'album_dir_path': self.album_dir_path, 'title': 'Second'}, overwrite=False)
 
     def test_file_exists_with_force(self):
-        title1 = 'title_' + os.urandom(8).hex()
-        title2 = 'title_' + os.urandom(8).hex()
+        title1 = 'album_title_' + os.urandom(8).hex()
+        title2 = 'album_title_' + os.urandom(8).hex()
 
         generate({'album_dir_path': self.album_dir_path, 'title': title1})
         generate({'album_dir_path': self.album_dir_path, 'title': title2}, overwrite=True)
@@ -193,8 +191,8 @@ class TestGenerate(unittest.TestCase):
         with open(player_file_path, 'r', encoding='UTF-8') as f:
             content = f.read()
 
+        self.assertIn('<html', content)
         self.assertIn(os_path.basename(self.album_dir_path), content)
-        self.assertIn('<html', content.lower())
 
     def test_missing_cover_file(self):
         with self.assertRaisesRegex(AssertionError, 'cover_file does not exist'):

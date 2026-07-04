@@ -48,6 +48,7 @@ createApp({
         const scannedDirs = ref(0);
         const albumsDirPath = ref('.');
         const albumsIndexFilename = ref('index.html');
+        const albumsTitle = ref('My Music Collections');
         const isPublishing = ref(false);
         const albums = ref([]);
         const availableAlbums = ref({});
@@ -117,6 +118,7 @@ createApp({
                 scannedDirs.value = data.data.scanned_dirs;
                 albumsDirPath.value = data.data.albums_config.albums_dir_path;
                 albumsIndexFilename.value = data.data.albums_config.albums_index_filename;
+                albumsTitle.value = data.data.albums_config.albums_title;
                 albums.value = data.data.albums_config.albums;
                 availableAlbums.value = data.data.available_albums;
 
@@ -134,6 +136,7 @@ createApp({
                 const albumsConfig = {
                     albums_dir_path: albumsDirPath.value,
                     albums_index_filename: albumsIndexFilename.value,
+                    albums_title: albumsTitle.value,
                     albums: albums.value,
                 };
 
@@ -180,6 +183,7 @@ createApp({
             scannedDirs,
             albumsDirPath,
             albumsIndexFilename,
+            albumsTitle,
             isPublishing,
             albums,
             availableAlbums,

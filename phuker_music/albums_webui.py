@@ -121,6 +121,7 @@ def api_scan():
                 albums_config = {
                     'albums_dir_path': utils.get_rel_path(albums_dir_path, albums_config_dir_path),
                     'albums_index_filename': constants.DEFAULT_ALBUMS_INDEX_FILENAME,
+                    'albums_title': constants.DEFAULT_ALBUMS_TITLE,
                     'albums': [],
                 }
 
