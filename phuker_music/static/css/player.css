@@ -191,6 +191,7 @@ li {
     white-space: nowrap;
 }
 
+/* Directory label wraps to multiple lines instead of scrolling horizontally like span.music_name */
 li.dirname {
     font-weight: bold;
     height: auto;
@@ -198,6 +199,7 @@ li.dirname {
     word-break: break-word;
 }
 
+/* Flex row: span.music_name scrolls horizontally and independently; span.metadata stays pinned right */
 li.item {
     display: flex;
     align-items: center;

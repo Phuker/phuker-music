@@ -67,6 +67,11 @@ li {
     margin: 4px 0;
 }
 
+/*
+Flex row:
+Single-line span.title with smaller height than span.cover-container: center the span.title vertically
+Wrapped span.title with larger height: top-align span.cover-container with span.title
+*/
 li a {
     box-sizing: border-box;
     display: flex;

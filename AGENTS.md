@@ -40,21 +40,24 @@ def generate(album_config: dict, *, base_dir_path: str = '.', overwrite: bool = 
 ## `normalize_album_config()` — `player.py:111`
 
 ```python
-def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.', absolute: bool = True) -> dict:
+def normalize_album_config(album_config_input: dict, *, base_dir_path: str = '.', check_exists: bool = True, absolute: bool = True) -> dict:
 ```
 
+- `check_exists=False` 跳过 `album_dir_path`/`cover_file` 的文件系统存在性校验，仅保留结构与逃逸校验（`albums_webui` scan 回显用，容忍已删除/重命名的专辑和封面图片文件）
 - `absolute=True` 返回绝对路径，`absolute=False` 返回相对路径（用于 `albums_webui.py` 保存配置文件）
 - **不包含**限制 `album_dir_path` 在 `base_dir_path` 范围内的安全校验（仅 `albums.py:normalize_albums_config()` 有此检查）
 
 ## `normalize_albums_config()` — `albums.py:16`
 
 ```python
-def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str, absolute: bool = True) -> dict:
+def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str, check_exists: bool = True, absolute: bool = True) -> dict:
 ```
 
 - `albums_config_dir_path` 是配置文件所在目录的绝对路径
 - 函数内部从 `albums_config['albums_dir_path']`（相对路径）解析出绝对路径
 - `albums_config['albums_index_filename']` 仅为文件名（不含 `/` `\`），与 `albums_dir_path` 拼接得到输出路径 `albums_index_file_path`
+- `albums_config['albums_title']` 必填非空字符串
+- `check_exists=False` 跳过 `albums_dir_path` 的文件系统存在性校验，并透传给 `normalize_album_config`，`get_config()` 同样接受该参数
 - `absolute=False` 时将路径转回相对于 `albums_config_dir_path` 的路径
 - 每个 album 的 `album_dir_path` 必须位于 `albums_dir_path` 内（`is_sub_path` 检查）
 
@@ -64,6 +67,7 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
 {
     "albums_dir_path": "../albums",
     "albums_index_filename": "index.html",
+    "albums_title": "My Music Collections",
     "albums": [
       {
         "album_dir_path": "./Ambience",
@@ -79,6 +83,7 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
 
 - `albums_dir_path` — 相对于配置文件所在目录；支持 `../` 指向其他目录
 - `albums_index_filename` — 仅文件名，不允许含 `/` `\`
+- `albums_title` — 必填非空字符串，用于索引页 `<title>` 与 `<h1>`
 - `albums` 中每个 `album_config`：
   - `album_dir_path` - 相对于 `albums_dir_path`
   - `cover_file` - 相对于 `album_dir_path`，必须位于 `album_dir_path` 内
@@ -95,10 +100,11 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
 - `music_info_list` — `music_info_groups` 展平后的 list
 - `storage_key_prefix` — localStorage key 前缀
 
-**`albums.html` 模板变量**（`albums.py:85`）：
+**`albums.html` 模板变量**（`albums.py:86`）：
 
 - `lang` — 语种代码
 - `manifest_url` — Web App Manifest data URL
+- `albums_title` — 索引页 `<title>` 与 `<h1>`
 - `indexes` — `[(player_path, title, cover_path), ...]`
 
 # 路径工具
@@ -126,15 +132,14 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
 - **`-v` / `--verbose`** — 顶层和子命令级 `-v` 叠加，`>=1` 即设 `DEBUG`（`cli.py:122-124`）
 - **封面文件不存在时抛 `AssertionError`**（不是 `FileNotFoundError`）— `player.py:142`
 - **Jinja2 `autoescape=True`** — HTML 模板默认转义；`| safe_json_encode` 过滤器额外替换 `<` `>` 防 XSS
-- **Jinja globals**: `read_static_text_file(path)`、`read_static_file_as_data_url(path, mime)` — 以 `phuker_music/static/` 为基准
+- **Jinja globals** — 其中的 `read_static_file_as_text(path)`、`read_static_file_as_data_url(path, mime)` 以 `phuker_music/static/` 为基准
 - **语种识别** — 置信度 >0.98 才采纳，否则回退 `en`；跳过低置信 `la`；输入小写化避免全大写 bug；`langid` 懒加载
 - **Sort types**：`filename`（默认）、`mtime_desc`
 - **无 lint/typecheck/formatter 配置**
 - **测试 `mtime_desc` 排序** — Makefile 中 `make test` 先 touch 测试文件设置固定 mtime，再运行测试
 - **`albums-webui` CLI** — 需两个位置参数：`<albums_config_file_path> <albums_dir_path>`
 - **`albums_webui` 线程** — scan 和 generate 使用 `threading.Lock` + daemon thread，模块级全局状态（`scan_status`、`generate_status`）
-- **CSS 规范** — CSS 规则顺序按对应 HTML 中的 DOM 出现顺序排列，`@media` / `::-webkit-scrollbar` / `@starting-style` 等全局规则放文件末尾；font-size 使用绝对大小关键字（`large`/`medium`/`small`/`x-large`），不硬编码 px；albums_webui.css 中 font-family 使用 CSS 变量 `var(--font-ui)`/`var(--font-mono)`
-- **CSS 隐藏滚动条** — 使用两个规则 `scrollbar-width: none` + `::-webkit-scrollbar { display: none }`，player 中 `ul`、`li.item`、`span.music_name` 均遵循此模式
-- **player 前端 `li.item` 结构** — 为 flex 容器，歌曲名包在 `span.music_name` 可独立横向滚动（`flex: 1; min-width: 0`），`span.metadata` 始终靠右可见（`flex-shrink: 0`）
-- **player 前端 `li.dirname` 换行** — 目录名超宽时换行而非滚动（`height: auto; white-space: normal; word-break: break-word`）
+- **CSS 规范** — CSS 规则顺序按对应 HTML 中的 DOM 出现顺序排列，`@media` 等全局规则放文件末尾；`font-size` 不硬编码 px 而是使用绝对大小关键字（`large`/`medium`/`small`/`x-large`）
+- **CSS 隐藏滚动条** — 同时使用两个规则实现 `scrollbar-width: none` + `::-webkit-scrollbar { display: none }`
+- **CSS 颜色主题变量** — 颜色、字体等提取为 CSS 变量定义于 `:root`，暗色模式通过 `@media (prefers-color-scheme: dark) { :root { ... } }` 覆写变量值，新增颜色变量时必须两处同步赋值；`:root` 需设 `color-scheme: light dark;`，模板中需 `<meta name="color-scheme">` 配合
 - **HTML 语义化标签** — `player.html` 和 `albums.html` 均使用 `<header>` + `<main>` 地标，`h1` 在 `<header>` 内，列表和播放器控件在 `<main>` 内

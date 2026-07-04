@@ -4,6 +4,7 @@
     padding: 0;
 }
 
+/* Use these font vars everywhere in albums_webui; do not hardcode font-family stacks */
 :root {
     --font-ui: "Helvetica Neue", Tahoma, Arial, "Microsoft YaHei", "PingFang SC", "WenQuanYi Micro Hei", sans-serif;
     --font-mono: Consolas, Monaco, "Droid Sans Mono", "Courier New", "Microsoft YaHei", "PingFang SC", "WenQuanYi Micro Hei", sans-serif;
