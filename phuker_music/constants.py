@@ -41,7 +41,7 @@ DEFAULT_PLAYER_FILENAME: str = 'player.html'
 # albums_config
 DEFAULT_ALBUMS_DIR_PATH: str = '.'
 DEFAULT_ALBUMS_INDEX_FILENAME: str = 'index.html'
-DEFAULT_ALBUMS_TITLE: str = 'Music'
+DEFAULT_ALBUMS_TITLE: str = 'My Music'
 
 # albums_webui
 DEFAULT_WEBUI_HOST: str = '127.0.0.1'

@@ -67,7 +67,7 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
 {
     "albums_dir_path": "../albums",
     "albums_index_filename": "index.html",
-    "albums_title": "Music",
+    "albums_title": "My Music",
     "albums": [
       {
         "album_dir_path": "./Ambience",
