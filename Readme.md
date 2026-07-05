@@ -6,68 +6,7 @@ Yet another HTML music player generator. Scan a directory of audio files and gen
 
 You can try the [demo](https://phuker.github.io/phuker-music/) to see what the generated index page and players look like.
 
-## Features
-
-### The crap you won't find
-
-- No account sign-up or paid subscription required
-- No 15-second preview limit
-- No splash screen ads
-- No loan ads popups
-- No AI
-- No tracking, analytics, statistics, or telemetry
-- No user data uploads
-- No extra assets — No JS/CSS dependencies, no web fonts, no CDN
-- **Only a fucking single HTML file**
-
-### What it does have
-
-- System media controls and now playing information
-- System notification on track start (requires permission)
-- Installable as a Progressive Web App (PWA)
-- Follow system dark mode
-- Background playback persistence
-
-### What's not yet supported
-
-- Gapless playback
-
-## Install and run
-
-### Run with uvx (without installation)
-
-```bash
-uvx phuker-music --help
-```
-
-### Run with pipx (without installation)
-
-```bash
-pipx run phuker-music --help
-```
-
-### Install with uv and run
-
-```bash
-uv tool install phuker-music
-phuker-music --help
-```
-
-### Install with pipx and run
-
-```bash
-pipx install phuker-music
-phuker-music --help
-```
-
-### Install with pip and run
-
-```bash
-pip install phuker-music
-phuker-music --help
-```
-
-## Quick start
+## Typical use case
 
 ### Generate music player HTML for a single album
 
@@ -151,6 +90,69 @@ Visit <http://127.0.0.1:8000/> in a browser, drag albums from the Available colu
 ```
 
 Open `index.html` in a browser to view the index page.
+
+## Features
+
+### The crap you won't find
+
+- No account sign-up or paid subscription required
+- No 15-second preview limit
+- No splash screen ads
+- No loan ads popups
+- No AI
+- No tracking, analytics, statistics, or telemetry
+- No user data uploads
+- No extra assets — No JS/CSS dependencies, no web fonts, no CDN
+- **Only a fucking single HTML file**
+
+### What it does have
+
+- System media controls and now playing information
+- System notification on track start (requires permission)
+- Installable as a Progressive Web App (PWA)
+- Follow system dark mode
+- Background playback persistence
+
+### What's not yet supported
+
+- Gapless playback
+
+## Install and run
+
+This project requires Python 3.10 or later.
+
+### Run with uvx (without installation)
+
+```bash
+uvx phuker-music --help
+```
+
+### Run with pipx (without installation)
+
+```bash
+pipx run phuker-music --help
+```
+
+### Install with uv and run
+
+```bash
+uv tool install phuker-music
+phuker-music --help
+```
+
+### Install with pipx and run
+
+```bash
+pipx install phuker-music
+phuker-music --help
+```
+
+### Install with pip and run
+
+```bash
+pip install phuker-music
+phuker-music --help
+```
 
 ## Usage
 

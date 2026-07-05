@@ -6,68 +6,7 @@ HTML 音乐播放器生成器。扫描音频文件目录，生成离线单文件
 
 您可以访问 [demo](https://phuker.github.io/phuker-music/) 直接查看索引页和播放器的生成效果。
 
-## 功能特性
-
-### 绝不存在的特性
-
-- 无需账号登录和付费订阅
-- 没有 15 秒试听限制
-- 没有开屏广告
-- 没有贷款广告弹窗
-- 没有 AI
-- 没有追踪、分析、统计或遥测
-- 不上传任何用户数据
-- 没有额外资源 — 无 JS/CSS 依赖、无网络字体、无 CDN
-- **只有一个 HTML 文件**
-
-### 现有特性
-
-- 系统原生媒体控制与播放信息展示
-- 每首曲目开始播放时弹出系统通知（需要授予权限）
-- 可被安装为渐进式 Web 应用（PWA）
-- 暗色模式跟随系统
-- 后台播放防止冻结
-
-### 暂未支持
-
-- 无缝播放
-
-## 安装与运行
-
-### 用 uvx 运行（无需安装）
-
-```bash
-uvx phuker-music --help
-```
-
-### 用 pipx 运行（无需安装）
-
-```bash
-pipx run phuker-music --help
-```
-
-### 用 uv 安装并运行
-
-```bash
-uv tool install phuker-music
-phuker-music --help
-```
-
-### 用 pipx 安装并运行
-
-```bash
-pipx install phuker-music
-phuker-music --help
-```
-
-### 用 pip 安装并运行
-
-```bash
-pip install phuker-music
-phuker-music --help
-```
-
-## 快速开始
+## 典型使用场景
 
 ### 为单张专辑生成音乐播放器 HTML
 
@@ -151,6 +90,69 @@ phuker-music albums-webui ./albums.json .
 ```
 
 在浏览器中打开 `index.html` 即可访问索引页。
+
+## 功能特性
+
+### 绝不存在的特性
+
+- 无需账号登录和付费订阅
+- 没有 15 秒试听限制
+- 没有开屏广告
+- 没有贷款广告弹窗
+- 没有 AI
+- 没有追踪、分析、统计或遥测
+- 不上传任何用户数据
+- 没有额外资源 — 无 JS/CSS 依赖、无网络字体、无 CDN
+- **只有一个 HTML 文件**
+
+### 现有特性
+
+- 系统原生媒体控制与播放信息展示
+- 每首曲目开始播放时弹出系统通知（需要授予权限）
+- 可被安装为渐进式 Web 应用（PWA）
+- 暗色模式跟随系统
+- 后台播放防止冻结
+
+### 暂未支持
+
+- 无缝播放
+
+## 安装与运行
+
+运行本项目需要 Python 3.10 或更高版本。
+
+### 用 uvx 运行（无需安装）
+
+```bash
+uvx phuker-music --help
+```
+
+### 用 pipx 运行（无需安装）
+
+```bash
+pipx run phuker-music --help
+```
+
+### 用 uv 安装并运行
+
+```bash
+uv tool install phuker-music
+phuker-music --help
+```
+
+### 用 pipx 安装并运行
+
+```bash
+pipx install phuker-music
+phuker-music --help
+```
+
+### 用 pip 安装并运行
+
+```bash
+pip install phuker-music
+phuker-music --help
+```
 
 ## 用法
 

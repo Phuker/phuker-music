@@ -136,7 +136,7 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
 - **Jinja globals** — 其中的 `read_static_file_as_text(path)`、`read_static_file_as_data_url(path, mime)` 以 `phuker_music/static/` 为基准
 - **语种识别** — 置信度 >0.98 才采纳，否则回退 `en`；跳过低置信 `la`；输入小写化避免全大写 bug；`langid` 懒加载
 - **Sort types**：`filename`（默认）、`mtime_desc`
-- **无 lint/typecheck/formatter 配置**
+- **无 lint/typecheck/formatter 配置**；Python `>=3.10`（`pyproject.toml` `requires-python`，与 `Readme.md:122`/`Readme.zh-CN.md:122` 一致）
 - **测试 `mtime_desc` 排序** — Makefile 中 `make test` 先 touch 测试文件设置固定 mtime，再运行测试
 - **`albums-webui` CLI** — 需两个位置参数：`<albums_config_file_path> <albums_dir_path>`
 - **`albums_webui` 线程** — scan 和 generate 使用 `threading.Lock` + daemon thread，模块级全局状态（`scan_status`、`generate_status`）
