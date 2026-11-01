@@ -242,6 +242,12 @@ class TestWriteTextFileIfChanged(unittest.TestCase):
         with open(self.file_path, 'r', encoding='UTF-8') as f:
             self.assertEqual(f.read(), 'hello world\n')
 
+    def test_writes_lf_not_os_linesep(self):
+        write_text_file_if_changed(self.file_path, 'a\nb\n')
+
+        with open(self.file_path, 'rb') as f:
+            self.assertEqual(f.read(), b'a\nb\n')
+
 
 if __name__ == '__main__':
     unittest.main()

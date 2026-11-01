@@ -145,9 +145,8 @@ def api_save_config():
         albums_config = request.get_json()
         albums_config = albums.normalize_albums_config(albums_config, albums_config_dir_path=albums_config_dir_path, absolute=False)
 
-        with open(albums_config_file_path, 'w', encoding='UTF-8') as f:
-            json.dump(albums_config, f, indent=4, ensure_ascii=False)
-            f.write('\n')
+        content = json.dumps(albums_config, indent=4, ensure_ascii=False) + '\n'
+        utils.write_text_file_if_changed(albums_config_file_path, content)
 
         return jsonify({'status': 'done'})
     except Exception as e:
