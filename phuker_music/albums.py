@@ -90,6 +90,7 @@ def main(albums_config_file_path: str, overwrite: bool = False) -> None:
         indexes=indexes,
     )
 
-    logger.info('Writing index page: %r', albums_index_file_path)
-    with open(albums_index_file_path, 'w', encoding='UTF-8') as f:
-        f.write(result)
+    if utils.write_text_file_if_changed(albums_index_file_path, result):
+        logger.info('Wrote index page: %r', albums_index_file_path)
+    else:
+        logger.info('Index page unchanged, skipped writing: %r', albums_index_file_path)

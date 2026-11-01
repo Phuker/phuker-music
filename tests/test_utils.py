@@ -1,5 +1,7 @@
 import os
 import sys
+import shutil
+import tempfile
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -11,6 +13,7 @@ from phuker_music.utils import (
     is_sub_path,
     get_rel_path,
     get_abs_joined_path,
+    write_text_file_if_changed,
 )
 
 
@@ -202,6 +205,42 @@ class TestGetAbsJoinedPath(unittest.TestCase):
     def test_non_string_raises(self):
         with self.assertRaises(AssertionError):
             get_abs_joined_path(123)
+
+
+class TestWriteTextFileIfChanged(unittest.TestCase):
+    def setUp(self):
+        self.tmpdir = tempfile.mkdtemp()
+        self.file_path = get_abs_joined_path(self.tmpdir, 'test.html')
+
+    def tearDown(self):
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    def test_create_new_file(self):
+        self.assertTrue(write_text_file_if_changed(self.file_path, 'hello\n'))
+
+        with open(self.file_path, 'r', encoding='UTF-8') as f:
+            self.assertEqual(f.read(), 'hello\n')
+
+    def test_unchanged_content_skips_write(self):
+        write_text_file_if_changed(self.file_path, 'hello\n')
+        mtime_ns = os.stat(self.file_path).st_mtime_ns
+
+        self.assertFalse(write_text_file_if_changed(self.file_path, 'hello\n'))
+        self.assertEqual(os.stat(self.file_path).st_mtime_ns, mtime_ns)
+
+    def test_same_size_different_content_writes(self):
+        write_text_file_if_changed(self.file_path, 'hello\n')
+
+        self.assertTrue(write_text_file_if_changed(self.file_path, 'world\n'))
+        with open(self.file_path, 'r', encoding='UTF-8') as f:
+            self.assertEqual(f.read(), 'world\n')
+
+    def test_different_size_writes(self):
+        write_text_file_if_changed(self.file_path, 'hello\n')
+
+        self.assertTrue(write_text_file_if_changed(self.file_path, 'hello world\n'))
+        with open(self.file_path, 'r', encoding='UTF-8') as f:
+            self.assertEqual(f.read(), 'hello world\n')
 
 
 if __name__ == '__main__':

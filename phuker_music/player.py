@@ -185,6 +185,7 @@ def generate(album_config: dict, *, base_dir_path: str = '.', overwrite: bool = 
     if os_path.exists(player_file_path) and not overwrite:
         raise FileExistsError(f'Player file already exists: {player_file_path!r}, use -f/--force to overwrite')
 
-    logger.info('Writing to file: %r', player_file_path)
-    with open(player_file_path, 'w', encoding='UTF-8') as f:
-        f.write(result)
+    if utils.write_text_file_if_changed(player_file_path, result):
+        logger.info('Wrote player: %r', player_file_path)
+    else:
+        logger.info('Player unchanged, skipped writing: %r', player_file_path)

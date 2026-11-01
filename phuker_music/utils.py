@@ -120,6 +120,22 @@ def get_abs_joined_path(*paths: str) -> str:
     return os_path.abspath(os_path.join(*expanded))
 
 
+def write_text_file_if_changed(file_path: str, content: str) -> bool:
+    file_content_bytes = content.encode('UTF-8')
+
+    # Compare size first: a same-named huge file must not be loaded into memory
+    if os_path.isfile(file_path) and os_path.getsize(file_path) == len(file_content_bytes):
+        with open(file_path, 'rb') as f:
+            if f.read() == file_content_bytes:
+                return False
+
+    # Avoid '\n' being translated to the system default line separator (os.linesep)
+    with open(file_path, 'wb') as f:
+        f.write(file_content_bytes)
+
+    return True
+
+
 STATIC_DIR_PATH: str = os_path.join(os_path.dirname(os_path.abspath(__file__)), 'static')
 
 
