@@ -7,7 +7,7 @@
   - `player.py` — 单专辑生成，`normalize_album_config()`、`generate()`
   - `albums.py` — 多专辑批量生成 + 索引页，`normalize_albums_config()`、`main()`
   - `albums_webui.py` — Flask 应用，`/api/scan`、`/api/save-config`、`/api/generate`
-  - `utils.py` — `assert_()`、日志初始化（TTY 彩色）、语种识别、Jinja2 环境、`os_path`、路径工具函数
+  - `utils.py` — `assert_()`、日志初始化（TTY 彩色）、语种识别、Jinja2 环境、`os_path`、路径工具函数、`write_text_file_if_changed()`
   - `constants.py` — `AUDIO_EXT_LIST`、`IMAGE_EXT_LIST`、默认配置常量
   - `templates/` — Jinja2 模板（`player.html`、`albums.html`）
   - `static/` — 静态资源（`css/`、`js/`、`images/`、`audio/`、`libs/`、`albums_webui.html`），`libs/` 下为本地化第三方库，无需读取
@@ -19,7 +19,7 @@
 ```bash
 pip install -U -r requirements.txt    # 安装依赖
 pip install -e .                      # 或 make dev-install，editable 开发安装
-make test                             # 运行测试：先 unittest，再 CLI 集成测试（albums 子命令）
+make test                             # 运行测试：先固定部分音频文件 mtime 用于后续排序测试，再 unittest，最后 CLI 集成测试（albums 子命令）
 make demo                             # 等价于 phuker-music albums -v -f ./docs/albums.json
 make build                            # 构建 wheel 和 sdist（需 uv/uvx）
 ```
@@ -122,6 +122,12 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
 | `is_sub_path(path, parent_path)` | `os_path.commonpath` 判断路径是否在目录范围内 |
 | `assert_(expr, msg)` | 抛出 `AssertionError`（不是 `ValueError`） |
 
+# 文件写入
+
+- 生成 HTML 和 WebUI 配置统一调用 `utils.write_text_file_if_changed(file_path, content)`（`utils.py:123`），该函数先比较文件大小，再比较字节；内容相同则不写入，保持 mtime 不变；内容不同时以 `'wb'` 模式写入，确保 `'\n'` 不会在 Windows 上被转换成 `os.linesep`
+- 不要用文本模式 `open(..., 'w')` 写生成文件；测试中写 JSON 配置若用文本模式，显式传 `newline='\n'`
+- 文本模式读取（配置、模板、静态资源）是有意为之，会将 CRLF 归一化为 LF，不要改为二进制
+
 # 路径逃逸限制
 
 - **`album_config`**：`cover_file` 必须位于 `album_dir_path` 内（`player.py:141`），`player_filename` 不能包含 `/` 或 `\`（`player.py:126`）
@@ -137,7 +143,7 @@ def normalize_albums_config(albums_config: dict, *, albums_config_dir_path: str,
 - **语种识别** — 置信度 >0.98 才采纳，否则回退 `en`；跳过低置信 `la`；输入小写化避免全大写 bug；`langid` 懒加载
 - **Sort types**：`filename`（默认）、`mtime_desc`
 - **无 lint/typecheck/formatter 配置**；Python `>=3.10`（`pyproject.toml` `requires-python`，与 `Readme.md:122`/`Readme.zh-CN.md:122` 一致）
-- **测试 `mtime_desc` 排序** — Makefile 中 `make test` 先 touch 测试文件设置固定 mtime，再运行测试
+- **版本号唯一来源** — `phuker_music/__init__.py` 的 `__version__`，`pyproject.toml` 动态读取
 - **`albums-webui` CLI** — 需两个位置参数：`<albums_config_file_path> <albums_dir_path>`
 - **`albums_webui` 线程** — scan 和 generate 使用 `threading.Lock` + daemon thread，模块级全局状态（`scan_status`、`generate_status`）
 - **CSS 规范** — CSS 规则顺序按对应 HTML 中的 DOM 出现顺序排列，`@media` 等全局规则放文件末尾；`font-size` 不硬编码 px 而是使用绝对大小关键字（`large`/`medium`/`small`/`x-large`）
