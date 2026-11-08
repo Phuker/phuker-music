@@ -161,7 +161,7 @@ def get_web_app_manifest_data_url(title: str, filename: str) -> str:
         'short_name': title,
         'name': title,
         'start_url': f'./{filename}',
-        'display': 'minimal-ui',
+        'display': 'standalone',
         'icons': [
             {
                 'type': 'image/png',
